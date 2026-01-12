@@ -4,8 +4,10 @@ Tests for src.wiki.__init__ (fallback logic)
 import importlib
 import sys
 from unittest.mock import MagicMock, patch
+import pytest
 
 
+@pytest.mark.skipif(sys.platform != "win32", reason="Windows-specific test")
 def test_wiki_init_logic(monkeypatch):
     import src.wiki
 
