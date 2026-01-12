@@ -53,7 +53,7 @@ def load_lang_titles_from_dump(lang):
     return []
 
 
-def dump_one(file, data):
+def dump_one(file, data) -> None:
     # ---
     if not data:
         return
@@ -62,10 +62,9 @@ def dump_one(file, data):
     # ---
     with open(file, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False)
-        # json.dump(data, f, ensure_ascii=False, indent=2)
 
 
-def dump_all(data):
+def dump_languages_counts(data: dict[str, int]) -> None:
     """
     Write language count data to the main dump file when there are more than 200 entries.
 
@@ -85,7 +84,7 @@ def dump_all(data):
         dump_one(file, data)
 
 
-def load_languages_counts():
+def load_languages_counts() -> dict:
     """
     Load the saved mapping of language codes to article counts from the main dump file.
 

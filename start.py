@@ -5,7 +5,7 @@ python3 I:/mdwiki/med_views/start.py
 import logging
 import sys
 
-from src.dump_utils import count_languages_in_json, dump_all, load_languages_counts
+from src.dump_utils import count_languages_in_json, dump_languages_counts, load_languages_counts
 from src.sql_utils import get_language_article_counts_sql
 from src.texts_utils import make_text
 from src.titles_utils import load_lang_titles
@@ -22,7 +22,7 @@ def get_languages_articles_counts():
     # ---
     if not all_infos and ("local" not in sys.argv):
         data = get_language_article_counts_sql()
-        dump_all(data)
+        dump_languages_counts(data)
         return data
     # ---
     if all_infos:

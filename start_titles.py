@@ -10,7 +10,7 @@ import logging
 
 from src.config import json_titles_path
 from src.dump_utils import (
-    dump_all,
+    dump_languages_counts,
     dump_one,
 )
 from src.sql_utils import (
@@ -18,36 +18,28 @@ from src.sql_utils import (
 )
 
 logger = logging.getLogger(__name__)
-
-
-def dump_data(all_data):
-    # ---
-    """
-    Write per-language title lists to JSON files inside the configured json_titles_path.
-
-    Each language in `all_data` is serialized to a file named `<lang>.json` containing that language's titles.
-
-    Parameters:
-        all_data (dict[str, list[str]]): Mapping from language key (e.g., locale or language code) to the list of titles to persist.
-    """
-    for n, (lang, titles) in enumerate(all_data.items(), start=1):
-        # ---
-        logger.debug(f"dump_data(): lang:{n}/{len(all_data)} \t {lang} {len(titles)}")
-        # ---
-        file = json_titles_path / f"{lang}.json"
-        # ---
-        dump_one(file, titles)
-    # ---
-    logger.debug(f"dump_data: all langs: {len(all_data)}")
+logging.basicConfig(level=logging.INFO)
 
 
 def start():
     # ---
     all_links = retrieve_medicine_titles()
     # ---
-    dump_all({x: len(y) for x, y in all_links.items()})
+    if not all_links or len(all_links) == 0:
+        logger.warning("No links retrieved from database, aborting.")
+        return
     # ---
-    dump_data(all_links)
+    dump_languages_counts({x: len(y) for x, y in all_links.items()})
+    # ---
+    for n, (lang, titles) in enumerate(all_links.items(), start=1):
+        # ---
+        logger.debug(f"dump_data(): lang:{n}/{len(all_links)} \t {lang} {len(titles)}")
+        # ---
+        file = json_titles_path / f"{lang}.json"
+        # ---
+        dump_one(file, titles)
+    # ---
+    logger.debug(f"dump_data: all langs: {len(all_links)}")
 
 
 if __name__ == "__main__":
