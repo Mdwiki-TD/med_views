@@ -33,7 +33,7 @@ def get_en_articles():
 def get_language_article_counts_sql():
     # ---
     query = """
-    select ll_lang, count(page_title) as counts
+        select ll_lang, count(page_title) as counts
         from page , langlinks , page_assessments , page_assessments_projects
         where pap_project_title = "Medicine"
         and pa_project_id = pap_project_id
@@ -42,6 +42,17 @@ def get_language_article_counts_sql():
         and page_is_redirect = 0
         and page_namespace = 0
         group by ll_lang
+
+        UNION ALL
+
+        select "en" as ll_lang, count(*) as counts
+        from page, page_assessments, page_assessments_projects
+        where pap_project_title = "Medicine"
+        and pa_project_id = pap_project_id
+        and pa_page_id = page_id
+        and page_is_redirect = 0
+        and page_namespace = 0;
+
     """
     # ---
     logger.debug("def get_language_article_counts_sql():")
@@ -50,16 +61,13 @@ def get_language_article_counts_sql():
     # ---
     languages = {x["ll_lang"]: x["counts"] for x in result}
     # ---
-    if "en" not in languages:
-        languages["en"] = len(get_en_articles())
-    # ---
     return languages
 
 
 def retrieve_medicine_titles() -> dict:
     # ---
     query = """
-        select ll_lang, ll_title
+        select page_title, ll_lang, ll_title
             from page, langlinks, page_assessments, page_assessments_projects
             where pap_project_title = "Medicine"
             and pa_project_id = pap_project_id
@@ -73,12 +81,13 @@ def retrieve_medicine_titles() -> dict:
     # ---
     result = retrieve_sql_results(query, "enwiki")
     # ---
-    titles = {}
+    titles = {"en": []}
     # ---
     for x in result:
         titles.setdefault(x["ll_lang"], []).append(x["ll_title"])
+        titles["en"].append(x["page_title"])
     # ---
-    titles["en"] = get_en_articles()
+    titles["en"] = list(set(titles["en"]))
     # ---
     logger.info(f"retrieve_medicine_titles: {len(titles)}")
     # ---
