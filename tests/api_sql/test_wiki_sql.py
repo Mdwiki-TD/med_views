@@ -1,9 +1,7 @@
 """
 Tests for src.api_sql.wiki_sql
 """
-from unittest.mock import patch
-
-import pytest
+from unittest.mock import MagicMock
 
 from src.api_sql.wiki_sql import (
     GET_SQL,
@@ -12,22 +10,21 @@ from src.api_sql.wiki_sql import (
 )
 
 
-def test_GET_SQL():
+def test_GET_SQL(monkeypatch):
     # Clear cache before test
     GET_SQL.cache_clear()
-    with patch("os.path.isdir") as mock_isdir:
-        # Case 1: On labs
-        # Logic: if not isdir(dir1) and not isdir(dir2) or isdir("I:/core/bots"): return False
-        # If isdir(dir2) is True, then (False and False) is False.
-        # If isdir("I:/core/bots") is False, then (False or False) is False.
-        # So it does not return False. It returns True.
-        mock_isdir.side_effect = lambda path: path == "/data/project/"
-        assert GET_SQL() is True
 
-        # Case 2: Not on labs
-        GET_SQL.cache_clear()
-        mock_isdir.side_effect = lambda path: False
-        assert GET_SQL() is False
+    mock_isdir = MagicMock()
+    monkeypatch.setattr("os.path.isdir", mock_isdir)
+
+    # Case 1: On labs
+    mock_isdir.side_effect = lambda path: path == "/data/project/"
+    assert GET_SQL() is True
+
+    # Case 2: Not on labs
+    GET_SQL.cache_clear()
+    mock_isdir.side_effect = lambda path: False
+    assert GET_SQL() is False
 
 
 def test_make_labsdb_dbs_p():
@@ -45,11 +42,12 @@ def test_make_labsdb_dbs_p():
     assert db == "be_x_oldwiki_p"
 
 
-@patch("src.api_sql.wiki_sql.GET_SQL")
-@patch("src.api_sql.wiki_sql.mysql_client.make_sql_connect")
-def test_retrieve_sql_results(mock_make_sql, mock_get_sql):
-    mock_get_sql.return_value = True
-    mock_make_sql.return_value = [{"col": "val"}]
+def test_retrieve_sql_results(monkeypatch):
+    mock_get_sql = MagicMock(return_value=True)
+    monkeypatch.setattr("src.api_sql.wiki_sql.GET_SQL", mock_get_sql)
+
+    mock_make_sql = MagicMock(return_value=[{"col": "val"}])
+    monkeypatch.setattr("src.api_sql.wiki_sql.mysql_client.make_sql_connect", mock_make_sql)
 
     results = retrieve_sql_results("SELECT 1", wiki="enwiki")
 

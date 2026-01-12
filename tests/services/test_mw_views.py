@@ -1,6 +1,5 @@
 from datetime import date, datetime
-from unittest.mock import MagicMock, patch
-
+from unittest.mock import MagicMock
 
 from src.services.mw_views import (
     PageviewsClient,
@@ -58,13 +57,14 @@ def test_month_from_day():
     assert month_from_day(dt2) == expected2
 
 
-@patch("src.services.mw_views.requests.get")
-def test_PageviewsClient(mock_get):
+def test_PageviewsClient(monkeypatch):
     # Setup mock response
     mock_resp = MagicMock()
     mock_resp.json.return_value = {"items": [{"article": "Test_Article", "timestamp": "2023010100", "views": 50}]}
     mock_resp.status_code = 200
-    mock_get.return_value = mock_resp
+
+    mock_get = MagicMock(return_value=mock_resp)
+    monkeypatch.setattr("src.services.mw_views.requests.get", mock_get)
 
     client = PageviewsClient(user_agent="test-agent", parallelism=1)
 

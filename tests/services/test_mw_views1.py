@@ -1,6 +1,4 @@
 """
-Tests
-# TODO: Implement test
 """
 import pytest
 
@@ -11,7 +9,6 @@ from src.services.mw_views import (
 
 @pytest.mark.network
 def test_pageviewsclient():
-    # TODO: Implement test
     view_bot = PageviewsClient()
     data = view_bot.article_views_new(
         "ar.wikipedia", ["الصفحة الرئيسة"], granularity="monthly", start="20150101", end="20191231"
