@@ -6,7 +6,7 @@
 import functools
 import sys
 import logging
-from .account_info import my_username, mdwiki_pass
+from ..config import my_username, mdwiki_pass
 
 all_apis_valid = None
 try:

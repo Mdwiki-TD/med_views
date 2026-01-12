@@ -2,8 +2,8 @@
 """
 """
 import sys
-import os
 import requests
+import logging
 import time
 from requests.utils import quote
 from datetime import date, datetime, timedelta
@@ -11,11 +11,9 @@ from concurrent.futures import ThreadPoolExecutor
 from collections import defaultdict
 from tqdm import tqdm
 
+logger = logging.getLogger(__name__)
 
-tool = os.getenv("HOME")
-tool = tool.split("/")[-1] if tool else "himo"
-# ---
-default_user_agent = f"{tool} bot/1.0 (https://{tool}.toolforge.org/; tools.{tool}@toolforge.org)"
+default_user_agent = "himo bot/1.0 (https://himo.toolforge.org/; tools.himo@toolforge.org)"
 
 endpoints = {
     "article": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article",
@@ -173,17 +171,9 @@ class PageviewsClient:
             print(Exception(f"The pageview API returned nothing useful at: ({len(urls)})"))
 
             for detail, count in details.items():
-                print(Exception(f">>>>>>>>>({count}): {detail=}"))
-
-            if "printurl" in sys.argv:
-                print(Exception(urls))
+                logger.info(f">>>>>>>>>({count}): {detail=}")
 
         return output
-        # except Exception as e:
-        #     print(f'ERROR {e} while fetching and parsing ' + str(urls))
-        #     traceback.print_exc()
-
-        return {}
 
     def get_concurrent(self, urls):
         def fetch(url):

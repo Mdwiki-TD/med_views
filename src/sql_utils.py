@@ -3,7 +3,7 @@
 
 """
 
-from .api_sql.wiki_sql import sql_new
+from .api_sql.wiki_sql import retrieve_sql_results
 
 
 def get_en_articles():
@@ -20,7 +20,7 @@ def get_en_articles():
     # ---
     print("def get_en_articles():")
     # ---
-    result = sql_new(query, "enwiki")
+    result = retrieve_sql_results(query, "enwiki")
     # ---
     articles = [x["page_title"] for x in result]
     # ---
@@ -45,7 +45,7 @@ def get_language_article_counts_sql():
     # ---
     print("def get_language_article_counts_sql():")
     # ---
-    result = sql_new(query, "enwiki")
+    result = retrieve_sql_results(query, "enwiki")
     # ---
     languages = {x["ll_lang"]: x["counts"] for x in result}
     # ---
@@ -74,7 +74,7 @@ def one_lang_titles(langcode):
     # ---
     print(f"def one_lang_titles({langcode}):")
     # ---
-    result = sql_new(query, "enwiki", values=(langcode,))
+    result = retrieve_sql_results(query, "enwiki", values=(langcode,))
     # ---
     titles = [x["ll_title"] for x in result]
     # ---
@@ -96,7 +96,7 @@ def retrieve_medicine_titles():
     # ---
     print("def langs_titles():")
     # ---
-    result = sql_new(query, "enwiki")
+    result = retrieve_sql_results(query, "enwiki")
     # ---
     titles = {}
     # ---

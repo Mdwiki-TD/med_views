@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 """
-from .wiki_sql import GET_SQL, sql_new
+from .wiki_sql import GET_SQL, retrieve_sql_results
 
 __all__ = [
     "GET_SQL",
-    "sql_new",
+    "retrieve_sql_results",
 ]

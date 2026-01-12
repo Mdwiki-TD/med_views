@@ -4,7 +4,7 @@
 # ---
 import logging
 import mwclient
-from .account_info import my_username, mdwiki_pass
+from ..config import my_username, mdwiki_pass
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

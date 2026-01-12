@@ -30,21 +30,20 @@ def is_empty_data(data):
     return False
 
 
-def json_load(json_file):
-    # ---
-    u_data = False
-    # ---
+def json_load(json_file) -> None | dict | list:
     try:
         with open(json_file, "r", encoding="utf-8") as f:
             u_data = json.load(f)
-    except Exception as e:
-        logger.info(f"<<red>> json_load({json_file}) {e}")
-    # ---
+    except (json.JSONDecodeError, FileNotFoundError) as e:
+        logger.error(f"Failed to load JSON from {json_file}: {e}")
+        return None
+
     if isinstance(u_data, dict):
-        u_data = {x.replace("_", " "): v for x, v in u_data.items()}
-    elif isinstance(u_data, list):
-        u_data = [x.replace("_", " ") for x in u_data]
-    # ---
+        return {x.replace("_", " "): v for x, v in u_data.items()}
+
+    if isinstance(u_data, list):
+        return [x.replace("_", " ") for x in u_data]
+
     return u_data
 
 

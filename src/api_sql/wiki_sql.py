@@ -69,9 +69,9 @@ def make_labsdb_dbs_p(wiki):
     return host, dbs_p
 
 
-def sql_new(queries, wiki="", values=[]):
+def retrieve_sql_results(queries, wiki="", values=None):
     # ---
-    logger.debug(f"wiki_sql.py sql_new wiki '{wiki}'")
+    logger.debug(f"wiki_sql.py retrieve_sql_results wiki '{wiki}'")
     # ---
     host, dbs_p = make_labsdb_dbs_p(wiki)
     # ---
@@ -87,6 +87,6 @@ def sql_new(queries, wiki="", values=[]):
     # ---
     delta = time.perf_counter() - start
     # ---
-    logger.info(f'wiki_sql.py sql_new len(encats) = "{len(rows)}", in {delta:.2f} seconds')
+    logger.info(f'wiki_sql.py retrieve_sql_results len(encats) = "{len(rows)}", in {delta:.2f} seconds')
     # ---
     return rows
