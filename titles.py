@@ -5,13 +5,10 @@ python3 core8/pwb.py med_views/titles
 
 
 """
-import sys
 
 from views_all_bots.dump_utils import (
     dump_one,
     dump_all,
-    load_lang_titles_from_dump,
-    one_lang_titles,
     t_dump_dir,
 )
 from views_all_bots.sql_utils import (
@@ -30,25 +27,6 @@ def dump_data(all_data):
         dump_one(file, titles)
     # ---
     print(f"dump_data: all langs: {len(all_data)}")
-
-
-def load_lang_titles(lang):
-    # ---
-    data = load_lang_titles_from_dump(lang)
-    # ---
-    data = [x.replace("_", " ") for x in data]
-    # ---
-    if data:
-        return data
-    # ---
-    if "local" in sys.argv:
-        return {}
-    # ---
-    data = one_lang_titles(lang)
-    # ---
-    data = [x.replace("_", " ") for x in data]
-    # ---
-    return data
 
 
 def start():

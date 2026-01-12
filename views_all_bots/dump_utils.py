@@ -11,6 +11,17 @@ if not t_dump_dir.exists():
     t_dump_dir.mkdir()
 
 
+def count_languages_in_json():
+    result = {}
+    # ---
+    for json_file in t_dump_dir.glob("*.json"):
+        lang = json_file.stem
+        # ---
+        with open(json_file, "r", encoding="utf-8") as f:
+            result[lang] = len(json.load(f))
+    return result
+
+
 def load_lang_titles_from_dump(lang):
     # ---
     json_file = t_dump_dir / f"{lang}.json"

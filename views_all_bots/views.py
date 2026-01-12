@@ -180,6 +180,28 @@ def load_one_lang_views(langcode, titles, year, max_items=1000, maxv=0):
     return data
 
 
+def get_one_lang_views(langcode, titles, year, maxv=0):
+    # ---
+    views_t = load_one_lang_views(langcode, titles, year, maxv=maxv)
+    # ---
+    # print(views_t)
+    # ---
+    total = 0
+    # ---
+    for _, views in views_t.items():
+        if isinstance(views, dict):
+            views = views.get("all", 0)
+        # ---
+        total += views
+    # ---
+    if total == 0:
+        logger.info(f"<<yellow>> No views for {langcode}")
+        # logger.info("views_t" + str(views_t))
+        # logger.info("titles" + str(titles))
+    # ---
+    return total
+
+
 if __name__ == "__main__":
     # ---
     # titles = load_lang_titles_from_dump("ba")

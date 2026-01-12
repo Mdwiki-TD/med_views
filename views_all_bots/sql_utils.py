@@ -27,7 +27,7 @@ def get_en_articles():
     return articles
 
 
-def count_all_langs_sql():
+def get_language_article_counts_sql():
     # ---
     query = """
     select ll_lang, count(page_title) as counts
@@ -43,7 +43,7 @@ def count_all_langs_sql():
         #limit 10
     """
     # ---
-    print("def count_all_langs_sql():")
+    print("def get_language_article_counts_sql():")
     # ---
     result = sql_new(query, "enwiki")
     # ---
