@@ -4,6 +4,7 @@
 """
 # ---
 import functools
+import sys
 import logging
 import os
 import configparser
@@ -38,8 +39,16 @@ class page:
     def exists(self):
         return self.page.exists()
 
-    def save(self, newtext: str, summary: str, nocreate: int, minor: str):
-        self.page.save(newtext=newtext, summary=summary, nocreate=nocreate, minor=minor)
+    def save(self, newtext: str, summary: str, nocreate: int, minor: str) -> bool | str:
+        if "save" not in sys.argv:
+            logger.info("Dry run mode, not saving changes.")
+            return True
 
-    def create(self, newtext: str, summary: str):
-        self.page.Create(newtext, summary=summary)
+        return self.page.save(newtext=newtext, summary=summary, nocreate=nocreate, minor=minor)
+
+    def create(self, newtext: str, summary: str) -> bool:
+        if "save" not in sys.argv:
+            logger.info("Dry run mode, not saving changes.")
+            return True
+
+        return self.page.Create(newtext, summary=summary)
