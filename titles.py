@@ -3,7 +3,6 @@
 
 python3 core8/pwb.py med_views/titles
 
-from med_views.titles import load_lang_titles
 
 """
 import sys

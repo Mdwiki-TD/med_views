@@ -17,8 +17,8 @@ from pathlib import Path
 
 import tqdm
 
-from med_views.views_all_bots.helps import get_views_all_file, json_load
-from med_views.views_all_bots.stats_bot import update_all_stats
+from views_all_bots.helps import get_views_all_file, json_load
+from views_all_bots.stats_bot import update_all_stats
 from views_all_bots.utils import load_lang_titles_from_dump, load_languages_counts
 from views_all_bots.views_all import article_all_views, dump_stats, get_titles_to_work, load_one_lang_views_all
 

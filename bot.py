@@ -16,9 +16,9 @@ tfj run umvsh --image tf-python39 --command "$HOME/pybot/md_core/med_views/run.s
 import logging
 import sys
 
-from newapi.mdwiki_page import md_MainPage
+from views_all_bots.mdwiki_page import md_MainPage
 
-from med_views.titles import load_lang_titles
+from titles import load_lang_titles
 from views_all_bots.utils import count_all_langs
 from views_all_bots.views import load_one_lang_views
 

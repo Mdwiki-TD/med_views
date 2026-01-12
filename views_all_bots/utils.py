@@ -1,16 +1,12 @@
 #!/usr/bin/python3
 """
 
-from med_views.helps import count_all_langs, get_en_articles, one_lang_titles, langs_titles, load_lang_titles_from_dump
-from med_views.helps import dump_one
-from med_views.helps import load_languages_counts
-
 """
 import json
 import sys
 from pathlib import Path
 
-from mdapi_sql import wiki_sql
+from api_sql.wiki_sql import sql_new
 
 t_dump_dir = Path(__file__).parent / "titles"
 
@@ -59,7 +55,7 @@ def get_en_articles():
     # ---
     print("def get_en_articles():")
     # ---
-    result = wiki_sql.sql_new(query, "enwiki")
+    result = sql_new(query, "enwiki")
     # ---
     articles = [x["page_title"] for x in result]
     # ---
@@ -105,7 +101,7 @@ def count_all_langs_sql():
     # ---
     print("def count_all_langs_sql():")
     # ---
-    result = wiki_sql.sql_new(query, "enwiki")
+    result = sql_new(query, "enwiki")
     # ---
     languages = {x["ll_lang"]: x["counts"] for x in result}
     # ---
@@ -159,7 +155,7 @@ def one_lang_titles(langcode):
     # ---
     print(f"def one_lang_titles({langcode}):")
     # ---
-    result = wiki_sql.sql_new(query, "enwiki", values=(langcode,))
+    result = sql_new(query, "enwiki", values=(langcode,))
     # ---
     titles = [x["ll_title"] for x in result]
     # ---
@@ -181,7 +177,7 @@ def langs_titles():
     # ---
     print("def langs_titles():")
     # ---
-    result = wiki_sql.sql_new(query, "enwiki")
+    result = sql_new(query, "enwiki")
     # ---
     titles = {}
     # ---

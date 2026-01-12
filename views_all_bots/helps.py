@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """
 
-from med_views.views_all_bots.helps import json_load, get_views_all_file, update_data_new, is_empty_data
 
 """
 import json

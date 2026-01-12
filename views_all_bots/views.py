@@ -11,8 +11,8 @@ from pathlib import Path
 # from mwviews.api import PageviewsClient
 from apis.mw_views import PageviewsClient
 
-from med_views.views_all_bots.helps import json_load
-from views_all_bots.utils import dump_one
+from .helps import json_load
+from .utils import dump_one
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)

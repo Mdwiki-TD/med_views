@@ -1,15 +1,14 @@
 #!/usr/bin/python3
 """
 
-from med_views.views_all_bots.stats_bot import dump_stats, update_all_stats
 
 """
 import json
 import sys
 from pathlib import Path
 
-from med_views.views_all_bots.helps import is_empty_data
-from views_all_bots.utils import dump_one
+from .helps import is_empty_data
+from .utils import dump_one
 
 
 def sum_all_views_new(new_data):

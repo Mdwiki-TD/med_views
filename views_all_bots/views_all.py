@@ -9,9 +9,9 @@ import sys
 
 from apis.mw_views import PageviewsClient
 
-from med_views.views_all_bots.helps import get_views_all_file, is_empty_data, json_load, update_data_new
-from med_views.views_all_bots.stats_bot import dump_stats
-from views_all_bots.utils import dump_one
+from .helps import get_views_all_file, is_empty_data, json_load, update_data_new
+from .stats_bot import dump_stats
+from .utils import dump_one
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
