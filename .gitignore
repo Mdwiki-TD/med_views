@@ -1,5 +1,9 @@
 *.pyc
 .env
 views_all_run_it.py
-/dumps
 *.zip
+!dumps/total_sites_by_year/*.json
+dumps/titles
+dumps/views_new
+dumps/views_by_year
+dumps/*.json

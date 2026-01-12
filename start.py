@@ -3,6 +3,7 @@
 python3 I:/mdwiki/med_views/start.py
 """
 import logging
+import json
 import sys
 
 from src.dump_utils import count_languages_in_json, load_languages_counts
@@ -60,7 +61,7 @@ def fetch_language_statistics(year, langcode):
     return calculate_total_views(langcode, year_data)
 
 
-def make_views(languages, year, limit, maxv):
+def make_views(languages, year, limit):
     # ---
     views = {}
     # ---
@@ -70,7 +71,7 @@ def make_views(languages, year, limit, maxv):
             logger.info(f"limit {limit} reached, break")
             break
         # ---
-        views[lang] = fetch_language_statistics(year, maxv, lang)
+        views[lang] = fetch_language_statistics(year, lang)
     # ---
     return views
 
@@ -100,7 +101,7 @@ def start(year, limit, maxv):
     # sort languages ASC
     languages = {k: v for k, v in sorted(languages.items(), key=lambda item: item[1], reverse=False)}
     # ---
-    views = make_views(languages, year, limit, maxv)
+    views = make_views(languages, year, limit)
     # ---
     views_not_0 = len([x for x in views.values() if x > 0])
     # ---
@@ -112,7 +113,7 @@ def start(year, limit, maxv):
     # ---
     # dump views
     with open(main_dump_path / f"views_{year}.json", "w", encoding="utf-8") as f:
-        f.write(str(views))
+        json.dump(views, f, ensure_ascii=False, indent=4)
     # ---
     newtext = make_text(languages, views)
     # ---

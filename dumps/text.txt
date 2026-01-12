@@ -1,0 +1,2034 @@
+{{WPM:WikiProject Medicine/Total medical views by language}}
+* Total views for medical content = 3,643,867,833
+* Total articles= 385,398
+
+{| class="wikitable sortable"
+!Rank
+!Lang
+!# of articles
+!Total views
+!Ave. views
+|----
+|1
+|[//en.wikipedia.org en]
+|53,900
+|1,717,608,795
+|31,866
+|-
+|2
+|[//ar.wikipedia.org ar]
+|20,444
+|61,881,116
+|3,026
+|-
+|3
+|[//de.wikipedia.org de]
+|15,027
+|220,683,318
+|14,685
+|-
+|4
+|[//fr.wikipedia.org fr]
+|13,733
+|154,578,624
+|11,255
+|-
+|5
+|[//es.wikipedia.org es]
+|13,581
+|183,820,147
+|13,535
+|-
+|6
+|[//it.wikipedia.org it]
+|10,690
+|81,500,212
+|7,623
+|-
+|7
+|[//fa.wikipedia.org fa]
+|10,451
+|96,388,263
+|9,222
+|-
+|8
+|[//pt.wikipedia.org pt]
+|10,342
+|56,988,396
+|5,510
+|-
+|9
+|[//ru.wikipedia.org ru]
+|9,778
+|255,872,999
+|26,168
+|-
+|10
+|[//zh.wikipedia.org zh]
+|9,277
+|113,605,089
+|12,245
+|-
+|11
+|[//pl.wikipedia.org pl]
+|8,874
+|62,860,464
+|7,083
+|-
+|12
+|[//ja.wikipedia.org ja]
+|8,517
+|120,090,370
+|14,100
+|-
+|13
+|[//uk.wikipedia.org uk]
+|7,647
+|27,905,526
+|3,649
+|-
+|14
+|[//ca.wikipedia.org ca]
+|6,763
+|7,581,442
+|1,121
+|-
+|15
+|[//nl.wikipedia.org nl]
+|6,752
+|34,399,620
+|5,094
+|-
+|16
+|[//id.wikipedia.org id]
+|6,436
+|20,425,040
+|3,173
+|-
+|17
+|[//ko.wikipedia.org ko]
+|6,209
+|25,427,189
+|4,095
+|-
+|18
+|[//sr.wikipedia.org sr]
+|6,190
+|12,416,755
+|2,005
+|-
+|19
+|[//tr.wikipedia.org tr]
+|6,024
+|33,581,487
+|5,574
+|-
+|20
+|[//sv.wikipedia.org sv]
+|5,963
+|18,097,574
+|3,034
+|-
+|21
+|[//he.wikipedia.org he]
+|5,462
+|24,075,068
+|4,407
+|-
+|22
+|[//fi.wikipedia.org fi]
+|5,195
+|18,252,536
+|3,513
+|-
+|23
+|[//vi.wikipedia.org vi]
+|5,125
+|13,590,890
+|2,651
+|-
+|24
+|[//arz.wikipedia.org arz]
+|4,435
+|1,238,148
+|279
+|-
+|25
+|[//cs.wikipedia.org cs]
+|4,251
+|25,146,456
+|5,915
+|-
+|26
+|[//sh.wikipedia.org sh]
+|3,599
+|5,410,619
+|1,503
+|-
+|27
+|[//ro.wikipedia.org ro]
+|3,482
+|13,151,727
+|3,777
+|-
+|28
+|[//no.wikipedia.org no]
+|3,474
+|6,571,407
+|1,891
+|-
+|29
+|[//hy.wikipedia.org hy]
+|3,385
+|7,753,995
+|2,290
+|-
+|30
+|[//simple.wikipedia.org simple]
+|3,335
+|13,145,443
+|3,941
+|-
+|31
+|[//eu.wikipedia.org eu]
+|3,220
+|2,823,940
+|877
+|-
+|32
+|[//ml.wikipedia.org ml]
+|3,145
+|3,833,494
+|1,218
+|-
+|33
+|[//el.wikipedia.org el]
+|2,944
+|16,011,983
+|5,438
+|-
+|34
+|[//or.wikipedia.org or]
+|2,891
+|1,682,692
+|582
+|-
+|35
+|[//th.wikipedia.org th]
+|2,876
+|7,726,673
+|2,686
+|-
+|36
+|[//hu.wikipedia.org hu]
+|2,704
+|15,254,098
+|5,641
+|-
+|37
+|[//bn.wikipedia.org bn]
+|2,652
+|8,505,758
+|3,207
+|-
+|38
+|[//ms.wikipedia.org ms]
+|2,468
+|5,232,499
+|2,120
+|-
+|39
+|[//gl.wikipedia.org gl]
+|2,458
+|2,507,848
+|1,020
+|-
+|40
+|[//da.wikipedia.org da]
+|2,435
+|5,732,375
+|2,354
+|-
+|41
+|[//sl.wikipedia.org sl]
+|2,390
+|4,979,860
+|2,083
+|-
+|42
+|[//eo.wikipedia.org eo]
+|2,322
+|1,690,403
+|727
+|-
+|43
+|[//az.wikipedia.org az]
+|2,270
+|5,471,493
+|2,410
+|-
+|44
+|[//hi.wikipedia.org hi]
+|2,231
+|7,705,511
+|3,453
+|-
+|45
+|[//uz.wikipedia.org uz]
+|2,216
+|9,132,846
+|4,121
+|-
+|46
+|[//bg.wikipedia.org bg]
+|2,212
+|8,594,765
+|3,885
+|-
+|47
+|[//et.wikipedia.org et]
+|2,181
+|3,772,117
+|1,729
+|-
+|48
+|[//ta.wikipedia.org ta]
+|2,156
+|3,906,704
+|1,812
+|-
+|49
+|[//bs.wikipedia.org bs]
+|2,136
+|3,886,698
+|1,819
+|-
+|50
+|[//hr.wikipedia.org hr]
+|2,118
+|7,372,035
+|3,480
+|-
+|51
+|[//mk.wikipedia.org mk]
+|1,772
+|3,260,101
+|1,839
+|-
+|52
+|[//azb.wikipedia.org azb]
+|1,751
+|780,149
+|445
+|-
+|53
+|[//sk.wikipedia.org sk]
+|1,669
+|5,901,529
+|3,535
+|-
+|54
+|[//cy.wikipedia.org cy]
+|1,630
+|1,011,894
+|620
+|-
+|55
+|[//zh-yue.wikipedia.org zh-yue]
+|1,617
+|1,775,461
+|1,097
+|-
+|56
+|[//kk.wikipedia.org kk]
+|1,510
+|3,700,574
+|2,450
+|-
+|57
+|[//ur.wikipedia.org ur]
+|1,451
+|1,555,226
+|1,071
+|-
+|58
+|[//lt.wikipedia.org lt]
+|1,415
+|3,672,384
+|2,595
+|-
+|59
+|[//be.wikipedia.org be]
+|1,387
+|982,099
+|708
+|-
+|60
+|[//ga.wikipedia.org ga]
+|1,331
+|944,898
+|709
+|-
+|61
+|[//te.wikipedia.org te]
+|1,266
+|1,695,583
+|1,339
+|-
+|62
+|[//la.wikipedia.org la]
+|1,235
+|1,370,154
+|1,109
+|-
+|63
+|[//lv.wikipedia.org lv]
+|1,235
+|2,286,806
+|1,851
+|-
+|64
+|[//ka.wikipedia.org ka]
+|1,094
+|3,078,866
+|2,814
+|-
+|65
+|[//ha.wikipedia.org ha]
+|1,064
+|749,202
+|704
+|-
+|66
+|[//sq.wikipedia.org sq]
+|1,040
+|3,211,450
+|3,087
+|-
+|67
+|[//ckb.wikipedia.org ckb]
+|984
+|981,201
+|997
+|-
+|68
+|[//ky.wikipedia.org ky]
+|943
+|1,729,275
+|1,833
+|-
+|69
+|[//nn.wikipedia.org nn]
+|909
+|1,090,584
+|1,199
+|-
+|70
+|[//tt.wikipedia.org tt]
+|887
+|424,089
+|478
+|-
+|71
+|[//af.wikipedia.org af]
+|881
+|2,279,609
+|2,587
+|-
+|72
+|[//tl.wikipedia.org tl]
+|845
+|2,263,286
+|2,678
+|-
+|73
+|[//ast.wikipedia.org ast]
+|817
+|1,122,939
+|1,374
+|-
+|74
+|[//is.wikipedia.org is]
+|786
+|968,732
+|1,232
+|-
+|75
+|[//wuu.wikipedia.org wuu]
+|751
+|1,375,474
+|1,831
+|-
+|76
+|[//sw.wikipedia.org sw]
+|749
+|1,457,754
+|1,946
+|-
+|77
+|[//kn.wikipedia.org kn]
+|728
+|1,335,917
+|1,835
+|-
+|78
+|[//pa.wikipedia.org pa]
+|716
+|516,394
+|721
+|-
+|79
+|[//ig.wikipedia.org ig]
+|686
+|295,043
+|430
+|-
+|80
+|[//io.wikipedia.org io]
+|660
+|692,517
+|1,049
+|-
+|81
+|[//ff.wikipedia.org ff]
+|599
+|116,901
+|195
+|-
+|82
+|[//jv.wikipedia.org jv]
+|544
+|707,454
+|1,300
+|-
+|83
+|[//be-x-old.wikipedia.org be-x-old]
+|526
+|509,507
+|968
+|-
+|84
+|[//ps.wikipedia.org ps]
+|510
+|509,689
+|999
+|-
+|85
+|[//mr.wikipedia.org mr]
+|488
+|1,371,357
+|2,810
+|-
+|86
+|[//tg.wikipedia.org tg]
+|466
+|750,400
+|1,610
+|-
+|87
+|[//si.wikipedia.org si]
+|464
+|1,159,837
+|2,499
+|-
+|88
+|[//oc.wikipedia.org oc]
+|435
+|595,176
+|1,368
+|-
+|89
+|[//zh-min-nan.wikipedia.org zh-min-nan]
+|434
+|370,120
+|852
+|-
+|90
+|[//war.wikipedia.org war]
+|433
+|594,887
+|1,373
+|-
+|91
+|[//my.wikipedia.org my]
+|395
+|999,544
+|2,530
+|-
+|92
+|[//pnb.wikipedia.org pnb]
+|385
+|266,354
+|691
+|-
+|93
+|[//as.wikipedia.org as]
+|371
+|607,440
+|1,637
+|-
+|94
+|[//ne.wikipedia.org ne]
+|368
+|562,921
+|1,529
+|-
+|95
+|[//ku.wikipedia.org ku]
+|351
+|364,700
+|1,039
+|-
+|96
+|[//mn.wikipedia.org mn]
+|344
+|865,908
+|2,517
+|-
+|97
+|[//su.wikipedia.org su]
+|334
+|610,573
+|1,828
+|-
+|98
+|[//gpe.wikipedia.org gpe]
+|314
+|180,820
+|575
+|-
+|99
+|[//dv.wikipedia.org dv]
+|313
+|282,011
+|900
+|-
+|100
+|[//ia.wikipedia.org ia]
+|309
+|548,599
+|1,775
+|-
+|101
+|[//fy.wikipedia.org fy]
+|288
+|425,570
+|1,477
+|-
+|102
+|[//br.wikipedia.org br]
+|280
+|306,056
+|1,093
+|-
+|103
+|[//lb.wikipedia.org lb]
+|273
+|336,996
+|1,234
+|-
+|104
+|[//ht.wikipedia.org ht]
+|272
+|286,566
+|1,053
+|-
+|105
+|[//an.wikipedia.org an]
+|269
+|405,717
+|1,508
+|-
+|106
+|[//yo.wikipedia.org yo]
+|262
+|187,674
+|716
+|-
+|107
+|[//wa.wikipedia.org wa]
+|258
+|233,071
+|903
+|-
+|108
+|[//hyw.wikipedia.org hyw]
+|258
+|182,033
+|705
+|-
+|109
+|[//ks.wikipedia.org ks]
+|255
+|183,566
+|719
+|-
+|110
+|[//bcl.wikipedia.org bcl]
+|250
+|360,110
+|1,440
+|-
+|111
+|[//sah.wikipedia.org sah]
+|245
+|207,830
+|848
+|-
+|112
+|[//lmo.wikipedia.org lmo]
+|244
+|294,169
+|1,205
+|-
+|113
+|[//yi.wikipedia.org yi]
+|244
+|290,988
+|1,192
+|-
+|114
+|[//qu.wikipedia.org qu]
+|241
+|334,969
+|1,389
+|-
+|115
+|[//nds.wikipedia.org nds]
+|237
+|313,189
+|1,321
+|-
+|116
+|[//cv.wikipedia.org cv]
+|231
+|165,909
+|718
+|-
+|117
+|[//new.wikipedia.org new]
+|226
+|214,325
+|948
+|-
+|118
+|[//sco.wikipedia.org sco]
+|225
+|552,655
+|2,456
+|-
+|119
+|[//xmf.wikipedia.org xmf]
+|225
+|226,855
+|1,008
+|-
+|120
+|[//ba.wikipedia.org ba]
+|221
+|209,159
+|946
+|-
+|121
+|[//scn.wikipedia.org scn]
+|213
+|247,019
+|1,159
+|-
+|122
+|[//sd.wikipedia.org sd]
+|203
+|183,610
+|904
+|-
+|123
+|[//mg.wikipedia.org mg]
+|196
+|211,145
+|1,077
+|-
+|124
+|[//als.wikipedia.org als]
+|194
+|355,775
+|1,833
+|-
+|125
+|[//min.wikipedia.org min]
+|177
+|282,983
+|1,598
+|-
+|126
+|[//za.wikipedia.org za]
+|175
+|155,479
+|888
+|-
+|127
+|[//dag.wikipedia.org dag]
+|170
+|181,582
+|1,068
+|-
+|128
+|[//mad.wikipedia.org mad]
+|166
+|127,781
+|769
+|-
+|129
+|[//ceb.wikipedia.org ceb]
+|166
+|120,325
+|724
+|-
+|130
+|[//gu.wikipedia.org gu]
+|155
+|405,456
+|2,615
+|-
+|131
+|[//so.wikipedia.org so]
+|149
+|205,179
+|1,377
+|-
+|132
+|[//bo.wikipedia.org bo]
+|141
+|129,531
+|918
+|-
+|133
+|[//mzn.wikipedia.org mzn]
+|140
+|103,702
+|740
+|-
+|134
+|[//lfn.wikipedia.org lfn]
+|136
+|274,467
+|2,018
+|-
+|135
+|[//kab.wikipedia.org kab]
+|134
+|128,610
+|959
+|-
+|136
+|[//eml.wikipedia.org eml]
+|133
+|100,195
+|753
+|-
+|137
+|[//sa.wikipedia.org sa]
+|132
+|241,170
+|1,827
+|-
+|138
+|[//gn.wikipedia.org gn]
+|131
+|187,221
+|1,429
+|-
+|139
+|[//li.wikipedia.org li]
+|131
+|202,658
+|1,547
+|-
+|140
+|[//rw.wikipedia.org rw]
+|128
+|167,817
+|1,311
+|-
+|141
+|[//ban.wikipedia.org ban]
+|127
+|138,367
+|1,089
+|-
+|142
+|[//vo.wikipedia.org vo]
+|113
+|49,414
+|437
+|-
+|143
+|[//lo.wikipedia.org lo]
+|110
+|92,100
+|837
+|-
+|144
+|[//pms.wikipedia.org pms]
+|109
+|96,453
+|884
+|-
+|145
+|[//bat-smg.wikipedia.org bat-smg]
+|108
+|123,561
+|1,144
+|-
+|146
+|[//ln.wikipedia.org ln]
+|108
+|128,043
+|1,185
+|-
+|147
+|[//diq.wikipedia.org diq]
+|107
+|130,496
+|1,219
+|-
+|148
+|[//zh-classical.wikipedia.org zh-classical]
+|107
+|168,254
+|1,572
+|-
+|149
+|[//zu.wikipedia.org zu]
+|106
+|168,664
+|1,591
+|-
+|150
+|[//bh.wikipedia.org bh]
+|103
+|190,222
+|1,846
+|-
+|151
+|[//gd.wikipedia.org gd]
+|103
+|125,942
+|1,222
+|-
+|152
+|[//rue.wikipedia.org rue]
+|100
+|108,158
+|1,081
+|-
+|153
+|[//cdo.wikipedia.org cdo]
+|99
+|90,440
+|913
+|-
+|154
+|[//lg.wikipedia.org lg]
+|98
+|69,780
+|712
+|-
+|155
+|[//frr.wikipedia.org frr]
+|96
+|143,399
+|1,493
+|-
+|156
+|[//sn.wikipedia.org sn]
+|96
+|178,210
+|1,856
+|-
+|157
+|[//bjn.wikipedia.org bjn]
+|94
+|128,011
+|1,361
+|-
+|158
+|[//sc.wikipedia.org sc]
+|94
+|117,214
+|1,246
+|-
+|159
+|[//ary.wikipedia.org ary]
+|94
+|119,822
+|1,274
+|-
+|160
+|[//sat.wikipedia.org sat]
+|94
+|95,045
+|1,011
+|-
+|161
+|[//hak.wikipedia.org hak]
+|93
+|111,816
+|1,202
+|-
+|162
+|[//am.wikipedia.org am]
+|92
+|222,828
+|2,422
+|-
+|163
+|[//tw.wikipedia.org tw]
+|92
+|111,724
+|1,214
+|-
+|164
+|[//ug.wikipedia.org ug]
+|92
+|82,891
+|900
+|-
+|165
+|[//fo.wikipedia.org fo]
+|88
+|203,536
+|2,312
+|-
+|166
+|[//tk.wikipedia.org tk]
+|88
+|345,625
+|3,927
+|-
+|167
+|[//vec.wikipedia.org vec]
+|81
+|153,193
+|1,891
+|-
+|168
+|[//bar.wikipedia.org bar]
+|80
+|121,274
+|1,515
+|-
+|169
+|[//pam.wikipedia.org pam]
+|79
+|148,466
+|1,879
+|-
+|170
+|[//om.wikipedia.org om]
+|77
+|197,333
+|2,562
+|-
+|171
+|[//mai.wikipedia.org mai]
+|77
+|70,963
+|921
+|-
+|172
+|[//hif.wikipedia.org hif]
+|74
+|184,766
+|2,496
+|-
+|173
+|[//gcr.wikipedia.org gcr]
+|71
+|96,825
+|1,363
+|-
+|174
+|[//jam.wikipedia.org jam]
+|69
+|118,209
+|1,713
+|-
+|175
+|[//szy.wikipedia.org szy]
+|68
+|54,147
+|796
+|-
+|176
+|[//km.wikipedia.org km]
+|65
+|263,750
+|4,057
+|-
+|177
+|[//ce.wikipedia.org ce]
+|64
+|56,501
+|882
+|-
+|178
+|[//pap.wikipedia.org pap]
+|61
+|108,823
+|1,783
+|-
+|179
+|[//fiu-vro.wikipedia.org fiu-vro]
+|59
+|67,892
+|1,150
+|-
+|180
+|[//szl.wikipedia.org szl]
+|59
+|49,913
+|845
+|-
+|181
+|[//bxr.wikipedia.org bxr]
+|58
+|80,947
+|1,395
+|-
+|182
+|[//rki.wikipedia.org rki]
+|58
+|16,133
+|278
+|-
+|183
+|[//ilo.wikipedia.org ilo]
+|56
+|145,468
+|2,597
+|-
+|184
+|[//kaa.wikipedia.org kaa]
+|55
+|58,653
+|1,066
+|-
+|185
+|[//tyv.wikipedia.org tyv]
+|51
+|45,757
+|897
+|-
+|186
+|[//lij.wikipedia.org lij]
+|50
+|83,100
+|1,662
+|-
+|187
+|[//se.wikipedia.org se]
+|50
+|52,909
+|1,058
+|-
+|188
+|[//csb.wikipedia.org csb]
+|49
+|43,267
+|883
+|-
+|189
+|[//bew.wikipedia.org bew]
+|48
+|41,646
+|867
+|-
+|190
+|[//kw.wikipedia.org kw]
+|47
+|97,350
+|2,071
+|-
+|191
+|[//kbp.wikipedia.org kbp]
+|45
+|58,905
+|1,309
+|-
+|192
+|[//xh.wikipedia.org xh]
+|45
+|60,189
+|1,337
+|-
+|193
+|[//din.wikipedia.org din]
+|44
+|46,699
+|1,061
+|-
+|194
+|[//ext.wikipedia.org ext]
+|43
+|85,258
+|1,982
+|-
+|195
+|[//mt.wikipedia.org mt]
+|42
+|64,863
+|1,544
+|-
+|196
+|[//ay.wikipedia.org ay]
+|42
+|66,552
+|1,584
+|-
+|197
+|[//os.wikipedia.org os]
+|40
+|34,939
+|873
+|-
+|198
+|[//vep.wikipedia.org vep]
+|40
+|71,686
+|1,792
+|-
+|199
+|[//tcy.wikipedia.org tcy]
+|40
+|48,035
+|1,200
+|-
+|200
+|[//gan.wikipedia.org gan]
+|40
+|71,001
+|1,775
+|-
+|201
+|[//ny.wikipedia.org ny]
+|39
+|49,515
+|1,269
+|-
+|202
+|[//tok.wikipedia.org tok]
+|39
+|5,345
+|137
+|-
+|203
+|[//skr.wikipedia.org skr]
+|39
+|19,474
+|499
+|-
+|204
+|[//arc.wikipedia.org arc]
+|38
+|60,808
+|1,600
+|-
+|205
+|[//anp.wikipedia.org anp]
+|38
+|58,190
+|1,531
+|-
+|206
+|[//ss.wikipedia.org ss]
+|36
+|45,368
+|1,260
+|-
+|207
+|[//blk.wikipedia.org blk]
+|35
+|37,504
+|1,071
+|-
+|208
+|[//gv.wikipedia.org gv]
+|35
+|65,068
+|1,859
+|-
+|209
+|[//myv.wikipedia.org myv]
+|35
+|30,014
+|857
+|-
+|210
+|[//kcg.wikipedia.org kcg]
+|35
+|35,396
+|1,011
+|-
+|211
+|[//inh.wikipedia.org inh]
+|34
+|38,284
+|1,126
+|-
+|212
+|[//mwl.wikipedia.org mwl]
+|34
+|51,745
+|1,521
+|-
+|213
+|[//st.wikipedia.org st]
+|34
+|48,157
+|1,416
+|-
+|214
+|[//awa.wikipedia.org awa]
+|33
+|43,080
+|1,305
+|-
+|215
+|[//nds-nl.wikipedia.org nds-nl]
+|33
+|58,289
+|1,766
+|-
+|216
+|[//iba.wikipedia.org iba]
+|32
+|24,203
+|756
+|-
+|217
+|[//knc.wikipedia.org knc]
+|31
+|46,409
+|1,497
+|-
+|218
+|[//pi.wikipedia.org pi]
+|31
+|135,329
+|4,365
+|-
+|219
+|[//tn.wikipedia.org tn]
+|31
+|36,420
+|1,174
+|-
+|220
+|[//dty.wikipedia.org dty]
+|30
+|41,046
+|1,368
+|-
+|221
+|[//av.wikipedia.org av]
+|29
+|28,669
+|988
+|-
+|222
+|[//wo.wikipedia.org wo]
+|29
+|46,908
+|1,617
+|-
+|223
+|[//fur.wikipedia.org fur]
+|28
+|49,732
+|1,776
+|-
+|224
+|[//ts.wikipedia.org ts]
+|28
+|56,955
+|2,034
+|-
+|225
+|[//roa-rup.wikipedia.org roa-rup]
+|27
+|33,221
+|1,230
+|-
+|226
+|[//ie.wikipedia.org ie]
+|27
+|53,009
+|1,963
+|-
+|227
+|[//gom.wikipedia.org gom]
+|27
+|40,717
+|1,508
+|-
+|228
+|[//co.wikipedia.org co]
+|26
+|42,660
+|1,640
+|-
+|229
+|[//nia.wikipedia.org nia]
+|26
+|37,832
+|1,455
+|-
+|230
+|[//chr.wikipedia.org chr]
+|26
+|29,928
+|1,151
+|-
+|231
+|[//rn.wikipedia.org rn]
+|26
+|49,072
+|1,887
+|-
+|232
+|[//dtp.wikipedia.org dtp]
+|26
+|25,517
+|981
+|-
+|233
+|[//jbo.wikipedia.org jbo]
+|24
+|32,052
+|1,335
+|-
+|234
+|[//mnw.wikipedia.org mnw]
+|24
+|49,058
+|2,044
+|-
+|235
+|[//ti.wikipedia.org ti]
+|24
+|31,504
+|1,312
+|-
+|236
+|[//ang.wikipedia.org ang]
+|23
+|29,242
+|1,271
+|-
+|237
+|[//shi.wikipedia.org shi]
+|23
+|48,317
+|2,100
+|-
+|238
+|[//vls.wikipedia.org vls]
+|23
+|38,835
+|1,688
+|-
+|239
+|[//ki.wikipedia.org ki]
+|23
+|53,660
+|2,333
+|-
+|240
+|[//fj.wikipedia.org fj]
+|22
+|34,959
+|1,589
+|-
+|241
+|[//mdf.wikipedia.org mdf]
+|22
+|21,627
+|983
+|-
+|242
+|[//hsb.wikipedia.org hsb]
+|22
+|27,141
+|1,233
+|-
+|243
+|[//guw.wikipedia.org guw]
+|21
+|26,520
+|1,262
+|-
+|244
+|[//nso.wikipedia.org nso]
+|21
+|24,005
+|1,143
+|-
+|245
+|[//lez.wikipedia.org lez]
+|19
+|26,196
+|1,378
+|-
+|246
+|[//ksh.wikipedia.org ksh]
+|19
+|19,305
+|1,016
+|-
+|247
+|[//nap.wikipedia.org nap]
+|19
+|19,539
+|1,028
+|-
+|248
+|[//frp.wikipedia.org frp]
+|18
+|32,736
+|1,818
+|-
+|249
+|[//mhr.wikipedia.org mhr]
+|18
+|20,299
+|1,127
+|-
+|250
+|[//nrm.wikipedia.org nrm]
+|18
+|24,378
+|1,354
+|-
+|251
+|[//smn.wikipedia.org smn]
+|18
+|20,370
+|1,131
+|-
+|252
+|[//zgh.wikipedia.org zgh]
+|18
+|14,898
+|827
+|-
+|253
+|[//mni.wikipedia.org mni]
+|18
+|41,066
+|2,281
+|-
+|254
+|[//nv.wikipedia.org nv]
+|17
+|18,488
+|1,087
+|-
+|255
+|[//nr.wikipedia.org nr]
+|17
+|16,097
+|946
+|-
+|256
+|[//nov.wikipedia.org nov]
+|16
+|69,697
+|4,356
+|-
+|257
+|[//btm.wikipedia.org btm]
+|16
+|27,751
+|1,734
+|-
+|258
+|[//iu.wikipedia.org iu]
+|16
+|69,212
+|4,325
+|-
+|259
+|[//tly.wikipedia.org tly]
+|16
+|61,498
+|3,843
+|-
+|260
+|[//ace.wikipedia.org ace]
+|16
+|21,529
+|1,345
+|-
+|261
+|[//pcm.wikipedia.org pcm]
+|16
+|50,585
+|3,161
+|-
+|262
+|[//olo.wikipedia.org olo]
+|15
+|20,113
+|1,340
+|-
+|263
+|[//gor.wikipedia.org gor]
+|14
+|53,771
+|3,840
+|-
+|264
+|[//pcd.wikipedia.org pcd]
+|14
+|18,821
+|1,344
+|-
+|265
+|[//trv.wikipedia.org trv]
+|14
+|39,954
+|2,853
+|-
+|266
+|[//nqo.wikipedia.org nqo]
+|13
+|12,036
+|925
+|-
+|267
+|[//stq.wikipedia.org stq]
+|13
+|49,188
+|3,783
+|-
+|268
+|[//lld.wikipedia.org lld]
+|13
+|22,079
+|1,698
+|-
+|269
+|[//lbe.wikipedia.org lbe]
+|13
+|15,400
+|1,184
+|-
+|270
+|[//nah.wikipedia.org nah]
+|13
+|15,453
+|1,188
+|-
+|271
+|[//mrj.wikipedia.org mrj]
+|12
+|10,966
+|913
+|-
+|272
+|[//glk.wikipedia.org glk]
+|12
+|12,142
+|1,011
+|-
+|273
+|[//haw.wikipedia.org haw]
+|12
+|15,304
+|1,275
+|-
+|274
+|[//bpy.wikipedia.org bpy]
+|12
+|15,712
+|1,309
+|-
+|275
+|[//fon.wikipedia.org fon]
+|12
+|12,015
+|1,001
+|-
+|276
+|[//kv.wikipedia.org kv]
+|11
+|11,316
+|1,028
+|-
+|277
+|[//ami.wikipedia.org ami]
+|11
+|14,886
+|1,353
+|-
+|278
+|[//kge.wikipedia.org kge]
+|11
+|16,409
+|1,491
+|-
+|279
+|[//bm.wikipedia.org bm]
+|11
+|17,843
+|1,622
+|-
+|280
+|[//map-bms.wikipedia.org map-bms]
+|11
+|18,363
+|1,669
+|-
+|281
+|[//pdc.wikipedia.org pdc]
+|11
+|13,023
+|1,183
+|-
+|282
+|[//ik.wikipedia.org ik]
+|10
+|10,652
+|1,065
+|-
+|283
+|[//crh.wikipedia.org crh]
+|10
+|13,580
+|1,358
+|-
+|284
+|[//tum.wikipedia.org tum]
+|10
+|25,637
+|2,563
+|-
+|285
+|[//zea.wikipedia.org zea]
+|10
+|12,338
+|1,233
+|-
+|286
+|[//syl.wikipedia.org syl]
+|9
+|8,193
+|910
+|-
+|287
+|[//udm.wikipedia.org udm]
+|9
+|7,277
+|808
+|-
+|288
+|[//bi.wikipedia.org bi]
+|8
+|24,306
+|3,038
+|-
+|289
+|[//cu.wikipedia.org cu]
+|8
+|13,778
+|1,722
+|-
+|290
+|[//lad.wikipedia.org lad]
+|8
+|17,736
+|2,217
+|-
+|291
+|[//guc.wikipedia.org guc]
+|8
+|7,970
+|996
+|-
+|292
+|[//shn.wikipedia.org shn]
+|8
+|20,977
+|2,622
+|-
+|293
+|[//pfl.wikipedia.org pfl]
+|8
+|18,481
+|2,310
+|-
+|294
+|[//koi.wikipedia.org koi]
+|7
+|7,109
+|1,015
+|-
+|295
+|[//mi.wikipedia.org mi]
+|7
+|9,548
+|1,364
+|-
+|296
+|[//ab.wikipedia.org ab]
+|7
+|5,063
+|723
+|-
+|297
+|[//tpi.wikipedia.org tpi]
+|7
+|17,823
+|2,546
+|-
+|298
+|[//dz.wikipedia.org dz]
+|6
+|9,146
+|1,524
+|-
+|299
+|[//xal.wikipedia.org xal]
+|6
+|9,398
+|1,566
+|-
+|300
+|[//chy.wikipedia.org chy]
+|6
+|8,698
+|1,449
+|-
+|301
+|[//got.wikipedia.org got]
+|6
+|4,180
+|696
+|-
+|302
+|[//ee.wikipedia.org ee]
+|6
+|10,003
+|1,667
+|-
+|303
+|[//bbc.wikipedia.org bbc]
+|6
+|8,336
+|1,389
+|-
+|304
+|[//rmy.wikipedia.org rmy]
+|6
+|6,351
+|1,058
+|-
+|305
+|[//ve.wikipedia.org ve]
+|6
+|20,760
+|3,460
+|-
+|306
+|[//bdr.wikipedia.org bdr]
+|6
+|19,178
+|3,196
+|-
+|307
+|[//nup.wikipedia.org nup]
+|6
+|14,322
+|2,387
+|-
+|308
+|[//ann.wikipedia.org ann]
+|5
+|10,136
+|2,027
+|-
+|309
+|[//atj.wikipedia.org atj]
+|5
+|7,507
+|1,501
+|-
+|310
+|[//kus.wikipedia.org kus]
+|5
+|5,331
+|1,066
+|-
+|311
+|[//rsk.wikipedia.org rsk]
+|5
+|4,002
+|800
+|-
+|312
+|[//krc.wikipedia.org krc]
+|5
+|6,769
+|1,353
+|-
+|313
+|[//rm.wikipedia.org rm]
+|5
+|8,614
+|1,722
+|-
+|314
+|[//tay.wikipedia.org tay]
+|5
+|5,585
+|1,117
+|-
+|315
+|[//mos.wikipedia.org mos]
+|5
+|3,285
+|657
+|-
+|316
+|[//igl.wikipedia.org igl]
+|5
+|861
+|172
+|-
+|317
+|[//cbk-zam.wikipedia.org cbk-zam]
+|4
+|9,587
+|2,396
+|-
+|318
+|[//kg.wikipedia.org kg]
+|4
+|9,294
+|2,323
+|-
+|319
+|[//bug.wikipedia.org bug]
+|4
+|9,200
+|2,300
+|-
+|320
+|[//pag.wikipedia.org pag]
+|4
+|5,888
+|1,472
+|-
+|321
+|[//ty.wikipedia.org ty]
+|4
+|1,317
+|329
+|-
+|322
+|[//avk.wikipedia.org avk]
+|3
+|3,720
+|1,240
+|-
+|323
+|[//alt.wikipedia.org alt]
+|3
+|8,921
+|2,973
+|-
+|324
+|[//srn.wikipedia.org srn]
+|3
+|4,126
+|1,375
+|-
+|325
+|[//sm.wikipedia.org sm]
+|3
+|4,917
+|1,639
+|-
+|326
+|[//to.wikipedia.org to]
+|3
+|10,171
+|3,390
+|-
+|327
+|[//pwn.wikipedia.org pwn]
+|3
+|4,480
+|1,493
+|-
+|328
+|[//fat.wikipedia.org fat]
+|3
+|2,851
+|950
+|-
+|329
+|[//roa-tara.wikipedia.org roa-tara]
+|3
+|2,054
+|684
+|-
+|330
+|[//kbd.wikipedia.org kbd]
+|2
+|2,911
+|1,455
+|-
+|331
+|[//sg.wikipedia.org sg]
+|2
+|1,542
+|771
+|-
+|332
+|[//dga.wikipedia.org dga]
+|2
+|2,120
+|1,060
+|-
+|333
+|[//tet.wikipedia.org tet]
+|2
+|3,767
+|1,883
+|-
+|334
+|[//tdd.wikipedia.org tdd]
+|2
+|2,544
+|1,272
+|-
+|335
+|[//gur.wikipedia.org gur]
+|1
+|970
+|970
+|-
+|336
+|[//dsb.wikipedia.org dsb]
+|1
+|4,362
+|4,362
+|-
+|337
+|[//gag.wikipedia.org gag]
+|1
+|505
+|505
+|-
+|}
