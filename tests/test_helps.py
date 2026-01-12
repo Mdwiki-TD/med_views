@@ -52,7 +52,27 @@ def test_json_load(tmp_path):
     assert json_load(str(f3)) is None
 
 
-@pytest.mark.skip(reason="Pending write")
-def test_get_views_all_file():
-    # TODO: Implement test
-    pass
+def test_get_views_all_file(tmp_path, monkeypatch):
+    # Mock views_new_path
+    monkeypatch.setattr("src.helps.views_new_path", tmp_path)
+
+    # Test default subdir
+    lang = "en"
+    result = get_views_all_file(lang)
+    expected_dir = tmp_path / "all"
+    expected_file = expected_dir / "en.json"
+
+    assert result == expected_file
+    assert expected_dir.exists()
+    assert expected_dir.is_dir()
+
+    # Test custom subdir
+    subdir = "custom"
+    result_custom = get_views_all_file(lang, subdir=subdir)
+    expected_dir_custom = tmp_path / subdir
+    expected_file_custom = expected_dir_custom / "en.json"
+
+    assert result_custom == expected_file_custom
+    assert expected_dir_custom.exists()
+    assert expected_dir_custom.is_dir()
+
