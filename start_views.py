@@ -4,12 +4,12 @@
 python3 start_views.py
 python3 I:/mdwiki/med_views/start_views.py
 
-tfj run views0 --image python3.9 --command "$HOME/local/bin/python3 core8/pwb.py med_views/views_all_run start"
-tfj run views --image python3.9 --command "$HOME/local/bin/python3 core8/pwb.py med_views/views_all_run start -max:1000"
-tfj run views1 --image python3.9 --command "$HOME/local/bin/python3 core8/pwb.py med_views/views_all_run start -min:1000 -max:5000"
-tfj run views2 --image python3.9 --command "$HOME/local/bin/python3 core8/pwb.py med_views/views_all_run start -min:5000 -max:10000"
-tfj run views3 --image python3.9 --command "$HOME/local/bin/python3 core8/pwb.py med_views/views_all_run start -min:10000 -max:19000"
-tfj run views4 --image python3.9 --command "$HOME/local/bin/python3 core8/pwb.py med_views/views_all_run start -min:19000"
+tfj run views0 --image python3.9 --command "$HOME/local/bin/python3 pybot/med_views/start_views.py"
+tfj run views --image python3.9 --command "$HOME/local/bin/python3 pybot/med_views/start_views.py -max:1000"
+tfj run views1 --image python3.9 --command "$HOME/local/bin/python3 pybot/med_views/start_views.py -min:1000 -max:5000"
+tfj run views2 --image python3.9 --command "$HOME/local/bin/python3 pybot/med_views/start_views.py -min:5000 -max:10000"
+tfj run views3 --image python3.9 --command "$HOME/local/bin/python3 pybot/med_views/start_views.py -min:10000 -max:19000"
+tfj run views4 --image python3.9 --command "$HOME/local/bin/python3 pybot/med_views/start_views.py -min:19000"
 
 """
 import logging

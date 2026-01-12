@@ -3,7 +3,6 @@ import pytest
 from src.stats_bot import (
     dump_stats,
     sum_all_views_new,
-    update_all_stats,
 )
 
 

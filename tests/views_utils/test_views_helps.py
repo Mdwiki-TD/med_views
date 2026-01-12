@@ -7,14 +7,7 @@ import pytest
 from src.views_utils.views_helps import (
     article_views,
     article_all_views,
-    get_view_file,
 )
-
-
-@pytest.mark.skip(reason="Pending write")
-def test_get_view_file():
-    # TODO: Implement test
-    pass
 
 
 @pytest.mark.skip(reason="Pending write")
