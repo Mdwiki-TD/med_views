@@ -8,13 +8,11 @@ import sys
 
 from src.dump_utils import count_languages_in_json, load_languages_counts
 from src.texts_utils import make_text
-from src.views import print_title_stats, calculate_total_views
 from src.helps import json_load
 from src.wiki import page
 from src.config import main_dump_path, total_sites_by_year_path
 
 from src.views_utils.views_helps import (
-    get_file_views_new,
     get_view_file,
 )
 logger = logging.getLogger(__name__)
@@ -54,14 +52,10 @@ def fetch_language_statistics(year, langcode):
     json_file = get_view_file(langcode, year)
     year_data = json_load(json_file)
     # ---
-    # json_file_all = get_file_views_new(langcode)
-    # all_years_data = json_load(json_file_all)
-    # year_data = {x: v.get(year, 0) for x, v in all_years_data.items()}
-    # ---
     return calculate_total_views(langcode, year_data)
 
 
-def make_views(languages, year, limit):
+def make_views_local(languages, year, limit):
     # ---
     views = {}
     # ---
@@ -76,17 +70,16 @@ def make_views(languages, year, limit):
     return views
 
 
-def start(year, limit, maxv):
+def start(year, limit):
     # ---
     """
     Orchestrates collection of per-language pageview totals for a given year and updates the corresponding wiki stats page.
 
-    Retrieves stored language article counts, computes pageviews (respecting `limit` and `maxv`), generates page text, and saves the page if content changed. The function logs progress and exits early without modifying the wiki when no language data or no non-zero views are available.
+    Retrieves stored language article counts, computes pageviews (respecting `limit`), generates page text, and saves the page if content changed. The function logs progress and exits early without modifying the wiki when no language data or no non-zero views are available.
 
     Parameters:
         year (int): Year used in view calculations and included in the target wiki page title.
         limit (int): Maximum number of languages to process (0 means no limit).
-        maxv (int): Upper bound applied to per-language view calculations (0 means no cap).
     """
     title = f"WikiProjectMed:WikiProject Medicine/Stats/Total pageviews by language {year}"
     # ---
@@ -101,7 +94,7 @@ def start(year, limit, maxv):
     # sort languages ASC
     languages = {k: v for k, v in sorted(languages.items(), key=lambda item: item[1], reverse=False)}
     # ---
-    views = make_views(languages, year, limit)
+    views = make_views_local(languages, year, limit)
     # ---
     views_not_0 = len([x for x in views.values() if x > 0])
     # ---
@@ -122,8 +115,6 @@ def start(year, limit, maxv):
     # ---
     with open(main_dump_path / "text.txt", "w", encoding="utf-8") as f:
         f.write(newtext)
-    # ---
-    print_title_stats()
     # ---
     target_page = page(title)
     # ---
@@ -159,4 +150,3 @@ def parse_args():
 if __name__ == "__main__":
     year, limit, maxv = parse_args()
     start(year, limit, maxv)
-    print_title_stats()

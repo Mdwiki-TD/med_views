@@ -4,7 +4,7 @@
 """
 import logging
 
-from ..config import parallelism, views_by_year_path, views_new_path
+from ..config import parallelism, views_by_year_path
 from ..services.mw_views import PageviewsClient
 
 logger = logging.getLogger(__name__)
@@ -24,24 +24,11 @@ def article_views(site, articles, year=2024):
     # ---
     for title, views in data.items():
         # ---
-        title = title.replace(" ", "_")
+        title = title.replace("_", " ")
         # ---
         new_data[title] = views.get(year) or views.get(str(year)) or views.get("all", 0)
     # ---
     return new_data
-
-
-def article_all_views(site, articles, year=2024):
-    # ---
-    site = "be-tarask" if site == "be-x-old" else site
-    # ---
-    data = view_bot.article_views_new(
-        f"{site}.wikipedia", articles, granularity="monthly", start="20100101", end="20250627"
-    )
-    # ---
-    # logger.debug(data)
-    # ---
-    return data
 
 
 def get_view_file(lang, year):
@@ -66,23 +53,7 @@ def get_view_file(lang, year):
     return file
 
 
-def get_file_views_new(lang):
-    # ---
-    """
-    """
-    dir_v = views_new_path / "all"
-    # ---
-    if not dir_v.exists():
-        dir_v.mkdir(parents=True)
-    # ---
-    file = dir_v / f"{lang}.json"
-    # ---
-    return file
-
-
 __all__ = [
-    "get_file_views_new",
     "article_views",
-    "article_all_views",
     "get_view_file",
 ]

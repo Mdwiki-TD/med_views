@@ -4,7 +4,6 @@ Tests for src.views_utils.views_helps
 from unittest.mock import MagicMock
 
 from src.views_utils.views_helps import (
-    article_all_views,
     article_views,
     get_view_file,
 )
@@ -28,17 +27,6 @@ def test_article_views(monkeypatch):
     assert result["Title_2"] == 200
     assert result["Title_3"] == 300
     assert result["Title_4"] == 0
-
-
-def test_article_all_views(monkeypatch):
-    mock_bot = MagicMock()
-    monkeypatch.setattr("src.views_utils.views_helps.view_bot", mock_bot)
-
-    mock_data = {"Title 1": {"2020": 10}}
-    mock_bot.article_views_new.return_value = mock_data
-
-    result = article_all_views("en", ["Title 1"])
-    assert result == mock_data
 
 
 def test_get_view_file(tmp_path, monkeypatch):
