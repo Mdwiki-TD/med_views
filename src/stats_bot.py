@@ -6,9 +6,10 @@
 import json
 import logging
 import sys
+
+from .config import views_new_path
 from .dump_utils import dump_one
 from .helps import is_empty_data
-from .config import views_new_path
 
 logger = logging.getLogger(__name__)
 

@@ -18,8 +18,8 @@ import sys
 import tqdm
 
 from src.dump_utils import load_lang_titles_from_dump, load_languages_counts
-from src.views_utils.views_all import get_titles_to_work, get_titles_and_in_file, render_data, update_data_new, dump_it
 from src.helps import get_views_all_file
+from src.views_utils.views_all import dump_it, get_titles_and_in_file, get_titles_to_work, render_data, update_data_new
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)

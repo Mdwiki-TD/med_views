@@ -1,11 +1,13 @@
+from datetime import date, datetime
+
 import pytest
-from datetime import datetime, date
+
 from src.services.mw_views import (
-    parse_date,
-    format_date,
-    timestamps_between,
-    month_from_day,
     PageviewsClient,
+    format_date,
+    month_from_day,
+    parse_date,
+    timestamps_between,
 )
 
 
@@ -35,7 +37,7 @@ def test_format_date():
 def test_timestamps_between():
     start = datetime(2023, 1, 1)
     end = datetime(2023, 1, 3)
-    increment = (datetime(2023, 1, 2) - datetime(2023, 1, 1))  # 1 day
+    increment = datetime(2023, 1, 2) - datetime(2023, 1, 1)  # 1 day
 
     gen = timestamps_between(start, end, increment)
     results = list(gen)

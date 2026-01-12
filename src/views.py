@@ -4,10 +4,11 @@
 """
 import logging
 import sys
+
+from .config import views_by_year_path
 from .dump_utils import dump_one
 from .helps import json_load
 from .services.mw_views import PageviewsClient
-from .config import views_by_year_path
 
 logger = logging.getLogger(__name__)
 

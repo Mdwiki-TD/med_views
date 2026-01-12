@@ -5,6 +5,7 @@
 """
 import json
 import logging
+
 from .config import views_new_path
 
 logger = logging.getLogger(__name__)

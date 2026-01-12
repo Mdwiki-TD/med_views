@@ -4,6 +4,7 @@
 """
 import json
 import logging
+
 from .config import json_titles_path, main_dump_path
 
 logger = logging.getLogger(__name__)

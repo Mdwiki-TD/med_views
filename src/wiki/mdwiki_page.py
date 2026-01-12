@@ -5,8 +5,8 @@
 # ---
 import functools
 import logging
-from typing import Any
 import sys
+from typing import Any
 
 from ..config import mdwiki_pass, my_username
 
