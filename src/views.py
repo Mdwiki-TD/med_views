@@ -125,23 +125,32 @@ def get_one_lang_views(langcode, titles, year, maxv=0):
     json_file_all = get_file_views_new(langcode)
     json_file = get_view_file(langcode, year)
     # ---
+    titles_not_in_file_all = titles
+    # ---
     u_data_all = {}
     u_data = {}
     titles_not_in_file = titles
     # ---
     if json_file_all.exists():
         u_data_all = json_load(json_file_all)
-        titles_not_in_file_all = [x for x in titles if (x not in u_data_all or u_data_all[x].get(year, 0) == 0)]
+        titles_not_in_file_all = [x for x in titles if (x not in u_data_all or u_data_all[x].get(str(year), 0) == 0)]
+    else:
+        logger.info(f"<<yellow>> No all views file for lang:{langcode}")
     # ---
     if json_file.exists():
         u_data = json_load(json_file)
         titles_not_in_file = [x for x in titles if (x not in u_data or u_data[x] == 0)]
+    # ---
+    titles_not_in_file_all.sort()
+    titles_not_in_file.sort()
     # ---
     if titles_not_in_file == titles_not_in_file_all:
         print("same")
         same_titles += 1
     else:
         print("diff")
+        print("Titles not in file all:", len(titles_not_in_file_all))
+        print("Titles not in file year:", len(titles_not_in_file))
         diff_titles += 1
     # ---
     if maxv > 0 and len(titles_not_in_file) > maxv:

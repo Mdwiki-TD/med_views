@@ -1,7 +1,6 @@
 """
 Tests for src.views_utils.views_helps
 """
-from pathlib import Path
 from unittest.mock import MagicMock
 
 from src.views_utils.views_helps import (
