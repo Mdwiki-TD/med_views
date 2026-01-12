@@ -8,6 +8,7 @@ import sys
 from .dump_utils import dump_one
 from .helps import json_load
 from .views_utils.views_helps import (
+    get_file_views_new,
     article_views,
     get_view_file,
 )
@@ -108,15 +109,40 @@ def load_one_lang_views(langcode, titles, year, max_items=1000):
     return data
 
 
+same_titles = 0
+diff_titles = 0
+
+
+def print_title_stats():
+    global same_titles, diff_titles
+    logger.info(f"<<blue>> Titles with same views file status: {same_titles}")
+    logger.info(f"<<blue>> Titles with different views file status: {diff_titles}")
+
+
 def get_one_lang_views(langcode, titles, year, maxv=0):
+    global same_titles, diff_titles
     # ---
+    json_file_all = get_file_views_new(langcode)
     json_file = get_view_file(langcode, year)
+    # ---
+    u_data_all = {}
     u_data = {}
     titles_not_in_file = titles
+    # ---
+    if json_file_all.exists():
+        u_data_all = json_load(json_file_all)
+        titles_not_in_file_all = [x for x in titles if (x not in u_data_all or u_data_all[x].get(year, 0) == 0)]
     # ---
     if json_file.exists():
         u_data = json_load(json_file)
         titles_not_in_file = [x for x in titles if (x not in u_data or u_data[x] == 0)]
+    # ---
+    if titles_not_in_file == titles_not_in_file_all:
+        print("same")
+        same_titles += 1
+    else:
+        print("diff")
+        diff_titles += 1
     # ---
     if maxv > 0 and len(titles_not_in_file) > maxv:
         logger.info(f"<<yellow>> {langcode}: {len(titles)} titles > max {maxv}, skipping")
@@ -125,11 +151,10 @@ def get_one_lang_views(langcode, titles, year, maxv=0):
     else:
         views_t = load_one_lang_views(langcode, titles_not_in_file, year)
         u_data = update_data(u_data, views_t)
+        dump_one(json_file, u_data)
     # ---
     if not u_data:
         return 0
-    # ---
-    dump_one(json_file, u_data)
     # ---
     total = calculate_total_views(langcode, u_data)
     # ---

@@ -9,12 +9,12 @@ from src.dump_utils import count_languages_in_json, dump_languages_counts, load_
 from src.sql_utils import get_language_article_counts_sql
 from src.texts_utils import make_text
 from src.titles_utils import load_lang_titles
-from src.views import get_one_lang_views
+from src.views import get_one_lang_views, print_title_stats
 from src.wiki import page
 from src.config import main_dump_path
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 
 def get_languages_articles_counts():
@@ -127,3 +127,4 @@ def parse_args():
 if __name__ == "__main__":
     year, limit, maxv = parse_args()
     start(year, limit, maxv)
+    print_title_stats()

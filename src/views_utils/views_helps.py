@@ -4,7 +4,7 @@
 """
 import logging
 
-from ..config import parallelism, views_by_year_path
+from ..config import parallelism, views_by_year_path, views_new_path
 from ..services.mw_views import PageviewsClient
 
 logger = logging.getLogger(__name__)
@@ -66,7 +66,22 @@ def get_view_file(lang, year):
     return file
 
 
+def get_file_views_new(lang):
+    # ---
+    """
+    """
+    dir_v = views_new_path / "all"
+    # ---
+    if not dir_v.exists():
+        dir_v.mkdir(parents=True)
+    # ---
+    file = dir_v / f"{lang}.json"
+    # ---
+    return file
+
+
 __all__ = [
+    "get_file_views_new",
     "article_views",
     "article_all_views",
     "get_view_file",
