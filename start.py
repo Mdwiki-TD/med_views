@@ -93,6 +93,8 @@ def start(year, limit, maxv):
     with open(main_dump_path / "text.txt", "w", encoding="utf-8") as f:
         f.write(newtext)
     # ---
+    print_title_stats()
+    # ---
     target_page = page(title)
     # ---
     text = target_page.get_text()
