@@ -13,6 +13,7 @@ except ImportError:
 
         from .mdwiki_page import page
     else:
+        print("newapi_bot not found, using mwclient fallback")
         from .mdwiki_page_mwclient import page_mwclient as page
 
 __all__ = ["page"]

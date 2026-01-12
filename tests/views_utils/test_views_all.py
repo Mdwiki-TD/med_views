@@ -11,7 +11,6 @@ from src.views_utils.views_all import (
     get_one_lang_views_all_by_titles_plus_1k,
     get_titles_and_in_file,
     get_titles_to_work,
-    load_one_lang_views_all,
     render_data,
     update_data_new,
 )
@@ -61,11 +60,5 @@ def test_get_titles_and_in_file():
 
 @pytest.mark.skip(reason="Pending write")
 def test_get_titles_to_work():
-    # TODO: Implement test
-    pass
-
-
-@pytest.mark.skip(reason="Pending write")
-def test_load_one_lang_views_all():
     # TODO: Implement test
     pass

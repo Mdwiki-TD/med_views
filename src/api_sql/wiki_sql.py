@@ -74,7 +74,7 @@ def retrieve_sql_results(queries, wiki="", values=None):
     # ---
     host, dbs_p = make_labsdb_dbs_p(wiki)
     # ---
-    logger.info(queries)
+    logger.debug(queries)
     # ---
     if not GET_SQL():
         logger.info("no GET_SQL()")

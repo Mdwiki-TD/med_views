@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
 
-python3 core8/pwb.py med_views/titles
+python3 titles.py
 
 
 """

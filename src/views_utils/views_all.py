@@ -137,7 +137,7 @@ def get_titles_and_in_file(json_file, titles):
     titles_not_in_file = [x for x in titles if is_empty_data(u_data.get(x, {})) and x.find("#") == -1]
     # ---
     if not (len(u_data) != len(titles) or len(titles_not_in_file) > 0):
-        logger.info(f"<<green>> load_one_lang_views_all(lang:{json_file}) \t titles: {len(titles):,}")
+        logger.info(f"<<green>> get_titles_and_in_file(lang:{json_file}) \t titles: {len(titles):,}")
         logger.debug("nothing to do")
         return [], {}
     # ---
@@ -162,33 +162,3 @@ def get_titles_to_work(langcode, titles, year):
         return []
     # ---
     return titles_to_work
-
-
-def load_one_lang_views_all(langcode, titles, year, max_items=1000, maxv=0):
-    # ---
-    json_file = get_views_all_file(langcode)
-    json_file_stats = get_views_all_file(langcode, "stats")
-    # ---
-    titles, in_file = get_titles_and_in_file(json_file, titles)
-    # # ---
-    if len(titles) == 0:
-        return
-    # ---
-    if maxv > 0 and len(titles) > maxv:
-        logger.info(f"<<yellow>> {langcode}: {len(titles)} titles > max {maxv}, skipping")
-        return
-    # ---
-    if "local" in sys.argv:
-        return
-    # ---
-    data = render_data(titles, langcode, year, json_file, json_file_stats, max_items=1000)
-    # ---
-    if len(in_file) > 0:
-        # ---
-        logger.info(f"<<yellow>>(lang:{langcode}) new data: {len(data)}, in_file: {len(in_file)}")
-        # ---
-        data = update_data_new(in_file, data)
-    else:
-        logger.info(f"<<green>>(lang:{langcode}) new data: {len(data)}")
-    # ---
-    dump_it(json_file, data, json_file_stats)
