@@ -7,7 +7,7 @@ import sys
 
 from src.dump_utils import load_languages_counts, dump_all, count_languages_in_json
 from src.sql_utils import get_language_article_counts_sql
-from src.mdwiki_page import md_MainPage
+from src.mdwiki_page import page
 from src.texts_utils import make_text
 
 from src.titles_utils import load_lang_titles
@@ -70,9 +70,9 @@ def start(year, limit, maxv):
     # ---
     newtext = make_text(languages, views)
     # ---
-    page = md_MainPage(title, "www", family="mdwiki")
+    target_page = page(title)
     # ---
-    text = page.get_text()
+    text = target_page.get_text()
     # ---
     if text == newtext:
         logger.info("No change")
@@ -80,10 +80,10 @@ def start(year, limit, maxv):
     # ---
     logger.info(f"Total views not 0: {views_not_0:,}")
     # ---
-    if page.exists():
-        page.save(newtext=newtext, summary="update", nocreate=0, minor="")
+    if target_page.exists():
+        target_page.save(newtext=newtext, summary="update", nocreate=0, minor="")
     else:
-        page.Create(newtext, summary="update")
+        target_page.Create(newtext, summary="update")
 
 
 def parse_args():

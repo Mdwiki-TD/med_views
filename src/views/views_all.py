@@ -7,11 +7,11 @@ python3 core8/pwb.py med_views/views_all
 import logging
 import sys
 
-from .mw_views import PageviewsClient
+from ..services.mw_views import PageviewsClient
 
-from .helps import get_views_all_file, is_empty_data, json_load, update_data_new
-from .stats_bot import dump_stats
-from .dump_utils import dump_one
+from ..helps import get_views_all_file, is_empty_data, json_load
+from ..stats_bot import dump_stats
+from ..dump_utils import dump_one
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -51,6 +51,18 @@ def article_all_views(site, articles, year=2024):
     # print(data)
     # ---
     return data
+
+
+def update_data_new(all_data, data):
+    # ---
+    for title, counts in data.items():
+        all_data.setdefault(title, {})
+        # ---
+        all_data[title].update(
+            {x: v for x, v in counts.items() if (x not in all_data[title] or all_data[title][x] == 0)}
+        )
+    # ---
+    return all_data
 
 
 def get_one_lang_views_all_by_titles(langcode, titles, year):

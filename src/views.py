@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 # from mwviews.api import PageviewsClient
-from .mw_views import PageviewsClient
+from .services.mw_views import PageviewsClient
 
 from .helps import json_load
 from .dump_utils import dump_one

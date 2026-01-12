@@ -7,7 +7,7 @@ import os
 import time
 import logging
 
-from . import mysql_client
+from ..services import mysql_client
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
