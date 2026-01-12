@@ -2,3 +2,4 @@
 .env
 views_all_run_it.py
 /dumps
+*.zip
