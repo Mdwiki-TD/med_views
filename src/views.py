@@ -7,7 +7,6 @@ import sys
 
 from .dump_utils import dump_one
 from .helps import json_load
-
 from .views_utils.views_helps import (
     article_views,
     get_view_file,

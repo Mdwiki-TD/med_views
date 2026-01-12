@@ -75,4 +75,3 @@ def test_get_views_all_file(tmp_path, monkeypatch):
     assert result_custom == expected_file_custom
     assert expected_dir_custom.exists()
     assert expected_dir_custom.is_dir()
-

@@ -1,9 +1,10 @@
 """
 Tests for src.wiki.mdwiki_page_mwclient
 """
-from unittest.mock import patch, MagicMock
-import pytest
+from unittest.mock import MagicMock, patch
+
 import mwclient
+import pytest
 
 from src.wiki.mdwiki_page_mwclient import (
     page_mwclient,

@@ -1,13 +1,12 @@
 """
 Tests for src.views_utils.views_helps
 """
-from unittest.mock import patch, MagicMock
-import pytest
 from pathlib import Path
+from unittest.mock import patch
 
 from src.views_utils.views_helps import (
-    article_views,
     article_all_views,
+    article_views,
     get_view_file,
 )
 

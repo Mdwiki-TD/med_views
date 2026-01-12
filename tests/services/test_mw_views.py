@@ -1,5 +1,6 @@
 from datetime import date, datetime
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
 import pytest
 
 from src.services.mw_views import (
@@ -62,15 +63,7 @@ def test_month_from_day():
 def test_PageviewsClient(mock_get):
     # Setup mock response
     mock_resp = MagicMock()
-    mock_resp.json.return_value = {
-        "items": [
-            {
-                "article": "Test_Article",
-                "timestamp": "2023010100",
-                "views": 50
-            }
-        ]
-    }
+    mock_resp.json.return_value = {"items": [{"article": "Test_Article", "timestamp": "2023010100", "views": 50}]}
     mock_resp.status_code = 200
     mock_get.return_value = mock_resp
 

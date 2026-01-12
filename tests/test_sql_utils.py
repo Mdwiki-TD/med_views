@@ -1,8 +1,8 @@
 """
 Tests for src.sql_utils
 """
+import unittest.mock
 from unittest.mock import patch
-import pytest
 
 from src.sql_utils import (
     get_en_articles,
@@ -66,6 +66,3 @@ def test_one_lang_titles():
         result = one_lang_titles("fr")
         assert result == ["T1", "T2"]
         mock_sql.assert_called_with(unittest.mock.ANY, "enwiki", values=("fr",))
-
-
-import unittest.mock

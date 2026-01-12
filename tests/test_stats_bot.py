@@ -1,9 +1,10 @@
+from unittest.mock import MagicMock, patch
+
 import pytest
-from unittest.mock import patch, MagicMock
 
 from src.stats_bot import (
-    sum_all_views_new,
     dump_stats,
+    sum_all_views_new,
 )
 
 
@@ -46,10 +47,7 @@ def test_sum_all_views_new():
 @patch("src.stats_bot.is_empty_data")
 def test_dump_stats(mock_empty, mock_dump):
     mock_empty.return_value = False
-    new_data = {
-        "Art1": {"all": 10},
-        "Art#1": {"all": 5}
-    }
+    new_data = {"Art1": {"all": 10}, "Art#1": {"all": 5}}
 
     stats = dump_stats("stats.json", new_data)
 

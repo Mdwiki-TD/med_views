@@ -1,9 +1,10 @@
 """
 Tests for src.wiki.mdwiki_page
 """
-from unittest.mock import patch, MagicMock
-import pytest
 import sys
+from unittest.mock import MagicMock, patch
+
+import pytest
 
 from src.wiki.mdwiki_page import (
     load_main_api,
@@ -39,12 +40,12 @@ def test_page(mock_load_api):
     assert p.exists() is True
 
     # Test save (Dry run)
-    with patch.object(sys, 'argv', ['script.py']):
+    with patch.object(sys, "argv", ["script.py"]):
         assert p.save("new text", "summary", 0, "minor") is True
         mock_main_page.save.assert_not_called()
 
     # Test save (Actual run)
-    with patch.object(sys, 'argv', ['script.py', 'save']):
+    with patch.object(sys, "argv", ["script.py", "save"]):
         mock_main_page.save.return_value = True
         assert p.save("new text", "summary", 0, "minor") is True
         mock_main_page.save.assert_called_once()

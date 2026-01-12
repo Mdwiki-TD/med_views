@@ -1,9 +1,8 @@
 """
 Tests for src.views
 """
-from unittest.mock import patch, MagicMock
-import pytest
 from pathlib import Path
+from unittest.mock import MagicMock, patch
 
 from src.views import (
     calculate_total_views,
@@ -17,11 +16,7 @@ from src.views import (
 
 
 def test_calculate_total_views():
-    u_data = {
-        "Art1": 100,
-        "Art2": {"all": 200},
-        "Art3": {"all": 0}
-    }
+    u_data = {"Art1": 100, "Art2": {"all": 200}, "Art3": {"all": 0}}
     assert calculate_total_views("en", u_data) == 300
 
     assert calculate_total_views("fr", {}) == 0

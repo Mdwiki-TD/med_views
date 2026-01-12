@@ -2,6 +2,7 @@
 Tests for src.api_sql.wiki_sql
 """
 from unittest.mock import patch
+
 import pytest
 
 from src.api_sql.wiki_sql import (
