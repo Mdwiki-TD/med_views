@@ -7,8 +7,8 @@ from dotenv import load_dotenv
 # load environment variables from a .env file if it exists
 load_dotenv()
 
-my_username = os.getenv("WIKI_USERNAME", "")
-mdwiki_pass = os.getenv("WIKI_PASSWORD", "")
+my_username = os.getenv("MDWIKI_USERNAME", "")
+mdwiki_pass = os.getenv("MDWIKI_PASSWORD", "")
 
 main_dump_path = Path(__file__).parent.parent / "dumps"
 
