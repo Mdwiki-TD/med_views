@@ -11,7 +11,7 @@ from src.texts_utils import make_text
 from src.views import print_title_stats, calculate_total_views
 from src.helps import json_load
 from src.wiki import page
-from src.config import main_dump_path
+from src.config import main_dump_path, total_sites_by_year_path
 
 from src.views_utils.views_helps import (
     get_file_views_new,
@@ -111,8 +111,11 @@ def start(year, limit, maxv):
         logger.info("No views found, run `python3 start_views.py` first")
         return
     # ---
+    # sort views by value DESC
+    views = {k: v for k, v in sorted(views.items(), key=lambda item: item[1], reverse=True)}
+    # ---
     # dump views
-    with open(main_dump_path / f"views_{year}.json", "w", encoding="utf-8") as f:
+    with open(total_sites_by_year_path / f"views_{year}.json", "w", encoding="utf-8") as f:
         json.dump(views, f, ensure_ascii=False, indent=4)
     # ---
     newtext = make_text(languages, views)
