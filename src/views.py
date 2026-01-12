@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 # from mwviews.api import PageviewsClient
-from apis.mw_views import PageviewsClient
+from .mw_views import PageviewsClient
 
 from .helps import json_load
 from .dump_utils import dump_one
@@ -49,7 +49,7 @@ def article_views(site, articles, year=2024):
     return new_data
 
 
-def get_view_file(lang, year, open_it=False):
+def get_view_file(lang, year):
     # ---
     dir_v = Path(__file__).parent / "views" / str(year)
     # ---
@@ -57,12 +57,6 @@ def get_view_file(lang, year, open_it=False):
         dir_v.mkdir(parents=True)
     # ---
     file = dir_v / f"{lang}.json"
-    # ---
-    if open_it:
-        data = json_load(file)
-        # ---
-        if data is False:
-            return False
     # ---
     return file
 

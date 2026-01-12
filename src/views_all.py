@@ -7,7 +7,7 @@ python3 core8/pwb.py med_views/views_all
 import logging
 import sys
 
-from apis.mw_views import PageviewsClient
+from .mw_views import PageviewsClient
 
 from .helps import get_views_all_file, is_empty_data, json_load, update_data_new
 from .stats_bot import dump_stats

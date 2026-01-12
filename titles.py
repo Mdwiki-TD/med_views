@@ -6,12 +6,12 @@ python3 core8/pwb.py med_views/titles
 
 """
 
-from views_all_bots.dump_utils import (
+from src.dump_utils import (
     dump_one,
     dump_all,
     t_dump_dir,
 )
-from views_all_bots.sql_utils import (
+from src.sql_utils import (
     retrieve_medicine_titles,
 )
 
