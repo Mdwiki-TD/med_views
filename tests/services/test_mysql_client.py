@@ -1,9 +1,7 @@
 """
 Tests for src.services.mysql_client
 """
-from unittest.mock import MagicMock, patch
-
-import pytest
+from unittest.mock import MagicMock
 
 from src.services.mysql_client import (
     _sql_connect_pymysql,
@@ -21,8 +19,10 @@ def test_load_db_config():
     assert "replica.my.cnf" in config["read_default_file"]
 
 
-@patch("src.services.mysql_client.pymysql.connect")
-def test__sql_connect_pymysql(mock_connect):
+def test__sql_connect_pymysql(monkeypatch):
+    mock_connect = MagicMock()
+    monkeypatch.setattr("src.services.mysql_client.pymysql.connect", mock_connect)
+
     # Setup mock connection and cursor
     mock_conn = MagicMock()
     mock_cursor = MagicMock()
@@ -59,9 +59,10 @@ def test_decode_bytes_in_list():
     assert decode_bytes_in_list(rows) == expected
 
 
-@patch("src.services.mysql_client._sql_connect_pymysql")
-def test_make_sql_connect(mock_sql):
-    mock_sql.return_value = [{"col": b"val"}]
+def test_make_sql_connect(monkeypatch):
+    mock_sql = MagicMock(return_value=[{"col": b"val"}])
+    monkeypatch.setattr("src.services.mysql_client._sql_connect_pymysql", mock_sql)
+
     results = make_sql_connect("SELECT 1")
     # make_sql_connect calls decode_bytes_in_list on the results
     assert results == [{"col": "val"}]

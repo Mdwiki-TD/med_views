@@ -2,7 +2,7 @@
 Tests for src.views
 """
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 from src.views import (
     calculate_total_views,
@@ -18,7 +18,6 @@ from src.views import (
 def test_calculate_total_views():
     u_data = {"Art1": 100, "Art2": {"all": 200}, "Art3": {"all": 0}}
     assert calculate_total_views("en", u_data) == 300
-
     assert calculate_total_views("fr", {}) == 0
 
 
@@ -29,19 +28,24 @@ def test_update_data():
     assert result == {"Art1": 10, "Art2": 5, "Art3": 15}
 
 
-@patch("src.views.article_views")
-def test_get_one_lang_views_by_titles(mock_article_views):
-    mock_article_views.return_value = {"Art1": 10}
+def test_get_one_lang_views_by_titles(monkeypatch):
+    mock_article_views = MagicMock(return_value={"Art1": 10})
+    monkeypatch.setattr("src.views.article_views", mock_article_views)
+
     result = get_one_lang_views_by_titles("en", ["Art1"], "2020")
     assert result == {"Art1": 10}
 
 
-@patch("src.views.article_views")
-@patch("src.views.json_load")
-@patch("src.views.dump_one")
-def test_get_one_lang_views_by_titles_plus_1k(mock_dump, mock_json_load, mock_article_views):
-    mock_json_load.return_value = {}
-    mock_article_views.return_value = {"New": 10}
+def test_get_one_lang_views_by_titles_plus_1k(monkeypatch):
+    mock_json_load = MagicMock(return_value={})
+    monkeypatch.setattr("src.views.json_load", mock_json_load)
+
+    mock_article_views = MagicMock(return_value={"New": 10})
+    monkeypatch.setattr("src.views.article_views", mock_article_views)
+
+    mock_dump = MagicMock()
+    monkeypatch.setattr("src.views.dump_one", mock_dump)
+
     json_file = MagicMock(spec=Path)
     json_file.exists.return_value = False
 
@@ -60,23 +64,33 @@ def test_retrieve_view_statistics():
     assert result["Old Art"] == 5
 
 
-@patch("src.views.get_view_file")
-@patch("src.views.get_one_lang_views_by_titles")
-def test_load_one_lang_views(mock_get_titles, mock_get_file):
-    mock_get_titles.return_value = {"Art1": 10}
+def test_load_one_lang_views(monkeypatch):
+    mock_get_file = MagicMock()
+    monkeypatch.setattr("src.views.get_view_file", mock_get_file)
+
+    mock_get_titles = MagicMock(return_value={"Art1": 10})
+    monkeypatch.setattr("src.views.get_one_lang_views_by_titles", mock_get_titles)
+
     result = load_one_lang_views("en", ["Art1"], "2020")
     assert result == {"Art1": 10}
 
 
-@patch("src.views.get_view_file")
-@patch("src.views.json_load")
-@patch("src.views.load_one_lang_views")
-@patch("src.views.dump_one")
-@patch("src.views.calculate_total_views")
-def test_get_one_lang_views(mock_calc, mock_dump, mock_load, mock_json, mock_get_file):
-    mock_json.return_value = {}
-    mock_load.return_value = {"Art1": 10}
-    mock_calc.return_value = 10
+def test_get_one_lang_views(monkeypatch):
+    mock_get_file = MagicMock()
+    monkeypatch.setattr("src.views.get_view_file", mock_get_file)
+
+    mock_json = MagicMock(return_value={})
+    monkeypatch.setattr("src.views.json_load", mock_json)
+
+    mock_load = MagicMock(return_value={"Art1": 10})
+    monkeypatch.setattr("src.views.load_one_lang_views", mock_load)
+
+    mock_dump = MagicMock()
+    monkeypatch.setattr("src.views.dump_one", mock_dump)
+
+    mock_calc = MagicMock(return_value=10)
+    monkeypatch.setattr("src.views.calculate_total_views", mock_calc)
+
     json_file = MagicMock(spec=Path)
     json_file.exists.return_value = False
     mock_get_file.return_value = json_file

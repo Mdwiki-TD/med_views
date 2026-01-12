@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import MagicMock
 
 from src.stats_bot import (
     dump_stats,
@@ -41,10 +41,13 @@ def test_sum_all_views_new():
     assert res_new_zero["2020"] == 0
 
 
-@patch("src.stats_bot.dump_one")
-@patch("src.stats_bot.is_empty_data")
-def test_dump_stats(mock_empty, mock_dump):
-    mock_empty.return_value = False
+def test_dump_stats(monkeypatch):
+    mock_empty = MagicMock(return_value=False)
+    monkeypatch.setattr("src.stats_bot.is_empty_data", mock_empty)
+
+    mock_dump = MagicMock()
+    monkeypatch.setattr("src.stats_bot.dump_one", mock_dump)
+
     new_data = {"Art1": {"all": 10}, "Art#1": {"all": 5}}
 
     stats = dump_stats("stats.json", new_data)

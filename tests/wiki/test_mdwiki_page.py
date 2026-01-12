@@ -2,8 +2,7 @@
 Tests for src.wiki.mdwiki_page
 """
 import sys
-from unittest.mock import MagicMock, patch
-
+from unittest.mock import MagicMock
 
 from src.wiki.mdwiki_page import (
     load_main_api,
@@ -11,9 +10,15 @@ from src.wiki.mdwiki_page import (
 )
 
 
-@patch("src.wiki.mdwiki_page.all_apis_valid", True)
-@patch("src.wiki.mdwiki_page.ALL_APIS")
-def test_load_main_api(mock_all_apis):
+def test_load_main_api(monkeypatch):
+    monkeypatch.setattr("src.wiki.mdwiki_page.all_apis_valid", True)
+    mock_all_apis = MagicMock()
+    monkeypatch.setattr("src.wiki.mdwiki_page.ALL_APIS", mock_all_apis)
+
+    # We must clear the cache if we want to test its call count properly
+    # since it was probably called in previous tests.
+    load_main_api.cache_clear()
+
     result = load_main_api()
     assert result is not None
     # Test caching (lru_cache)
@@ -21,10 +26,11 @@ def test_load_main_api(mock_all_apis):
     assert mock_all_apis.call_count == 1
 
 
-@patch("src.wiki.mdwiki_page.load_main_api")
-def test_page(mock_load_api):
+def test_page(monkeypatch):
     mock_api = MagicMock()
-    mock_load_api.return_value = mock_api
+    mock_load_api = MagicMock(return_value=mock_api)
+    monkeypatch.setattr("src.wiki.mdwiki_page.load_main_api", mock_load_api)
+
     mock_main_page = MagicMock()
     mock_api.MainPage.return_value = mock_main_page
 
@@ -39,12 +45,12 @@ def test_page(mock_load_api):
     assert p.exists() is True
 
     # Test save (Dry run)
-    with patch.object(sys, "argv", ["script.py"]):
-        assert p.save("new text", "summary", 0, "minor") is True
-        mock_main_page.save.assert_not_called()
+    monkeypatch.setattr(sys, "argv", ["script.py"])
+    assert p.save("new text", "summary", 0, "minor") is True
+    mock_main_page.save.assert_not_called()
 
     # Test save (Actual run)
-    with patch.object(sys, "argv", ["script.py", "save"]):
-        mock_main_page.save.return_value = True
-        assert p.save("new text", "summary", 0, "minor") is True
-        mock_main_page.save.assert_called_once()
+    monkeypatch.setattr(sys, "argv", ["script.py", "save"])
+    mock_main_page.save.return_value = True
+    assert p.save("new text", "summary", 0, "minor") is True
+    mock_main_page.save.assert_called_once()

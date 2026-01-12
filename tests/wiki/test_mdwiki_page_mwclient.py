@@ -1,20 +1,18 @@
 """
 Tests for src.wiki.mdwiki_page_mwclient
 """
-from unittest.mock import MagicMock, patch
-
-import mwclient
-import pytest
+from unittest.mock import MagicMock
 
 from src.wiki.mdwiki_page_mwclient import (
     page_mwclient,
 )
 
 
-@patch("mwclient.Site")
-def test_page_mwclient(mock_site_class):
+def test_page_mwclient(monkeypatch):
     mock_site = MagicMock()
-    mock_site_class.return_value = mock_site
+    mock_site_class = MagicMock(return_value=mock_site)
+    monkeypatch.setattr("mwclient.Site", mock_site_class)
+
     mock_page = MagicMock()
     mock_site.pages.__getitem__.return_value = mock_page
 
