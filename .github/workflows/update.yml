@@ -1,0 +1,44 @@
+name: Auto Update Toolforge
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Test workspace
+        run: |
+          echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE" # /home/runner/work/.../... # ls -al
+
+      - name: Copy files to server
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: 22
+          source: "./"
+          target: "~/temp_path_mdviews"
+          rm: true
+
+      - name: Deploy on Toolforge
+        uses: appleboy/ssh-action@v1.2.4
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: 22
+          request_pty: true
+          script_stop: true
+          key: ${{ secrets.KEY }}
+          script: |
+            become mdwiki bash -lc "
+              cp -rf /mnt/nfs/labstore-secondary-tools-home/${{ secrets.USERNAME }}/temp_path_mdviews ~/pybot/med_views &&
+              echo \"Updated on: $(date '+%Y-%m-%d %H:%M:%S')\" > ~/update_from_github &&
+              echo 'Deployment completed successfully.'
+            "
+            rm -rf temp_path_mdviews
