@@ -7,12 +7,15 @@ python3 core8/pwb.py med_views/titles
 """
 import sys
 
-from views_all_bots.utils import (
+from views_all_bots.dump_utils import (
     dump_one,
-    langs_titles,
+    dump_all,
     load_lang_titles_from_dump,
     one_lang_titles,
     t_dump_dir,
+)
+from views_all_bots.sql_utils import (
+    retrieve_medicine_titles,
 )
 
 
@@ -50,9 +53,9 @@ def load_lang_titles(lang):
 
 def start():
     # ---
-    # languages = count_all_langs()
+    all_links = retrieve_medicine_titles()
     # ---
-    all_links = langs_titles()
+    dump_all({x: len(y) for x, y in all_links.items()})
     # ---
     dump_data(all_links)
 

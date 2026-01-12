@@ -2,43 +2,8 @@
 """
 
 """
-import json
-import sys
-from pathlib import Path
 
-from api_sql.wiki_sql import sql_new
-
-t_dump_dir = Path(__file__).parent / "titles"
-
-if not t_dump_dir.exists():
-    t_dump_dir.mkdir()
-
-
-def load_lang_titles_from_dump(lang):
-    # ---
-    json_file = t_dump_dir / f"{lang}.json"
-    # ---
-    if json_file.exists():
-        # ---
-        with open(json_file, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        # ---
-        data = [x.replace("_", " ") for x in data]
-        return data
-    # ---
-    return []
-
-
-def dump_one(file, data):
-    # ---
-    if not data:
-        return
-    # ---
-    print(f"dump_one({file}), {len(data)=}")
-    # ---
-    with open(file, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False)
-        # json.dump(data, f, ensure_ascii=False, indent=2)
+from .api_sql.wiki_sql import sql_new
 
 
 def get_en_articles():
@@ -60,27 +25,6 @@ def get_en_articles():
     articles = [x["page_title"] for x in result]
     # ---
     return articles
-
-
-def dump_all(data):
-    file = Path(__file__).parent / "languages_counts.json"
-    # ---
-    # sort data
-    data = {k: v for k, v in sorted(data.items(), key=lambda item: item[1], reverse=True)}
-    # ---
-    if data and len(data) > 200:
-        dump_one(file, data)
-
-
-def load_languages_counts():
-    file = Path(__file__).parent / "languages_counts.json"
-    # ---
-    if file.exists():
-        # ---
-        with open(file, "r", encoding="utf-8") as f:
-            return json.load(f)
-    # ---
-    return {}
 
 
 def count_all_langs_sql():
@@ -108,32 +52,7 @@ def count_all_langs_sql():
     if "en" not in languages:
         languages["en"] = len(get_en_articles())
     # ---
-    dump_all(languages)
-    # ---
     return languages
-
-
-def count_all_langs():
-    # ---
-    all_infos = load_languages_counts()
-    # ---
-    if not all_infos and ("local" not in sys.argv):
-        return count_all_langs_sql()
-    # ---
-    if all_infos:
-        return all_infos
-    # ---
-    result = {}
-    # ---
-    for json_file in t_dump_dir.glob("*.json"):
-        lang = json_file.stem
-        # ---
-        with open(json_file, "r", encoding="utf-8") as f:
-            result[lang] = len(json.load(f))
-    # ---
-    print(f"count_all_langs local: {len(result)}")
-    # ---
-    return result
 
 
 def one_lang_titles(langcode):
@@ -162,7 +81,7 @@ def one_lang_titles(langcode):
     return titles
 
 
-def langs_titles():
+def retrieve_medicine_titles():
     # ---
     query = """
         select ll_lang, ll_title
@@ -185,7 +104,5 @@ def langs_titles():
         titles.setdefault(x["ll_lang"], []).append(x["ll_title"])
     # ---
     titles["en"] = get_en_articles()
-    # ---
-    dump_all({x: len(y) for x, y in titles.items()})
     # ---
     return titles

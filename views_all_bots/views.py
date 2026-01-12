@@ -12,7 +12,7 @@ from pathlib import Path
 from apis.mw_views import PageviewsClient
 
 from .helps import json_load
-from .utils import dump_one
+from .dump_utils import dump_one
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)

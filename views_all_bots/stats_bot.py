@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 from .helps import is_empty_data
-from .utils import dump_one
+from .dump_utils import dump_one
 
 
 def sum_all_views_new(new_data):

@@ -1,29 +1,45 @@
 #!/usr/bin/python3
 """
 
-python3 core8/pwb.py med_views/bot -year:2025 ask
-
-python3 core8/pwb.py med_views/bot -max:50 ask
-
-python3 core8/pwb.py med_views/bot -limit:50
-python3 core8/pwb.py med_views/bot local ask
-
-tfj run umv --image python3.9 --command "$HOME/local/bin/python3 core8/pwb.py med_views/bot -max:1000"
-
-tfj run umvsh --image tf-python39 --command "$HOME/pybot/md_core/med_views/run.sh"
-
 """
+import json
 import logging
 import sys
 
+from views_all_bots.dump_utils import load_languages_counts, dump_all, t_dump_dir
+from views_all_bots.sql_utils import count_all_langs_sql
 from views_all_bots.mdwiki_page import md_MainPage
 
 from titles import load_lang_titles
-from views_all_bots.utils import count_all_langs
 from views_all_bots.views import load_one_lang_views
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
+
+
+def count_all_langs():
+    # ---
+    all_infos = load_languages_counts()
+    # ---
+    if not all_infos and ("local" not in sys.argv):
+        data = count_all_langs_sql()
+        dump_all(data)
+        return data
+    # ---
+    if all_infos:
+        return all_infos
+    # ---
+    result = {}
+    # ---
+    for json_file in t_dump_dir.glob("*.json"):
+        lang = json_file.stem
+        # ---
+        with open(json_file, "r", encoding="utf-8") as f:
+            result[lang] = len(json.load(f))
+    # ---
+    print(f"count_all_langs local: {len(result)}")
+    # ---
+    return result
 
 
 def get_one_lang_views(langcode, titles, year, maxv=0):
