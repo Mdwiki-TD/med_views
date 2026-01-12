@@ -1,7 +1,6 @@
 from datetime import date, datetime
 from unittest.mock import MagicMock, patch
 
-import pytest
 
 from src.services.mw_views import (
     PageviewsClient,

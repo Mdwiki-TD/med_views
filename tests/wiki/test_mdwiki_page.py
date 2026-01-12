@@ -4,7 +4,6 @@ Tests for src.wiki.mdwiki_page
 import sys
 from unittest.mock import MagicMock, patch
 
-import pytest
 
 from src.wiki.mdwiki_page import (
     load_main_api,
