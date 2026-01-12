@@ -27,6 +27,16 @@ logging.basicConfig(level=logging.INFO)
 
 def load_one_lang_views_all(langcode, titles, year, max_items=1000, maxv=0):
     # ---
+    """
+    Load, render, and persist view data for a single language, optionally merging with existing file data.
+
+    Parameters:
+        langcode (str): Language code identifying which views file to read and write.
+        titles (Sequence[str]): Candidate page titles for processing; will be filtered against titles already present in the views file.
+        year (str): Year identifier used when rendering view data.
+        max_items (int): Maximum number of items to include per rendered batch.
+        maxv (int): If greater than zero, skip processing when the number of titles exceeds this limit.
+    """
     json_file = get_views_all_file(langcode)
     json_file_stats = get_views_all_file(langcode, "stats")
     # ---
@@ -56,6 +66,18 @@ def load_one_lang_views_all(langcode, titles, year, max_items=1000, maxv=0):
 
 
 def generate_work_data(filter_by, langs, maxv, minx):
+    """
+    Builds a per-language work plan mapping each language to its full title list and the subset to process, applying minimum and maximum size filters.
+
+    Parameters:
+        filter_by (str): Which list to use when applying min/max limits; expected values include "titles" or "to_work".
+        langs (Mapping): Mapping of language codes to metadata (used only for iteration order).
+        maxv (int): Maximum allowed size for the chosen filter list; languages with larger lists are skipped.
+        minx (int): Minimum required size for the chosen filter list; languages with smaller lists are skipped.
+
+    Returns:
+        dict: Mapping from language code to a dict with keys "titles" (list of all titles) and "to_work" (list of titles selected for processing). The returned mapping is sorted in ascending order by the length of the list indicated by `filter_by`.
+    """
     work_data = {}
     # ---
     for lang, _ in tqdm.tqdm(langs.items()):
@@ -93,6 +115,14 @@ def generate_work_data(filter_by, langs, maxv, minx):
 
 
 def parse_arg_limits():
+    """
+    Parse command-line limits for maximum and minimum item thresholds from sys.argv.
+
+    Scans sys.argv for tokens of the form "-max:<N>" and "-min:<N>" and extracts their integer values. If a key is missing or its value is not a digit, the function uses the defaults.
+
+    Returns:
+        (maxv, minx) (tuple[int, int]): maxv is the parsed maximum value (default 1000000), minx is the parsed minimum value (default 0).
+    """
     maxv = 1000000
     minx = 0
     # ---
@@ -107,6 +137,15 @@ def parse_arg_limits():
 
 def start(lang="", filter_by="titles"):
     # ---
+    """
+    Orchestrates generation of per-language work data and sequentially processes each language's view data.
+
+    Builds a sorted work plan from available language counts, applies command-line min/max filters, and for each language logs a summary and invokes the per-language loader/updater unless execution is suppressed via command-line flags.
+
+    Parameters:
+        lang (str): Optional language code to target a single language. If empty, all eligible languages are considered.
+        filter_by (str): Which list to base work sizing on; either "titles" or "to_work". Invalid values default to "titles".
+    """
     langs = load_languages_counts()
     # ---
     if not langs:

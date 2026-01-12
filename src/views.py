@@ -44,6 +44,16 @@ def article_views(site, articles, year=2024):
 
 def get_view_file(lang, year):
     # ---
+    """
+    Compute the filesystem path for the language's views JSON file for a given year, creating the year directory if it does not exist.
+
+    Parameters:
+        lang (str): Language code (used as the JSON filename without extension).
+        year (int | str): Year used to select or create the yearly subdirectory.
+
+    Returns:
+        pathlib.Path: Path to the "{lang}.json" file inside the year directory.
+    """
     dir_v = views_by_year_path / str(year)
     # ---
     if not dir_v.exists():

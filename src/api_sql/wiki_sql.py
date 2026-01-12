@@ -70,6 +70,19 @@ def make_labsdb_dbs_p(wiki):
 
 def retrieve_sql_results(queries, wiki="", values=None):
     # ---
+    """
+    Retrieve SQL query results for a specified wiki's analytics database.
+
+    Calls make_labsdb_dbs_p to determine host and database, attempts the SQL call via mysql_client, and returns the rows. If GET_SQL() indicates SQL should not be performed, returns an empty list immediately. Execution time is measured and logged.
+
+    Parameters:
+        queries (str | list): SQL query string or list of query strings to execute.
+        wiki (str): Wiki identifier used to derive the analytics host and database (e.g., "enwiki", "wikidata").
+        values (dict | list | None): Optional parameter values for a parameterized query.
+
+    Returns:
+        list: Rows returned by the database client (structure as provided by mysql_client), or an empty list if SQL execution is skipped.
+    """
     logger.debug(f"wiki_sql.py retrieve_sql_results wiki '{wiki}'")
     # ---
     host, dbs_p = make_labsdb_dbs_p(wiki)
