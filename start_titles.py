@@ -8,7 +8,7 @@ python3 titles.py
 
 import logging
 
-from src.config import json_titles_path
+from src.config import json_titles_path, main_dump_path
 from src.dump_utils import (
     dump_languages_counts,
     dump_one,
@@ -30,6 +30,8 @@ def start():
     if not all_links or len(all_links) == 0:
         logger.warning("No links retrieved from database, aborting.")
         return
+    # ---
+    dump_one(main_dump_path / "all_languages_titles.json", all_links)
     # ---
     dump_languages_counts({x: len(y) for x, y in all_links.items()})
     # ---

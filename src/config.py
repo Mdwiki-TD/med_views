@@ -22,7 +22,7 @@ views_new_path.mkdir(parents=True, exist_ok=True)
 views_by_year_path.mkdir(parents=True, exist_ok=True)
 
 
-parallelism = 2
+parallelism = 10
 
 for arg in sys.argv:
     key, _, val = arg.partition(":")

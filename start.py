@@ -106,7 +106,7 @@ def start(year, limit, maxv):
 
 
 def parse_args():
-    year = 2024
+    year = 2025
     limit = 0
     maxv = 0
     for arg in sys.argv:
