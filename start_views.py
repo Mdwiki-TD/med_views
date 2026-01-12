@@ -12,10 +12,12 @@ tfj run views4 --image python3.9 --command "$HOME/local/bin/python3 pybot/med_vi
 tfj run views5 --image python3.9 --command "$HOME/local/bin/python3 pybot/med_views/start_views.py -min:19000"
 
 """
-import logging
 import json
+import logging
 import sys
+
 import tqdm
+
 from src.dump_utils import load_lang_titles_from_dump, load_languages_counts
 from src.helps import get_views_all_file, is_empty_data, json_load
 from src.stats_bot import dump_stats

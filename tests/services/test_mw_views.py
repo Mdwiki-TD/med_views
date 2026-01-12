@@ -1,6 +1,6 @@
 from datetime import date, datetime
+from unittest.mock import MagicMock, patch
 
-import pytest
 
 from src.services.mw_views import (
     PageviewsClient,
@@ -58,7 +58,28 @@ def test_month_from_day():
     assert month_from_day(dt2) == expected2
 
 
-@pytest.mark.skip(reason="Requires network mocking")
-def test_PageviewsClient():
-    # TODO: Implement test with mocks
-    pass
+@patch("src.services.mw_views.requests.get")
+def test_PageviewsClient(mock_get):
+    # Setup mock response
+    mock_resp = MagicMock()
+    mock_resp.json.return_value = {"items": [{"article": "Test_Article", "timestamp": "2023010100", "views": 50}]}
+    mock_resp.status_code = 200
+    mock_get.return_value = mock_resp
+
+    client = PageviewsClient(user_agent="test-agent", parallelism=1)
+
+    # Test article_views
+    # Use dates that match the mock data
+    results = client.article_views("en.wikipedia", ["Test Article"], start="2023010100", end="2023010100")
+
+    # Verify results
+    expected_date = datetime(2023, 1, 1, 0)
+    assert results[expected_date]["Test Article"] == 50
+
+    # Test article_views_new
+    client.parallelism = 1  # for easier mocking if needed, but we already mocked get
+    new_results = client.article_views_new("en.wikipedia", ["Test Article"], start="2023010100", end="2023010100")
+
+    assert "Test Article" in new_results
+    assert new_results["Test Article"]["2023"] == 50
+    assert new_results["Test Article"]["all"] == 50

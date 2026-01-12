@@ -4,7 +4,7 @@
 """
 import logging
 
-from ..config import views_by_year_path, parallelism
+from ..config import parallelism, views_by_year_path
 from ..services.mw_views import PageviewsClient
 
 logger = logging.getLogger(__name__)
