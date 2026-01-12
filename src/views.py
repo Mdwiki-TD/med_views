@@ -5,63 +5,15 @@
 import logging
 import sys
 
-from .config import views_by_year_path
 from .dump_utils import dump_one
 from .helps import json_load
-from .services.mw_views import PageviewsClient
+
+from .views_utils.views_helps import (
+    article_views,
+    get_view_file,
+)
 
 logger = logging.getLogger(__name__)
-
-
-parallelism = 2
-
-for arg in sys.argv:
-    key, _, val = arg.partition(":")
-    if key == "-para":
-        parallelism = int(val) or parallelism
-
-view_bot = PageviewsClient(parallelism=parallelism)
-
-
-def article_views(site, articles, year=2024):
-    # ---
-    site = "be-tarask" if site == "be-x-old" else site
-    # ---
-    data = view_bot.article_views_new(
-        f"{site}.wikipedia", articles, granularity="monthly", start=f"{year}0101", end=f"{year}1231"
-    )
-    # ---
-    new_data = {}
-    # ---
-    for title, views in data.items():
-        # ---
-        title = title.replace(" ", "_")
-        # ---
-        new_data[title] = views.get(year) or views.get(str(year)) or views.get("all", 0)
-    # ---
-    return new_data
-
-
-def get_view_file(lang, year):
-    # ---
-    """
-    Compute the filesystem path for the language's views JSON file for a given year, creating the year directory if it does not exist.
-
-    Parameters:
-        lang (str): Language code (used as the JSON filename without extension).
-        year (int | str): Year used to select or create the yearly subdirectory.
-
-    Returns:
-        pathlib.Path: Path to the "{lang}.json" file inside the year directory.
-    """
-    dir_v = views_by_year_path / str(year)
-    # ---
-    if not dir_v.exists():
-        dir_v.mkdir(parents=True)
-    # ---
-    file = dir_v / f"{lang}.json"
-    # ---
-    return file
 
 
 def update_data(all_data, data):
@@ -112,6 +64,33 @@ def get_one_lang_views_by_titles_plus_1k(langcode, titles, year, json_file, max_
     return all_data
 
 
+def retrieve_view_statistics(langcode, titles, year, max_items, json_file, in_file):
+    if "zero" in sys.argv:
+        data = {x: 0 for x in titles}
+    elif len(titles) > max_items:
+        data = get_one_lang_views_by_titles_plus_1k(langcode, titles, year, json_file, max_items=max_items)
+    else:
+        data = get_one_lang_views_by_titles(langcode, titles, year)
+    # ---
+    data = {x.replace("_", " "): v for x, v in data.items()}
+    # ---
+    if len(in_file) > 0:
+        # ---
+        logger.info(f"<<yellow>>(lang:{langcode}) new data: {len(data)}, in_file: {len(in_file)}")
+        # ---
+        in_file = update_data(in_file, data)
+        # ---
+        dump_one(json_file, in_file)
+        # ---
+        data = in_file
+    else:
+        # ---
+        logger.info(f"<<green>>(lang:{langcode}) new data: {len(data)}")
+        # ---
+        dump_one(json_file, data)
+    return data
+
+
 def load_one_lang_views(langcode, titles, year, max_items=1000, maxv=0):
     # ---
     json_file = get_view_file(langcode, year)
@@ -123,7 +102,7 @@ def load_one_lang_views(langcode, titles, year, max_items=1000, maxv=0):
         # ---
         u_data = json_load(json_file)
         # ---
-        if u_data is False:
+        if u_data is None:
             return False
         # ---
         u_data = {x.replace("_", " "): v for x, v in u_data.items()}
@@ -150,29 +129,7 @@ def load_one_lang_views(langcode, titles, year, max_items=1000, maxv=0):
     if "local" in sys.argv:
         return u_data
     # ---
-    if "zero" in sys.argv:
-        data = {x: 0 for x in titles}
-    elif len(titles) > max_items:
-        data = get_one_lang_views_by_titles_plus_1k(langcode, titles, year, json_file, max_items=max_items)
-    else:
-        data = get_one_lang_views_by_titles(langcode, titles, year)
-    # ---
-    data = {x.replace("_", " "): v for x, v in data.items()}
-    # ---
-    if len(in_file) > 0:
-        # ---
-        logger.info(f"<<yellow>>(lang:{langcode}) new data: {len(data)}, in_file: {len(in_file)}")
-        # ---
-        in_file = update_data(in_file, data)
-        # ---
-        dump_one(json_file, in_file)
-        # ---
-        data = in_file
-    else:
-        # ---
-        logger.info(f"<<green>>(lang:{langcode}) new data: {len(data)}")
-        # ---
-        dump_one(json_file, data)
+    data = retrieve_view_statistics(langcode, titles, year, max_items, json_file, in_file)
     # ---
     return data
 
@@ -181,6 +138,9 @@ def get_one_lang_views(langcode, titles, year, maxv=0):
     # ---
     views_t = load_one_lang_views(langcode, titles, year, maxv=maxv)
     # ---
+    if not views_t:
+        return 0
+    # ---
     # logger.debug(views_t)
     # ---
     total = 0
@@ -188,7 +148,6 @@ def get_one_lang_views(langcode, titles, year, maxv=0):
     for _, views in views_t.items():
         if isinstance(views, dict):
             views = views.get("all", 0)
-        # ---
         total += views
     # ---
     if total == 0:

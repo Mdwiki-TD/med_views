@@ -9,20 +9,10 @@ import sys
 
 from ..dump_utils import dump_one
 from ..helps import get_views_all_file, is_empty_data, json_load
-from ..services.mw_views import PageviewsClient
 from ..stats_bot import dump_stats
+from ..views_utils.views_helps import article_all_views
 
 logger = logging.getLogger(__name__)
-
-
-parallelism = 2
-
-for arg in sys.argv:
-    key, _, val = arg.partition(":")
-    if key == "-para":
-        parallelism = int(val) or parallelism
-
-view_bot = PageviewsClient(parallelism=parallelism)
 
 
 def dump_it(json_file, data, json_file_stats):
@@ -36,19 +26,6 @@ def dump_it(json_file, data, json_file_stats):
     dump_one(json_file, new_data)
     # ---
     dump_stats(json_file_stats, new_data)
-
-
-def article_all_views(site, articles, year=2024):
-    # ---
-    site = "be-tarask" if site == "be-x-old" else site
-    # ---
-    data = view_bot.article_views_new(
-        f"{site}.wikipedia", articles, granularity="monthly", start="20100101", end="20250627"
-    )
-    # ---
-    # logger.debug(data)
-    # ---
-    return data
 
 
 def update_data_new(all_data, data):

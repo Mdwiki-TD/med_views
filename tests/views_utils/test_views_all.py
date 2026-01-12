@@ -5,7 +5,6 @@ Tests
 import pytest
 
 from src.views_utils.views_all import (
-    article_all_views,
     dump_it,
     get_one_lang_views_all_by_titles,
     get_one_lang_views_all_by_titles_plus_1k,
@@ -18,12 +17,6 @@ from src.views_utils.views_all import (
 
 @pytest.mark.skip(reason="Pending write")
 def test_dump_it():
-    # TODO: Implement test
-    pass
-
-
-@pytest.mark.skip(reason="Pending write")
-def test_article_all_views():
     # TODO: Implement test
     pass
 
