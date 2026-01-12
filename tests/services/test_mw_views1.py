@@ -10,7 +10,7 @@ from src.services.mw_views import (
 
 
 @pytest.mark.network
-def test_PageviewsClient():
+def test_pageviewsclient():
     # TODO: Implement test
     view_bot = PageviewsClient()
     data = view_bot.article_views_new(
