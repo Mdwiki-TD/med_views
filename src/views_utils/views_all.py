@@ -115,8 +115,7 @@ def get_titles_and_in_file(json_file, titles):
             in_file: the loaded JSON data mapping title -> data (empty if file missing or load failed).
     """
     if not json_file.exists():
-        name = json_file.name
-        logger.debug(f"json_file does not exist: {name}")
+        logger.debug(f"json_file does not exist: {json_file.name}")
         return titles, {}
     # ---
     u_data = json_load(json_file)
@@ -128,7 +127,7 @@ def get_titles_and_in_file(json_file, titles):
     titles_not_in_file = [x for x in titles if is_empty_data(u_data.get(x, {})) and x.find("#") == -1]
     # ---
     if not (len(u_data) != len(titles) or len(titles_not_in_file) > 0):
-        logger.info(f"<<green>> get_titles_and_in_file(lang:{json_file}) \t titles: {len(titles):,}")
+        logger.info(f"<<green>> get_titles_and_in_file(lang:{json_file.name}) \t titles: {len(titles):,}")
         logger.debug("nothing to do")
         return [], {}
     # ---
