@@ -20,7 +20,7 @@ import tqdm
 from src.helps import get_views_all_file, json_load
 from src.stats_bot import update_all_stats
 from src.dump_utils import load_lang_titles_from_dump, load_languages_counts
-from src.views.views_all import article_all_views, dump_stats, get_titles_to_work, load_one_lang_views_all
+from src.views_utils.views_all import article_all_views, dump_stats, get_titles_to_work, load_one_lang_views_all
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)

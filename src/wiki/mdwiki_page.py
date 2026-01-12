@@ -1,6 +1,5 @@
 """
 
-from api_bots.mdwiki_page import load_main_api
 
 """
 # ---
