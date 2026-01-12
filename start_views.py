@@ -67,9 +67,9 @@ def get_one_lang_views_all_by_titles(langcode, titles, year):
     # ---
     all_data = {}
     # ---
-    for i in range(0, len(titles), 200):
+    for i in range(0, len(titles), 500):
         # ---
-        group = titles[i : i + 200]
+        group = titles[i : i + 500]
         # ---
         data = article_all_views(langcode, group, year)
         # ---
