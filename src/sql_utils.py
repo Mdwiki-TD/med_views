@@ -80,6 +80,8 @@ def retrieve_medicine_titles() -> dict:
     # ---
     titles["en"] = get_en_articles()
     # ---
+    logger.info(f"retrieve_medicine_titles: {len(titles)}")
+    # ---
     return titles
 
 
