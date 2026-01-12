@@ -8,7 +8,11 @@ import sys
 import logging
 import os
 import configparser
-from newapi import ALL_APIS
+all_apis_valid = None
+try:
+    from newapi import ALL_APIS
+except ImportError:
+    all_apis_valid = None
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -24,13 +28,17 @@ mdwiki_pass = config["DEFAULT"].get("mdwiki_pass", "")
 
 
 @functools.lru_cache(maxsize=1)
-def load_main_api() -> ALL_APIS:
+def load_main_api() -> ALL_APIS | None:
+    if all_apis_valid is None:
+        return None
     return ALL_APIS(lang="www", family="mdwiki", username=my_username, password=mdwiki_pass)
 
 
 class page:
     def __init__(self, title: str):
         api = load_main_api()
+        if api is None:
+            raise ValueError("API is not available")
         self.page = api.MainPage(title)
 
     def get_text(self):
