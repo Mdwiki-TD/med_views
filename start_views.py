@@ -67,9 +67,9 @@ def get_one_lang_views_all_by_titles(langcode, titles, year):
     # ---
     all_data = {}
     # ---
-    for i in range(0, len(titles), 20):
+    for i in range(0, len(titles), 200):
         # ---
-        group = titles[i : i + 20]
+        group = titles[i : i + 200]
         # ---
         data = article_all_views(langcode, group, year)
         # ---
@@ -89,9 +89,9 @@ def get_one_lang_views_all_by_titles_plus_1k(langcode, titles, year, json_file, 
     if in_file is False:
         return False
     # ---
-    for i in range(0, len(titles), 200):
+    for i in range(0, len(titles), 2000):
         # ---
-        group = titles[i : i + 200]
+        group = titles[i : i + 2000]
         # ---
         data = article_all_views(langcode, group, year)
         # ---
