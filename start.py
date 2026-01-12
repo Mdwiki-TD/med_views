@@ -5,13 +5,12 @@
 import logging
 import sys
 
-from src.dump_utils import load_languages_counts, dump_all, count_languages_in_json
+from src.dump_utils import count_languages_in_json, dump_all, load_languages_counts
 from src.sql_utils import get_language_article_counts_sql
-from src.wiki.mdwiki_page import page
 from src.texts_utils import make_text
-
 from src.titles_utils import load_lang_titles
 from src.views import get_one_lang_views
+from src.wiki.mdwiki_page import page
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)

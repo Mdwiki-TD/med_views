@@ -3,9 +3,9 @@
 
 """
 import functools
+import logging
 import os
 import time
-import logging
 
 from ..services import mysql_client
 

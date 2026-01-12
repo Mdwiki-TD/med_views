@@ -7,9 +7,10 @@ python3 core8/pwb.py med_views/titles
 """
 
 import logging
+
 from src.dump_utils import (
-    dump_one,
     dump_all,
+    dump_one,
     t_dump_dir,
 )
 from src.sql_utils import (

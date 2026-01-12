@@ -6,10 +6,9 @@ import logging
 import sys
 from pathlib import Path
 
-from .services.mw_views import PageviewsClient
-
-from .helps import json_load
 from .dump_utils import dump_one
+from .helps import json_load
+from .services.mw_views import PageviewsClient
 
 logger = logging.getLogger(__name__)
 

@@ -3,7 +3,9 @@
 
 """
 import logging
+
 from .api_sql.wiki_sql import retrieve_sql_results
+
 logger = logging.getLogger(__name__)
 
 

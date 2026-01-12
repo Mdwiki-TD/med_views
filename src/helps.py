@@ -41,10 +41,7 @@ def json_load(json_file) -> None | dict | list:
         return {x.replace("_", " "): v for x, v in u_data.items()}
 
     if isinstance(u_data, list):
-        return [
-            x.replace("_", " ") if isinstance(x, str) else x
-            for x in u_data
-        ]
+        return [x.replace("_", " ") if isinstance(x, str) else x for x in u_data]
 
     return u_data
 

@@ -1,14 +1,15 @@
 #!/usr/bin/python3
 """
 """
-import sys
-import requests
 import logging
+import sys
 import time
-from requests.utils import quote
-from datetime import date, datetime, timedelta
-from concurrent.futures import ThreadPoolExecutor
 from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor
+from datetime import date, datetime, timedelta
+
+import requests
+from requests.utils import quote
 from tqdm import tqdm
 
 logger = logging.getLogger(__name__)
@@ -252,6 +253,8 @@ class PageviewsClient:
         # ---
         delta = time.time() - time_start
         # ---
-        logger.debug(f"<<green>> article_views, (articles:{len(articles):,}) new_data:{len(new_data):,} time: {delta:.2f} sec")
+        logger.debug(
+            f"<<green>> article_views, (articles:{len(articles):,}) new_data:{len(new_data):,} time: {delta:.2f} sec"
+        )
         # ---
         return new_data

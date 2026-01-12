@@ -4,13 +4,12 @@
 
 """
 import json
+import logging
 import sys
 from pathlib import Path
-import logging
 
-from .helps import is_empty_data
 from .dump_utils import dump_one
-
+from .helps import is_empty_data
 
 logger = logging.getLogger(__name__)
 

@@ -7,7 +7,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-
 def make_text(languages, views) -> str:
     # ---
     total_views = sum(views.values())

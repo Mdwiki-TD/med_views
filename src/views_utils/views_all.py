@@ -7,14 +7,12 @@ python3 core8/pwb.py med_views/views_all
 import logging
 import sys
 
-from ..services.mw_views import PageviewsClient
-
-from ..helps import get_views_all_file, is_empty_data, json_load
-from ..stats_bot import dump_stats
 from ..dump_utils import dump_one
+from ..helps import get_views_all_file, is_empty_data, json_load
+from ..services.mw_views import PageviewsClient
+from ..stats_bot import dump_stats
 
 logger = logging.getLogger(__name__)
-
 
 
 parallelism = 2

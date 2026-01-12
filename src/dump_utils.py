@@ -5,6 +5,7 @@
 import json
 import logging
 from pathlib import Path
+
 logger = logging.getLogger(__name__)
 t_dump_dir = Path(__file__).parent / "titles"
 

@@ -4,9 +4,10 @@
 """
 # ---
 import functools
-import sys
 import logging
-from ..config import my_username, mdwiki_pass
+import sys
+
+from ..config import mdwiki_pass, my_username
 
 all_apis_valid = None
 try:
