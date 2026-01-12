@@ -25,6 +25,8 @@ def start():
     # ---
     all_links = retrieve_medicine_titles()
     # ---
+    logger.info(f"dump_data: retrieved langs: {len(all_links)}")
+    # ---
     if not all_links or len(all_links) == 0:
         logger.warning("No links retrieved from database, aborting.")
         return

@@ -99,6 +99,6 @@ def retrieve_sql_results(queries, wiki="", values=None):
     # ---
     delta = time.perf_counter() - start
     # ---
-    logger.info(f'wiki_sql.py retrieve_sql_results len(encats) = "{len(rows)}", in {delta:.2f} seconds')
+    logger.debug(f'wiki_sql.py retrieve_sql_results len(encats) = "{len(rows)}", in {delta:.2f} seconds')
     # ---
     return rows

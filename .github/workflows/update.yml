@@ -37,7 +37,7 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             become ${{ secrets.TOOL }} bash -lc "
-              cp -rf /mnt/nfs/labstore-secondary-tools-home/${{ secrets.USERNAME }}/temp_path_mdviews ~/pybot/med_views &&
+              cp -rf /mnt/nfs/labstore-secondary-tools-home/${{ secrets.USERNAME }}/temp_path_mdviews/* ~/pybot/med_views &&
               echo \"Updated on: $(date '+%Y-%m-%d %H:%M:%S')\" > ~/update_from_github &&
               echo 'Deployment completed successfully.'
             "
