@@ -6,8 +6,8 @@
 import functools
 import sys
 import logging
-import os
-import configparser
+from .account_info import my_username, mdwiki_pass
+
 all_apis_valid = None
 try:
     from newapi import ALL_APIS
@@ -16,15 +16,6 @@ except ImportError:
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-home_dir = os.getenv("HOME")
-project = home_dir if home_dir else "I:/mdwiki/mdwiki"
-# ---
-config = configparser.ConfigParser()
-config.read(f"{project}/confs/user.ini")
-
-my_username = config["DEFAULT"].get("my_username", "")
-mdwiki_pass = config["DEFAULT"].get("mdwiki_pass", "")
 
 
 @functools.lru_cache(maxsize=1)
