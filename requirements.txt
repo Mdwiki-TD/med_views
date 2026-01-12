@@ -1,0 +1,4 @@
+tqdm
+mwclient
+requests
+pymysql
