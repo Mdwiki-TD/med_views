@@ -16,6 +16,19 @@ from .views_utils.views_helps import (
 logger = logging.getLogger(__name__)
 
 
+def calculate_total_views(langcode, u_data):
+    total = 0
+    # ---
+    for _, views in u_data.items():
+        if isinstance(views, dict):
+            views = views.get("all", 0)
+        total += views
+    # ---
+    if total == 0:
+        logger.info(f"<<yellow>> No views for {langcode}")
+    return total
+
+
 def update_data(all_data, data):
     # ---
     all_data.update({x: v for x, v in data.items() if (x not in all_data or all_data[x] == 0)})
@@ -82,53 +95,9 @@ def retrieve_view_statistics(data, langcode, in_file):
     return data
 
 
-def process_json_titles(titles, json_file):
-    u_data = {}
-    in_file = {}
-    # ---
-    titles_not_in_file = []
-    return_u_data = False
-    # ---
-    if json_file.exists():
-        # ---
-        u_data = json_load(json_file)
-        # ---
-        if u_data:
-            # ---
-            u_data = {x.replace("_", " "): v for x, v in u_data.items()}
-            # ---
-            titles_not_in_file = [x for x in titles if (x not in u_data or u_data[x] == 0)]
-            # ---
-            if len(u_data) != len(titles) or len(titles_not_in_file) > 0:
-                logger.info(
-                    f"<<red>>(lang:{json_file.name}) titles: {len(titles):,}, titles in file: {len(u_data):,}, missing: {len(titles_not_in_file):,}"
-                )
-                # ---
-                in_file = u_data
-        else:
-            logger.info(f"<<green>> load_one_lang_views(lang:{json_file}) \t titles: {len(titles):,}")
-            return_u_data = True
-    return u_data, in_file, titles_not_in_file, return_u_data
-
-
-def load_one_lang_views(langcode, titles, year, max_items=1000, maxv=0):
+def load_one_lang_views(langcode, titles, year, max_items=1000):
     # ---
     json_file = get_view_file(langcode, year)
-    # ---
-    u_data, in_file, titles_not_in_file, return_u_data = process_json_titles(titles, json_file)
-    # ---
-    if return_u_data:
-        return u_data
-    # ---
-    if titles_not_in_file:
-        titles = titles_not_in_file
-    # ---
-    if maxv > 0 and len(titles) > maxv:
-        logger.info(f"<<yellow>> {langcode}: {len(titles)} titles > max {maxv}, skipping")
-        return u_data
-    # ---
-    if "local" in sys.argv:
-        return u_data
     # ---
     if "zero" in sys.argv:
         data = {x: 0 for x in titles}
@@ -137,32 +106,32 @@ def load_one_lang_views(langcode, titles, year, max_items=1000, maxv=0):
     else:
         data = get_one_lang_views_by_titles(langcode, titles, year)
     # ---
-    data = retrieve_view_statistics(data, langcode, in_file)
-    # ---
-    dump_one(json_file, data)
-    # ---
     return data
 
 
 def get_one_lang_views(langcode, titles, year, maxv=0):
     # ---
-    views_t = load_one_lang_views(langcode, titles, year, maxv=maxv)
+    json_file = get_view_file(langcode, year)
+    u_data = {}
+    titles_not_in_file = titles
     # ---
-    if not views_t:
+    if json_file.exists():
+        u_data = json_load(json_file)
+        titles_not_in_file = [x for x in titles if (x not in u_data or u_data[x] == 0)]
+    # ---
+    if maxv > 0 and len(titles_not_in_file) > maxv:
+        logger.info(f"<<yellow>> {langcode}: {len(titles)} titles > max {maxv}, skipping")
+    elif "local" in sys.argv:
+        logger.info(f"<<green>> load_one_lang_views(lang:{langcode}) \t titles: {len(titles):,}")
+    else:
+        views_t = load_one_lang_views(langcode, titles_not_in_file, year)
+        u_data = update_data(u_data, views_t)
+    # ---
+    if not u_data:
         return 0
     # ---
-    # logger.debug(views_t)
+    dump_one(json_file, u_data)
     # ---
-    total = 0
-    # ---
-    for _, views in views_t.items():
-        if isinstance(views, dict):
-            views = views.get("all", 0)
-        total += views
-    # ---
-    if total == 0:
-        logger.info(f"<<yellow>> No views for {langcode}")
-        # logger.info("views_t" + str(views_t))
-        # logger.info("titles" + str(titles))
+    total = calculate_total_views(langcode, u_data)
     # ---
     return total
