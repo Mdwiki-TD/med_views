@@ -6,7 +6,7 @@ import pytest
 
 from src.dump_utils import (
     count_languages_in_json,
-    dump_all,
+    dump_languages_counts,
     dump_one,
     load_lang_titles_from_dump,
     load_languages_counts,
@@ -32,7 +32,7 @@ def test_dump_one():
 
 
 @pytest.mark.skip(reason="Pending write")
-def test_dump_all():
+def test_dump_languages_counts():
     # TODO: Implement test
     pass
 

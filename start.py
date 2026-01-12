@@ -5,7 +5,7 @@ python3 I:/mdwiki/med_views/start.py
 import logging
 import sys
 
-from src.dump_utils import count_languages_in_json, dump_all, load_languages_counts
+from src.dump_utils import count_languages_in_json, dump_languages_counts, load_languages_counts
 from src.sql_utils import get_language_article_counts_sql
 from src.texts_utils import make_text
 from src.titles_utils import load_lang_titles
@@ -22,7 +22,7 @@ def get_languages_articles_counts():
     # ---
     if not all_infos and ("local" not in sys.argv):
         data = get_language_article_counts_sql()
-        dump_all(data)
+        dump_languages_counts(data)
         return data
     # ---
     if all_infos:
@@ -54,6 +54,16 @@ def make_views(languages, year, limit, maxv):
 
 def start(year, limit, maxv):
     # ---
+    """
+    Orchestrates collection of per-language pageview totals for a given year and updates the corresponding wiki stats page.
+
+    Retrieves stored language article counts, computes pageviews (respecting `limit` and `maxv`), generates page text, and saves the page if content changed. The function logs progress and exits early without modifying the wiki when no language data or no non-zero views are available.
+
+    Parameters:
+        year (int): Year used in view calculations and included in the target wiki page title.
+        limit (int): Maximum number of languages to process (0 means no limit).
+        maxv (int): Upper bound applied to per-language view calculations (0 means no cap).
+    """
     title = f"WikiProjectMed:WikiProject Medicine/Stats/Total pageviews by language {year}"
     # ---
     languages = get_languages_articles_counts()

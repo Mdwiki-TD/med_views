@@ -9,20 +9,10 @@ import sys
 
 from ..dump_utils import dump_one
 from ..helps import get_views_all_file, is_empty_data, json_load
-from ..services.mw_views import PageviewsClient
 from ..stats_bot import dump_stats
+from ..views_utils.views_helps import article_all_views
 
 logger = logging.getLogger(__name__)
-
-
-parallelism = 2
-
-for arg in sys.argv:
-    key, _, val = arg.partition(":")
-    if key == "-para":
-        parallelism = int(val) or parallelism
-
-view_bot = PageviewsClient(parallelism=parallelism)
 
 
 def dump_it(json_file, data, json_file_stats):
@@ -36,19 +26,6 @@ def dump_it(json_file, data, json_file_stats):
     dump_one(json_file, new_data)
     # ---
     dump_stats(json_file_stats, new_data)
-
-
-def article_all_views(site, articles, year=2024):
-    # ---
-    site = "be-tarask" if site == "be-x-old" else site
-    # ---
-    data = view_bot.article_views_new(
-        f"{site}.wikipedia", articles, granularity="monthly", start="20100101", end="20250627"
-    )
-    # ---
-    # logger.debug(data)
-    # ---
-    return data
 
 
 def update_data_new(all_data, data):
@@ -123,6 +100,20 @@ def render_data(titles, langcode, year, json_file, json_file_stats, max_items=10
 
 def get_titles_and_in_file(json_file, titles):
     # ---
+    """
+    Determine which titles still require processing by comparing a list of titles against data stored in a JSON file.
+
+    If the JSON file does not exist, returns the original titles list and an empty in-file mapping. If loading the JSON fails (json_load returns False), returns two empty structures. Otherwise, returns a tuple (titles_to_work, in_file) where titles_to_work is the subset of input titles that either are missing from the file or have empty data (titles containing '#' are excluded), and in_file is the parsed JSON mapping loaded from json_file.
+
+    Parameters:
+        json_file (Path): Path to the JSON file containing previously fetched title data.
+        titles (list[str]): List of titles to check.
+
+    Returns:
+        tuple[list[str], dict]: (titles_to_work, in_file)
+            titles_to_work: titles that need processing (excluded: titles containing '#' and titles with non-empty data).
+            in_file: the loaded JSON data mapping title -> data (empty if file missing or load failed).
+    """
     if not json_file.exists():
         name = json_file.name
         logger.debug(f"json_file does not exist: {name}")
@@ -154,6 +145,19 @@ def get_titles_and_in_file(json_file, titles):
 
 def get_titles_to_work(langcode, titles, year):
     # ---
+    """
+    Determine which of the given titles still require processing for the specified language.
+
+    Loads the language's aggregated views file and compares it to the provided titles. Returns the subset of titles that are missing or have empty data in the file. If no titles need processing or if every requested title is missing from the file, an empty list is returned.
+
+    Parameters:
+        langcode (str): Language code identifying the target views file.
+        titles (list[str]): Titles to check.
+        year (int): Ignored by this function (kept for API compatibility).
+
+    Returns:
+        list[str]: Titles that should be processed, or an empty list when none should be processed.
+    """
     json_file = get_views_all_file(langcode)
     # ---
     titles_to_work, _ = get_titles_and_in_file(json_file, titles)

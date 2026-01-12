@@ -9,6 +9,16 @@ logger = logging.getLogger(__name__)
 
 def make_text(languages, views) -> str:
     # ---
+    """
+    Produce a MediaWiki-formatted block summarizing medical article counts and views by language.
+
+    Parameters:
+        languages (Mapping[str, int]): Mapping from language code or name to number of articles.
+        views (Mapping[str, int]): Mapping from language code or name to total views.
+
+    Returns:
+        str: Wikitext containing a header, total views and article counts, and a sortable table with columns for rank, language (as a wiki link), number of articles, total views, and average views. Average views are computed with integer division (floor).
+    """
     total_views = sum(views.values())
     total_articles = sum(languages.values())
     # ---

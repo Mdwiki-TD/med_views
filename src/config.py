@@ -1,5 +1,7 @@
+import sys
 import os
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 # load environment variables from a .env file if it exists
@@ -18,3 +20,11 @@ main_dump_path.mkdir(parents=True, exist_ok=True)
 json_titles_path.mkdir(parents=True, exist_ok=True)
 views_new_path.mkdir(parents=True, exist_ok=True)
 views_by_year_path.mkdir(parents=True, exist_ok=True)
+
+
+parallelism = 2
+
+for arg in sys.argv:
+    key, _, val = arg.partition(":")
+    if key == "-para":
+        parallelism = int(val) or parallelism

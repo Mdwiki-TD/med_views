@@ -5,6 +5,7 @@
 """
 import json
 import logging
+
 from .config import views_new_path
 
 logger = logging.getLogger(__name__)
@@ -30,6 +31,17 @@ def is_empty_data(data):
 
 
 def json_load(json_file) -> None | dict | list:
+    """
+    Load JSON from a file and normalize underscore-separated names to space-separated names.
+
+    Loads and parses the JSON at `json_file`. If the top-level value is a dict, returns a new dict with all keys having underscores replaced by spaces. If the top-level value is a list, returns a new list where string elements have underscores replaced by spaces; non-string list elements are returned unchanged. Returns the parsed value unchanged for other JSON types. If the file is missing or contains invalid JSON, returns `None`.
+
+    Parameters:
+        json_file (str | os.PathLike): Path to the JSON file to load.
+
+    Returns:
+        None | dict | list: The normalized JSON structure, or `None` if loading/parsing failed.
+    """
     try:
         with open(json_file, "r", encoding="utf-8") as f:
             u_data = json.load(f)
@@ -48,6 +60,16 @@ def json_load(json_file) -> None | dict | list:
 
 def get_views_all_file(lang, subdir="all"):
     # ---
+    """
+    Compute the path to a language-specific JSON file under views_new_path, creating the subdirectory if it does not already exist.
+
+    Parameters:
+        lang (str): Language identifier used as the filename (without extension).
+        subdir (str): Subdirectory name under views_new_path where the file resides (defaults to "all").
+
+    Returns:
+        pathlib.Path: Path to the JSON file named "<lang>.json" inside the specified subdirectory.
+    """
     dir_v = views_new_path / subdir
     # ---
     if not dir_v.exists():
