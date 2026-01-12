@@ -291,16 +291,20 @@ def parse_arg_limits():
     maxv = 1000000
     minx = 0
     # ---
+    lang = ""
+    # ---
     for arg in sys.argv:
         key, _, val = arg.partition(":")
         if key == "-max" and val.isdigit():
             maxv = int(val)
         elif key == "-min" and val.isdigit():
             minx = int(val)
-    return maxv, minx
+        elif key == "-lang":
+            lang = val
+    return maxv, minx, lang
 
 
-def start(lang="", filter_by="titles"):
+def start(filter_by="titles"):
     # ---
     """
     Orchestrates generation of per-language work data and sequentially processes each language's view data.
@@ -311,6 +315,8 @@ def start(lang="", filter_by="titles"):
         lang (str): Optional language code to target a single language. If empty, all eligible languages are considered.
         filter_by (str): Which list to base work sizing on; either "titles" or "to_work". Invalid values default to "titles".
     """
+    maxv, minx, lang = parse_arg_limits()
+    # ---
     langs = load_languages_counts()
     # ---
     if not langs:
@@ -320,9 +326,14 @@ def start(lang="", filter_by="titles"):
     # sort langs by len of titles { "ar": 19972, "bg": 2138, .. }
     langs = dict(sorted(langs.items(), key=lambda item: item[1], reverse=False))
     # ---
-    filter_by = filter_by if filter_by in ["titles", "to_work"] else "titles"
+    if lang != "":
+        if lang in langs:
+            langs = {lang: langs[lang]}
+        else:
+            logger.error(f"lang {lang} not found in langs")
+            return
     # ---
-    maxv, minx = parse_arg_limits()
+    filter_by = filter_by if filter_by in ["titles", "to_work"] else "titles"
     # ---
     work_data = generate_work_data(filter_by, langs, maxv, minx)
     # ---
