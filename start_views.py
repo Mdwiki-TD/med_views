@@ -170,9 +170,8 @@ def start(lang="", filter_by="titles"):
     for n, (lang, data) in enumerate(work_data.items(), start=1):
         # ---
         titles = data["titles"]
-        to_work = data["to_work"]
         # ---
-        logger.info(f"<<yellow>> {n}/{len(work_data)} lang:{lang},\ttitles: {len(titles)}, to_work: {len(to_work)}")
+        logger.info(f"<<yellow>> {n}/{len(work_data)} lang:{lang},\ttitles: {len(titles)}")
         # ---
         if "no" not in sys.argv:
             load_one_lang_views_all(lang, titles, "all")
