@@ -6,10 +6,9 @@
 import json
 import logging
 import sys
-from pathlib import Path
-
 from .dump_utils import dump_one
 from .helps import is_empty_data
+from .config import views_new_path
 
 logger = logging.getLogger(__name__)
 
@@ -55,7 +54,7 @@ def dump_stats(json_file_stats, new_data):
 
 def update_all_stats(stats_data):
     # ---
-    stats_file = Path(__file__).parent.parent / "views_new/stats.json"
+    stats_file = views_new_path / "stats.json"
     # ---
     if "update_stats" not in sys.argv:
         logger.debug("add 'update_stats' to sys.argv to update stats.json")

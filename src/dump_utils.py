@@ -4,19 +4,15 @@
 """
 import json
 import logging
-from pathlib import Path
+from .config import json_titles_path, main_dump_path
 
 logger = logging.getLogger(__name__)
-t_dump_dir = Path(__file__).parent / "titles"
-
-if not t_dump_dir.exists():
-    t_dump_dir.mkdir()
 
 
 def count_languages_in_json():
     result = {}
     # ---
-    for json_file in t_dump_dir.glob("*.json"):
+    for json_file in json_titles_path.glob("*.json"):
         lang = json_file.stem
         # ---
         with open(json_file, "r", encoding="utf-8") as f:
@@ -26,7 +22,7 @@ def count_languages_in_json():
 
 def load_lang_titles_from_dump(lang):
     # ---
-    json_file = t_dump_dir / f"{lang}.json"
+    json_file = json_titles_path / f"{lang}.json"
     # ---
     if json_file.exists():
         # ---
@@ -52,7 +48,7 @@ def dump_one(file, data):
 
 
 def dump_all(data):
-    file = Path(__file__).parent / "languages_counts.json"
+    file = main_dump_path / "languages_counts.json"
     # ---
     # sort data
     data = {k: v for k, v in sorted(data.items(), key=lambda item: item[1], reverse=True)}
@@ -62,7 +58,7 @@ def dump_all(data):
 
 
 def load_languages_counts():
-    file = Path(__file__).parent / "languages_counts.json"
+    file = main_dump_path / "languages_counts.json"
     # ---
     if file.exists():
         # ---
