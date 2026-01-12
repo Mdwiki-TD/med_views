@@ -25,7 +25,7 @@ mdwiki_pass = config["DEFAULT"].get("mdwiki_pass", "")
 
 @functools.lru_cache(maxsize=1)
 def load_main_api() -> ALL_APIS:
-    return ALL_APIS(lang='www', family='mdwiki', username=my_username, password=mdwiki_pass)
+    return ALL_APIS(lang="www", family="mdwiki", username=my_username, password=mdwiki_pass)
 
 
 class page:

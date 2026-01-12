@@ -18,22 +18,22 @@ tool = tool.split("/")[-1] if tool else "himo"
 default_user_agent = f"{tool} bot/1.0 (https://{tool}.toolforge.org/; tools.{tool}@toolforge.org)"
 
 endpoints = {
-    'article': 'https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article',
+    "article": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article",
 }
 
 
 def parse_date(stringDate):
-    return datetime.strptime(stringDate.ljust(10, '0'), '%Y%m%d%H')
+    return datetime.strptime(stringDate.ljust(10, "0"), "%Y%m%d%H")
 
 
 def format_date(d):
-    return datetime.strftime(d, '%Y%m%d%H')
+    return datetime.strftime(d, "%Y%m%d%H")
 
 
 def timestamps_between(start, end, increment):
     # convert both start and end to datetime just in case either are dates
-    start = datetime(start.year, start.month, start.day, getattr(start, 'hour', 0))
-    end = datetime(end.year, end.month, end.day, getattr(end, 'hour', 0))
+    start = datetime(start.year, start.month, start.day, getattr(start, "hour", 0))
+    end = datetime(end.year, end.month, end.day, getattr(end, "hour", 0))
 
     while start <= end:
         yield start
@@ -63,9 +63,8 @@ class PageviewsClient:
         self.parallelism = parallelism or 10
 
     def article_views(
-            self, project, articles,
-            access='all-access', agent='all-agents', granularity='daily',
-            start=None, end=None):
+        self, project, articles, access="all-access", agent="all-agents", granularity="daily", start=None, end=None
+    ):
         """
         Get pageview counts for one or more articles
         See `<https://wikimedia.org/api/rest_v1/metrics/pageviews/?doc\\
@@ -122,39 +121,43 @@ class PageviewsClient:
         if type(articles) is str:
             articles = [articles]
 
-        articles = [a.replace(' ', '_') for a in articles]
-        articlesSafe = [quote(a, safe='') for a in articles]
+        articles = [a.replace(" ", "_") for a in articles]
+        articlesSafe = [quote(a, safe="") for a in articles]
 
-        project = 'be-tarask.wikipedia' if project == 'be-x-old.wikipedia' else project
+        project = "be-tarask.wikipedia" if project == "be-x-old.wikipedia" else project
 
         urls = [
-            '/'.join([
-                endpoints['article'], project, access, agent, a, granularity,
-                format_date(startDate), format_date(endDate),
-            ])
+            "/".join(
+                [
+                    endpoints["article"],
+                    project,
+                    access,
+                    agent,
+                    a,
+                    granularity,
+                    format_date(startDate),
+                    format_date(endDate),
+                ]
+            )
             for a in articlesSafe
         ]
 
         outputDays = timestamps_between(startDate, endDate, timedelta(days=1))
-        if granularity == 'monthly':
+        if granularity == "monthly":
             outputDays = list(set([month_from_day(day) for day in outputDays]))
-        output = defaultdict(dict, {
-            day: {a: None for a in articles} for day in outputDays
-        })
+        output = defaultdict(dict, {day: {a: None for a in articles} for day in outputDays})
 
         # try:
         results = self.get_concurrent(urls)
         some_data_returned = False
         details = {}
         for result in results:
-            if 'items' in result:
+            if "items" in result:
                 some_data_returned = True
             else:
-
-                detail = result.get('detail')  # or result.get('error')
+                detail = result.get("detail")  # or result.get('error')
                 # detail = str(result)
                 if detail:
-
                     details.setdefault(detail, 0)
                     details[detail] += 1
 
@@ -162,12 +165,12 @@ class PageviewsClient:
                     print("result:", result)
                 continue
 
-            for item in result['items']:
-                article = item['article'].replace("_", " ")
-                output[parse_date(item['timestamp'])][article] = item['views']
+            for item in result["items"]:
+                article = item["article"].replace("_", " ")
+                output[parse_date(item["timestamp"])][article] = item["views"]
 
         if not some_data_returned:
-            print(Exception(f'The pageview API returned nothing useful at: ({len(urls)})'))
+            print(Exception(f"The pageview API returned nothing useful at: ({len(urls)})"))
 
             for detail, count in details.items():
                 print(Exception(f">>>>>>>>>({count}): {detail=}"))
@@ -183,7 +186,6 @@ class PageviewsClient:
         return {}
 
     def get_concurrent(self, urls):
-
         def fetch(url):
             try:
                 resp = requests.get(url, headers=self.headers, timeout=10)
@@ -193,11 +195,16 @@ class PageviewsClient:
                 return {"error": f"{exc}", "url": url}
 
         if self.parallelism == 1:
-            return [fetch(url) for url in tqdm(urls, total=len(urls), desc=f"Fetching URLs, parallelism: {self.parallelism}")]
+            return [
+                fetch(url)
+                for url in tqdm(urls, total=len(urls), desc=f"Fetching URLs, parallelism: {self.parallelism}")
+            ]
 
         with ThreadPoolExecutor(self.parallelism) as executor:
             # results = executor.map(fetch, urls)
-            results = tqdm(executor.map(fetch, urls), total=len(urls), desc=f"Fetching URLs, parallelism: {self.parallelism}")
+            results = tqdm(
+                executor.map(fetch, urls), total=len(urls), desc=f"Fetching URLs, parallelism: {self.parallelism}"
+            )
 
             return list(results)
 
@@ -213,7 +220,9 @@ class PageviewsClient:
         """
         # ---
         for title, views in data.items():
-            new_data[title] = {k: v for k, v in views.items() if (k.isnumeric() and int(k) >= 2015) or k == "all" or v > 0}
+            new_data[title] = {
+                k: v for k, v in views.items() if (k.isnumeric() and int(k) >= 2015) or k == "all" or v > 0
+            }
         # ---
         return new_data
 
@@ -227,7 +236,7 @@ class PageviewsClient:
         # ---
         for month, y in dd.items():
             # month = datetime.datetime(2024, 5, 1, 0, 0)
-            year_n = month.strftime('%Y')
+            year_n = month.strftime("%Y")
             for article, count in y.items():
                 article = article.replace("_", " ")
                 # ensure nested dict & the specific year key both exist

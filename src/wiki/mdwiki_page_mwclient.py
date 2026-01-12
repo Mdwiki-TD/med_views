@@ -22,7 +22,7 @@ mdwiki_pass = config["DEFAULT"].get("mdwiki_pass", "")
 
 class page_mwclient:
     def __init__(self, title: str):
-        self.site_mw = mwclient.Site('www.mdwiki.org')
+        self.site_mw = mwclient.Site("www.mdwiki.org")
         self.username = my_username
         self.password = mdwiki_pass
 
