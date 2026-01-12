@@ -36,6 +36,11 @@ def get_languages_articles_counts():
     return result
 
 
+def fetch_language_statistics(year, maxv, lang):
+    titles = load_lang_titles(lang)
+    return get_one_lang_views(lang, titles, year, maxv=maxv)
+
+
 def make_views(languages, year, limit, maxv):
     # ---
     views = {}
@@ -46,9 +51,7 @@ def make_views(languages, year, limit, maxv):
             logger.info(f"limit {limit} reached, break")
             break
         # ---
-        titles = load_lang_titles(lang)
-        # ---
-        views[lang] = get_one_lang_views(lang, titles, year, maxv=maxv)
+        views[lang] = fetch_language_statistics(year, maxv, lang)
     # ---
     return views
 

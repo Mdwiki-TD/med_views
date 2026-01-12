@@ -60,6 +60,13 @@ def dump_one(file, data) -> None:
     # ---
     logger.debug(f"dump_one({file}), {len(data)=}")
     # ---
+    if isinstance(data, dict):
+        data = {x.replace("_", " "): v for x, v in data.items()}
+
+    if isinstance(data, list):
+        data = [x.replace("_", " ") if isinstance(x, str) else x for x in data]
+
+    # ---
     with open(file, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False)
 

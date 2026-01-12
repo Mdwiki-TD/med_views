@@ -115,8 +115,12 @@ diff_titles = 0
 
 def print_title_stats():
     global same_titles, diff_titles
+    logger.info("----"*20)
+    logger.info("----"*20)
     logger.info(f"<<blue>> Titles with same views file status: {same_titles}")
     logger.info(f"<<blue>> Titles with different views file status: {diff_titles}")
+    logger.info("----"*20)
+    logger.info("----"*20)
 
 
 def get_one_lang_views(langcode, titles, year, maxv=0):
