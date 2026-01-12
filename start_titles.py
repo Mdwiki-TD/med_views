@@ -22,6 +22,14 @@ logger = logging.getLogger(__name__)
 
 def dump_data(all_data):
     # ---
+    """
+    Write per-language title lists to JSON files inside the configured json_titles_path.
+    
+    Each language in `all_data` is serialized to a file named `<lang>.json` containing that language's titles.
+    
+    Parameters:
+        all_data (dict[str, list[str]]): Mapping from language key (e.g., locale or language code) to the list of titles to persist.
+    """
     for n, (lang, titles) in enumerate(all_data.items(), start=1):
         # ---
         logger.debug(f"dump_data(): lang:{n}/{len(all_data)} \t {lang} {len(titles)}")

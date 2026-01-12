@@ -226,6 +226,14 @@ class PageviewsClient:
 
     def article_views_new(self, project, articles, **kwargs) -> dict:
         # ---
+        """
+        Aggregate pageview counts per article into yearly totals and an overall total.
+        
+        Calls article_views to retrieve monthly view counts, converts article names (underscores to spaces), sums counts by year and a cumulative "all" key (ignoring None values), sorts each article's keys, filters entries via filter_data, and returns the resulting structure.
+        
+        Returns:
+            dict: Mapping from article title (str) to a dictionary whose keys are year strings (e.g., "2024") and "all", with integer cumulative view counts for each key.
+        """
         time_start = time.time()
         # ---
         dd = self.article_views(project, articles, **kwargs)

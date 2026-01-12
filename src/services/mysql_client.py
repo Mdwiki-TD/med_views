@@ -16,6 +16,23 @@ logger = logging.getLogger(__name__)
 @functools.lru_cache(maxsize=1)
 def load_db_config(db: str, host: str) -> dict[str, Any]:
     # --- check ~/replica.my.cnf ---
+    """
+    Constructs a PyMySQL connection configuration dictionary for the specified database and host, using ~/replica.my.cnf as the read-default file.
+    
+    Parameters:
+        db (str): Name of the target MySQL database.
+        host (str): Hostname or IP address of the MySQL server.
+    
+    Returns:
+        dict[str, Any]: Connection parameters for PyMySQL including:
+            - host: provided host
+            - database: provided db
+            - read_default_file: path to ~/replica.my.cnf
+            - charset: "utf8mb4"
+            - use_unicode: True
+            - autocommit: True
+            - cursorclass: DictCursor
+    """
     replica_cnf_path = Path.home() / "replica.my.cnf"
     return {
         "host": host,

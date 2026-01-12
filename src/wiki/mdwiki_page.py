@@ -22,6 +22,12 @@ logger = logging.getLogger(__name__)
 
 @functools.lru_cache(maxsize=1)
 def load_main_api() -> None | Any:
+    """
+    Obtain a configured main API client for the mdwiki project.
+    
+    Returns:
+        An instance of the main API client configured for lang "www", family "mdwiki", and credentials from configuration, or `None` if the API factory is unavailable.
+    """
     if all_apis_valid is None:
         return None
     return ALL_APIS(lang="www", family="mdwiki", username=my_username, password=mdwiki_pass)
