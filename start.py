@@ -10,7 +10,7 @@ from src.sql_utils import get_language_article_counts_sql
 from src.texts_utils import make_text
 from src.titles_utils import load_lang_titles
 from src.views import get_one_lang_views
-from src.wiki.mdwiki_page import page
+from src.wiki import page
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
