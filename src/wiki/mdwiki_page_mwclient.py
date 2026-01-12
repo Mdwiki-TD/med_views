@@ -3,9 +3,10 @@
 """
 # ---
 import logging
-import mwclient
-from ..config import my_username, mdwiki_pass
 
+import mwclient
+
+from ..config import mdwiki_pass, my_username
 
 logger = logging.getLogger(__name__)
 

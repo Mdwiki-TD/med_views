@@ -1,17 +1,16 @@
 #!/usr/bin/python3
 """
-
+python3 I:/mdwiki/med_views/start.py
 """
 import logging
 import sys
 
-from src.dump_utils import load_languages_counts, dump_all, count_languages_in_json
+from src.dump_utils import count_languages_in_json, dump_all, load_languages_counts
 from src.sql_utils import get_language_article_counts_sql
-from src.wiki.mdwiki_page import page
 from src.texts_utils import make_text
-
 from src.titles_utils import load_lang_titles
 from src.views import get_one_lang_views
+from src.wiki.mdwiki_page import page
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -59,6 +58,12 @@ def start(year, limit, maxv):
     # ---
     languages = get_languages_articles_counts()
     # ---
+    logger.info(f"get_languages_articles_counts local: {len(languages)}")
+    # ---
+    if not languages or list(set(languages.values())) == [0]:
+        logger.error("No languages found, run `python3 start_titles.py` first")
+        return
+    # ---
     # sort languages ASC
     languages = {k: v for k, v in sorted(languages.items(), key=lambda item: item[1], reverse=False)}
     # ---
@@ -67,6 +72,10 @@ def start(year, limit, maxv):
     views_not_0 = len([x for x in views.values() if x > 0])
     # ---
     logger.info(f"<<yellow>> Total views not 0: {views_not_0:,}")
+    # ---
+    if not views_not_0:
+        logger.info("No views found, run `python3 start_views.py` first")
+        return
     # ---
     newtext = make_text(languages, views)
     # ---

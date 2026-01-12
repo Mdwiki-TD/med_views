@@ -2,3 +2,4 @@ tqdm
 mwclient
 requests
 pymysql
+dotenv

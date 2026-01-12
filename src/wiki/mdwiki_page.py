@@ -4,9 +4,11 @@
 """
 # ---
 import functools
-import sys
 import logging
-from ..config import my_username, mdwiki_pass
+from typing import Any
+import sys
+
+from ..config import mdwiki_pass, my_username
 
 all_apis_valid = None
 try:
@@ -19,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 @functools.lru_cache(maxsize=1)
-def load_main_api() -> ALL_APIS | None:
+def load_main_api() -> None | Any:
     if all_apis_valid is None:
         return None
     return ALL_APIS(lang="www", family="mdwiki", username=my_username, password=mdwiki_pass)

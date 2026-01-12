@@ -4,8 +4,8 @@
 """
 import sys
 
-from .sql_utils import one_lang_titles
 from .dump_utils import load_lang_titles_from_dump
+from .sql_utils import one_lang_titles
 
 
 def load_lang_titles(lang):

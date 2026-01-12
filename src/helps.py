@@ -5,7 +5,7 @@
 """
 import json
 import logging
-from pathlib import Path
+from .config import views_new_path
 
 logger = logging.getLogger(__name__)
 
@@ -41,17 +41,14 @@ def json_load(json_file) -> None | dict | list:
         return {x.replace("_", " "): v for x, v in u_data.items()}
 
     if isinstance(u_data, list):
-        return [
-            x.replace("_", " ") if isinstance(x, str) else x
-            for x in u_data
-        ]
+        return [x.replace("_", " ") if isinstance(x, str) else x for x in u_data]
 
     return u_data
 
 
 def get_views_all_file(lang, subdir="all"):
     # ---
-    dir_v = Path(__file__).parent.parent / "views_new" / subdir
+    dir_v = views_new_path / subdir
     # ---
     if not dir_v.exists():
         dir_v.mkdir(parents=True)

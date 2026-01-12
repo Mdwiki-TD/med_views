@@ -4,12 +4,10 @@
 """
 import logging
 import sys
-from pathlib import Path
-
-from .services.mw_views import PageviewsClient
-
-from .helps import json_load
 from .dump_utils import dump_one
+from .helps import json_load
+from .services.mw_views import PageviewsClient
+from .config import views_by_year_path
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +43,7 @@ def article_views(site, articles, year=2024):
 
 def get_view_file(lang, year):
     # ---
-    dir_v = Path(__file__).parent / "views" / str(year)
+    dir_v = views_by_year_path / str(year)
     # ---
     if not dir_v.exists():
         dir_v.mkdir(parents=True)

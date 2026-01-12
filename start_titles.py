@@ -1,16 +1,17 @@
 #!/usr/bin/python3
 """
 
-python3 core8/pwb.py med_views/titles
+python3 titles.py
 
 
 """
 
 import logging
+
+from src.config import json_titles_path
 from src.dump_utils import (
-    dump_one,
     dump_all,
-    t_dump_dir,
+    dump_one,
 )
 from src.sql_utils import (
     retrieve_medicine_titles,
@@ -25,7 +26,7 @@ def dump_data(all_data):
         # ---
         logger.debug(f"dump_data(): lang:{n}/{len(all_data)} \t {lang} {len(titles)}")
         # ---
-        file = t_dump_dir / f"{lang}.json"
+        file = json_titles_path / f"{lang}.json"
         # ---
         dump_one(file, titles)
     # ---

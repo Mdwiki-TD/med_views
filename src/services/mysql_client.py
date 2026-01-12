@@ -13,7 +13,6 @@ from pymysql.cursors import DictCursor
 logger = logging.getLogger(__name__)
 
 
-
 @functools.lru_cache(maxsize=1)
 def load_db_config(db: str, host: str) -> dict[str, Any]:
     # --- check ~/replica.my.cnf ---
