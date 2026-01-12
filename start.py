@@ -11,6 +11,7 @@ from src.texts_utils import make_text
 from src.titles_utils import load_lang_titles
 from src.views import get_one_lang_views
 from src.wiki import page
+from src.config import main_dump_path
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -88,6 +89,9 @@ def start(year, limit, maxv):
         return
     # ---
     newtext = make_text(languages, views)
+    # ---
+    with open(main_dump_path / "text.txt", "w", encoding="utf-8") as f:
+        f.write(newtext)
     # ---
     target_page = page(title)
     # ---
