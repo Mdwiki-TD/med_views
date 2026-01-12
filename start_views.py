@@ -42,7 +42,7 @@ def load_one_lang_views_all(langcode, titles, year, max_items=1000, maxv=0):
     if "local" in sys.argv:
         return
     # ---
-    data = render_data(titles, langcode, year, json_file, json_file_stats, max_items=1000)
+    data = render_data(titles, langcode, year, json_file, json_file_stats, max_items=max_items)
     # ---
     if len(in_file) > 0:
         # ---
