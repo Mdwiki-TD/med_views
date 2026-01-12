@@ -61,8 +61,15 @@ class PageviewsClient:
         self.parallelism = parallelism or 10
 
     def article_views(
-        self, project, articles, access="all-access", agent="all-agents", granularity="daily", start=None, end=None
-    ):
+        self,
+        project,
+        articles,
+        access="all-access",
+        agent="all-agents",
+        granularity="daily",
+        start=None,
+        end=None,
+    ) -> defaultdict[datetime, dict]:
         """
         Get pageview counts for one or more articles
         See `<https://wikimedia.org/api/rest_v1/metrics/pageviews/?doc\\
@@ -108,15 +115,15 @@ class PageviewsClient:
         TODO: probably doesn't handle unicode perfectly, look into it
         """
         endDate = end or date.today()
-        if type(endDate) is not date:
+        if not isinstance(endDate, date):
             endDate = parse_date(end)
 
         startDate = start or endDate - timedelta(30)
-        if type(startDate) is not date:
+        if not isinstance(startDate, date):
             startDate = parse_date(start)
 
         # If the user passes in a string as "articles", convert to a list
-        if type(articles) is str:
+        if isinstance(articles, str):
             articles = [articles]
 
         articles = [a.replace(" ", "_") for a in articles]
@@ -150,9 +157,9 @@ class PageviewsClient:
         some_data_returned = False
         details = {}
         for result in results:
-            if "items" in result:
-                some_data_returned = True
-            else:
+            some_data_returned = "items" in result
+
+            if not some_data_returned:
                 detail = result.get("detail")  # or result.get('error')
                 # detail = str(result)
                 if detail:
@@ -160,7 +167,7 @@ class PageviewsClient:
                     details[detail] += 1
 
                 if "printresult" in sys.argv:
-                    print("result:", result)
+                    logger.debug("result:", result)
                 continue
 
             for item in result["items"]:
@@ -168,7 +175,7 @@ class PageviewsClient:
                 output[parse_date(item["timestamp"])][article] = item["views"]
 
         if not some_data_returned:
-            print(Exception(f"The pageview API returned nothing useful at: ({len(urls)})"))
+            logger.exception(f"The pageview API returned nothing useful at: ({len(urls)})")
 
             for detail, count in details.items():
                 logger.info(f">>>>>>>>>({count}): {detail=}")
@@ -216,7 +223,7 @@ class PageviewsClient:
         # ---
         return new_data
 
-    def article_views_new(self, project, articles, **kwargs):
+    def article_views_new(self, project, articles, **kwargs) -> dict:
         # ---
         time_start = time.time()
         # ---
@@ -245,6 +252,6 @@ class PageviewsClient:
         # ---
         delta = time.time() - time_start
         # ---
-        print(f"<<green>> article_views, (articles:{len(articles):,}) new_data:{len(new_data):,} time: {delta:.2f} sec")
+        logger.debug(f"<<green>> article_views, (articles:{len(articles):,}) new_data:{len(new_data):,} time: {delta:.2f} sec")
         # ---
         return new_data

@@ -2,8 +2,9 @@
 """
 
 """
-
+import logging
 from .api_sql.wiki_sql import retrieve_sql_results
+logger = logging.getLogger(__name__)
 
 
 def get_en_articles():
@@ -18,7 +19,7 @@ def get_en_articles():
             and page_namespace = 0
     """
     # ---
-    print("def get_en_articles():")
+    logger.debug("def get_en_articles():")
     # ---
     result = retrieve_sql_results(query, "enwiki")
     # ---
@@ -43,7 +44,7 @@ def get_language_article_counts_sql():
         #limit 10
     """
     # ---
-    print("def get_language_article_counts_sql():")
+    logger.debug("def get_language_article_counts_sql():")
     # ---
     result = retrieve_sql_results(query, "enwiki")
     # ---
@@ -72,7 +73,7 @@ def one_lang_titles(langcode):
             and ll_lang = %s
     """
     # ---
-    print(f"def one_lang_titles({langcode}):")
+    logger.debug(f"def one_lang_titles({langcode}):")
     # ---
     result = retrieve_sql_results(query, "enwiki", values=(langcode,))
     # ---
@@ -94,7 +95,7 @@ def retrieve_medicine_titles():
             and page_namespace = 0
     """
     # ---
-    print("def langs_titles():")
+    logger.info("def langs_titles():")
     # ---
     result = retrieve_sql_results(query, "enwiki")
     # ---

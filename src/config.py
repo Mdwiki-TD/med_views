@@ -5,5 +5,5 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-my_username = os.getenv("USERNAME", "")
-mdwiki_pass = os.getenv("PASSWORD", "")
+my_username = os.getenv("WIKI_USERNAME", "")
+mdwiki_pass = os.getenv("WIKI_PASSWORD", "")

@@ -31,7 +31,7 @@ def get_languages_articles_counts():
     # ---
     result = count_languages_in_json()
     # ---
-    print(f"get_languages_articles_counts local: {len(result)}")
+    logger.debug(f"get_languages_articles_counts local: {len(result)}")
     # ---
     return result
 

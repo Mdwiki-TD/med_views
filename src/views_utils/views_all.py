@@ -14,7 +14,7 @@ from ..stats_bot import dump_stats
 from ..dump_utils import dump_one
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+
 
 
 parallelism = 2
@@ -48,7 +48,7 @@ def article_all_views(site, articles, year=2024):
         f"{site}.wikipedia", articles, granularity="monthly", start="20100101", end="20250627"
     )
     # ---
-    # print(data)
+    # logger.debug(data)
     # ---
     return data
 
@@ -127,7 +127,7 @@ def get_titles_and_in_file(json_file, titles):
     # ---
     if not json_file.exists():
         name = json_file.name
-        print(f"json_file does not exist: {name}")
+        logger.debug(f"json_file does not exist: {name}")
         return titles, {}
     # ---
     u_data = json_load(json_file)
@@ -140,7 +140,7 @@ def get_titles_and_in_file(json_file, titles):
     # ---
     if not (len(u_data) != len(titles) or len(titles_not_in_file) > 0):
         logger.info(f"<<green>> load_one_lang_views_all(lang:{json_file}) \t titles: {len(titles):,}")
-        print("nothing to do")
+        logger.debug("nothing to do")
         return [], {}
     # ---
     logger.info(

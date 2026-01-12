@@ -10,7 +10,6 @@ import logging
 from ..services import mysql_client
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
 
 
 @functools.lru_cache(maxsize=1)

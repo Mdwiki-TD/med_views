@@ -11,12 +11,12 @@ import pymysql
 from pymysql.cursors import DictCursor
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+
 
 
 @functools.lru_cache(maxsize=1)
 def load_db_config(db: str, host: str) -> dict[str, Any]:
-    # --- 1) تحقق من ملف الإنتاج ~/replica.my.cnf ---
+    # --- check ~/replica.my.cnf ---
     replica_cnf_path = Path.home() / "replica.my.cnf"
     return {
         "host": host,
@@ -44,7 +44,7 @@ def _sql_connect_pymysql(query: str, db: str = "", host: str = "", values: tuple
     # ---
     try:
         connection = pymysql.connect(**DB_CONFIG)
-    except Exception as e:
+    except pymysql.Error as e:
         logger.exception(e)
         return []
     # ---

@@ -11,6 +11,6 @@ except ImportError:
         from newapi import ALL_APIS  # noqa: F401
         from .mdwiki_page import page
     else:
-        from .mdwiki_page_mwclient import page
+        from .mdwiki_page_mwclient import page_mwclient as page
 
 __all__ = ["page"]

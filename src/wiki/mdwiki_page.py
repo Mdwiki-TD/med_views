@@ -14,7 +14,7 @@ try:
 except ImportError:
     all_apis_valid = None
 
-logging.basicConfig(level=logging.INFO)
+
 logger = logging.getLogger(__name__)
 
 

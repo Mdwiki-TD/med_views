@@ -6,6 +6,7 @@ python3 core8/pwb.py med_views/titles
 
 """
 
+import logging
 from src.dump_utils import (
     dump_one,
     dump_all,
@@ -15,18 +16,20 @@ from src.sql_utils import (
     retrieve_medicine_titles,
 )
 
+logger = logging.getLogger(__name__)
+
 
 def dump_data(all_data):
     # ---
     for n, (lang, titles) in enumerate(all_data.items(), start=1):
         # ---
-        print(f"dump_data(): lang:{n}/{len(all_data)} \t {lang} {len(titles)}")
+        logger.debug(f"dump_data(): lang:{n}/{len(all_data)} \t {lang} {len(titles)}")
         # ---
         file = t_dump_dir / f"{lang}.json"
         # ---
         dump_one(file, titles)
     # ---
-    print(f"dump_data: all langs: {len(all_data)}")
+    logger.debug(f"dump_data: all langs: {len(all_data)}")
 
 
 def start():

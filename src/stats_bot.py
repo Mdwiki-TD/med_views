@@ -6,9 +6,13 @@
 import json
 import sys
 from pathlib import Path
+import logging
 
 from .helps import is_empty_data
 from .dump_utils import dump_one
+
+
+logger = logging.getLogger(__name__)
 
 
 def sum_all_views_new(new_data):
@@ -43,7 +47,7 @@ def dump_stats(json_file_stats, new_data):
         "views": views,
     }
     # ---
-    # print(stats)
+    # logger.debug(stats)
     # ---
     dump_one(json_file_stats, stats)
     # ---
@@ -55,10 +59,10 @@ def update_all_stats(stats_data):
     stats_file = Path(__file__).parent.parent / "views_new/stats.json"
     # ---
     if "update_stats" not in sys.argv:
-        print("add 'update_stats' to sys.argv to update stats.json")
+        logger.debug("add 'update_stats' to sys.argv to update stats.json")
         return
     # ---
     with open(stats_file, "w", encoding="utf-8") as f:
         json.dump(stats_data, f, ensure_ascii=False)
     # ---
-    print(f"update_all_stats: {len(stats_data)=:,}")
+    logger.debug(f"update_all_stats: {len(stats_data)=:,}")

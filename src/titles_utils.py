@@ -12,13 +12,11 @@ def load_lang_titles(lang):
     # ---
     data = load_lang_titles_from_dump(lang)
     # ---
-    data = [x.replace("_", " ") for x in data]
-    # ---
     if data:
         return data
     # ---
     if "local" in sys.argv:
-        return {}
+        return []
     # ---
     data = one_lang_titles(lang)
     # ---

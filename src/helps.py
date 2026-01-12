@@ -8,12 +8,11 @@ import logging
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
 
 
 def is_empty_data(data):
     # ---
-    # print(data)
+    # logger.debug(data)
     # ---
     if not data:
         return True
@@ -42,7 +41,10 @@ def json_load(json_file) -> None | dict | list:
         return {x.replace("_", " "): v for x, v in u_data.items()}
 
     if isinstance(u_data, list):
-        return [x.replace("_", " ") for x in u_data]
+        return [
+            x.replace("_", " ") if isinstance(x, str) else x
+            for x in u_data
+        ]
 
     return u_data
 

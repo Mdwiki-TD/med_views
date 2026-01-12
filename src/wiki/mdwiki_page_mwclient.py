@@ -6,7 +6,7 @@ import logging
 import mwclient
 from ..config import my_username, mdwiki_pass
 
-logging.basicConfig(level=logging.INFO)
+
 logger = logging.getLogger(__name__)
 
 
@@ -20,7 +20,6 @@ class page_mwclient:
             self.site_mw.login(self.username, self.password)
         except mwclient.errors.LoginError as e:
             logger.error(f"Error logging in: {e}")
-            return None
 
         self.page = self.site_mw.pages[title]
 
