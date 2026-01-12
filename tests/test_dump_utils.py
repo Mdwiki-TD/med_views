@@ -1,7 +1,9 @@
 """
-Tests
-# TODO: Implement test
+Tests for src.dump_utils
 """
+import json
+from pathlib import Path
+from unittest.mock import patch, mock_open
 import pytest
 
 from src.dump_utils import (
@@ -13,31 +15,64 @@ from src.dump_utils import (
 )
 
 
-@pytest.mark.skip(reason="Pending write")
 def test_count_languages_in_json():
-    # TODO: Implement test
-    pass
+    with patch("src.dump_utils.json_titles_path") as mock_path:
+        file1 = MagicMock(spec=Path)
+        file1.stem = "en"
+        file2 = MagicMock(spec=Path)
+        file2.stem = "ar"
+        mock_path.glob.return_value = [file1, file2]
+
+        with patch("builtins.open", mock_open(read_data='["Art1", "Art2"]')):
+            result = count_languages_in_json()
+            assert result == {"en": 2, "ar": 2}
 
 
-@pytest.mark.skip(reason="Pending write")
 def test_load_lang_titles_from_dump():
-    # TODO: Implement test
-    pass
+    with patch("src.dump_utils.json_titles_path") as mock_path:
+        mock_file = MagicMock(spec=Path)
+        mock_path.__truediv__.return_value = mock_file
+        mock_file.exists.return_value = True
+
+        with patch("builtins.open", mock_open(read_data='["Art_1", "Art_2"]')):
+            result = load_lang_titles_from_dump("en")
+            assert result == ["Art 1", "Art 2"]
 
 
-@pytest.mark.skip(reason="Pending write")
 def test_dump_one():
-    # TODO: Implement test
-    pass
+    mock_file = "test.json"
+    data = {"key": "value"}
+    m = mock_open()
+    with patch("builtins.open", m):
+        dump_one(mock_file, data)
+        m.assert_called_once_with(mock_file, "w", encoding="utf-8")
+        # Check that json.dump was called
+        handle = m()
+        written = "".join(call.args[0] for call in handle.write.call_args_list)
+        assert json.loads(written) == data
 
 
-@pytest.mark.skip(reason="Pending write")
 def test_dump_languages_counts():
-    # TODO: Implement test
-    pass
+    with patch("src.dump_utils.main_dump_path") as mock_path:
+        with patch("src.dump_utils.dump_one") as mock_dump:
+            # Should not dump if < 200 items (based on source code)
+            dump_languages_counts({"en": 10})
+            mock_dump.assert_not_called()
+
+            # Should dump if > 200 items
+            large_data = {f"l{i}": i for i in range(205)}
+            dump_languages_counts(large_data)
+            mock_dump.assert_called_once()
 
 
-@pytest.mark.skip(reason="Pending write")
 def test_load_languages_counts():
-    # TODO: Implement test
-    pass
+    with patch("src.dump_utils.main_dump_path") as mock_path:
+        mock_file = MagicMock(spec=Path)
+        mock_path.__truediv__.return_value = mock_file
+        mock_file.exists.return_value = True
+        with patch("builtins.open", mock_open(read_data='{"en": 100}')):
+            result = load_languages_counts()
+            assert result == {"en": 100}
+
+
+from unittest.mock import MagicMock
