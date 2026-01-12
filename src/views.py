@@ -1,14 +1,11 @@
 #!/usr/bin/python3
 """
 
-python3 core8/pwb.py med_views/views
-
 """
 import logging
 import sys
 from pathlib import Path
 
-# from mwviews.api import PageviewsClient
 from .services.mw_views import PageviewsClient
 
 from .helps import json_load
@@ -16,9 +13,6 @@ from .dump_utils import dump_one
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
-
-
-# Sends a descriptive User-Agent header with every request
 
 parallelism = 2
 
@@ -194,19 +188,3 @@ def get_one_lang_views(langcode, titles, year, maxv=0):
         # logger.info("titles" + str(titles))
     # ---
     return total
-
-
-if __name__ == "__main__":
-    # ---
-    # titles = load_lang_titles_from_dump("ba")
-    # ---
-    # ux = article_views('ba', titles, 2024)
-    # ---
-    titles = ["Yemen", "COVID-19"]
-    # ---
-    zz = view_bot.article_views_new("en.wikipedia", titles)
-    # ---
-    print(zz)
-    print(f"{len(zz)=:,}")
-    # ---
-    # article_views: time: 14.52 sec

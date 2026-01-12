@@ -7,7 +7,7 @@ import sys
 
 from src.dump_utils import load_languages_counts, dump_all, count_languages_in_json
 from src.sql_utils import get_language_article_counts_sql
-from src.mdwiki_page import page
+from src.wiki.mdwiki_page import page
 from src.texts_utils import make_text
 
 from src.titles_utils import load_lang_titles

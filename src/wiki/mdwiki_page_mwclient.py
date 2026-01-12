@@ -1,15 +1,11 @@
 """
 
-from api_bots.mdwiki_page import load_main_api
-
 """
 # ---
-import functools
 import logging
 import mwclient
 import os
 import configparser
-from newapi import ALL_APIS
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -22,29 +18,6 @@ config.read(f"{project}/confs/user.ini")
 
 my_username = config["DEFAULT"].get("my_username", "")
 mdwiki_pass = config["DEFAULT"].get("mdwiki_pass", "")
-
-
-@functools.lru_cache(maxsize=1)
-def load_main_api() -> ALL_APIS:
-    return ALL_APIS(lang='www', family='mdwiki', username=my_username, password=mdwiki_pass)
-
-
-class page:
-    def __init__(self, title: str):
-        api = load_main_api()
-        self.page = api.MainPage(title)
-
-    def get_text(self):
-        return self.page.get_text()
-
-    def exists(self):
-        return self.page.exists()
-
-    def save(self, newtext: str, summary: str, nocreate: int, minor: str):
-        self.page.save(newtext=newtext, summary=summary, nocreate=nocreate, minor=minor)
-
-    def create(self, newtext: str, summary: str):
-        self.page.Create(newtext, summary=summary)
 
 
 class page_mwclient:
