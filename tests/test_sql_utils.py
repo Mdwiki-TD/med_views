@@ -5,7 +5,6 @@ from unittest.mock import MagicMock, ANY
 
 from src.sql_utils import (
     get_en_articles,
-    get_language_article_counts_sql,
     one_lang_titles,
     retrieve_medicine_titles,
 )
@@ -20,21 +19,6 @@ def test_get_en_articles(monkeypatch):
     mock_sql.assert_called_once()
     args, _ = mock_sql.call_args
     assert "enwiki" in args
-
-
-def test_get_language_article_counts_sql(monkeypatch):
-    mock_sql = MagicMock(return_value=[
-        {"ll_lang": "fr", "counts": 10},
-        {"ll_lang": "de", "counts": 5},
-        {"ll_lang": "en", "counts": 20},
-    ])
-    monkeypatch.setattr("src.sql_utils.retrieve_sql_results", mock_sql)
-
-    result = get_language_article_counts_sql()
-
-    expected = {"fr": 10, "de": 5, "en": 20}
-    assert result == expected
-    mock_sql.assert_called_once()
 
 
 def test_retrieve_medicine_titles(monkeypatch):

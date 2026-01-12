@@ -137,13 +137,22 @@ def get_one_lang_views(langcode, titles, year, maxv=0):
     # ---
     if json_file_all.exists():
         u_data_all = json_load(json_file_all)
-        titles_not_in_file_all = [x for x in titles if (x not in u_data_all or u_data_all[x].get(str(year), 0) == 0)]
+        titles_not_in_file_all = [
+            x for x in titles if (
+                x not in u_data_all
+                # or u_data_all[x].get(str(year), 0) == 0
+            )
+        ]
     else:
         logger.info(f"<<yellow>> No all views file for lang:{langcode}")
     # ---
     if json_file.exists():
         u_data = json_load(json_file)
-        titles_not_in_file = [x for x in titles if (x not in u_data or u_data[x] == 0)]
+        titles_not_in_file = [
+            x for x in titles if (
+                x not in u_data
+                # or u_data[x] == 0
+            )]
     # ---
     titles_not_in_file_all.sort()
     titles_not_in_file.sort()

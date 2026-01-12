@@ -5,26 +5,24 @@ python3 I:/mdwiki/med_views/start.py
 import logging
 import sys
 
-from src.dump_utils import count_languages_in_json, dump_languages_counts, load_languages_counts
-from src.sql_utils import get_language_article_counts_sql
+from src.dump_utils import count_languages_in_json, load_languages_counts
 from src.texts_utils import make_text
-from src.titles_utils import load_lang_titles
-from src.views import get_one_lang_views, print_title_stats
+from src.views import print_title_stats, calculate_total_views
+from src.helps import json_load
 from src.wiki import page
 from src.config import main_dump_path
 
+from src.views_utils.views_helps import (
+    get_file_views_new,
+    get_view_file,
+)
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
 
-def get_languages_articles_counts():
+def get_languages_articles_counts() -> dict:
     # ---
     all_infos = load_languages_counts()
-    # ---
-    if not all_infos and ("local" not in sys.argv):
-        data = get_language_article_counts_sql()
-        dump_languages_counts(data)
-        return data
     # ---
     if all_infos:
         return all_infos
@@ -36,9 +34,30 @@ def get_languages_articles_counts():
     return result
 
 
-def fetch_language_statistics(year, maxv, lang):
-    titles = load_lang_titles(lang)
-    return get_one_lang_views(lang, titles, year, maxv=maxv)
+def calculate_total_views(langcode, u_data):
+    # ---
+    total = 0
+    # ---
+    for _, views in u_data.items():
+        if isinstance(views, dict):
+            views = views.get("all", 0)
+        total += views
+    # ---
+    if total == 0:
+        logger.info(f"<<yellow>> No views for {langcode}")
+    return total
+
+
+def fetch_language_statistics(year, langcode):
+    # ---
+    json_file = get_view_file(langcode, year)
+    year_data = json_load(json_file)
+    # ---
+    # json_file_all = get_file_views_new(langcode)
+    # all_years_data = json_load(json_file_all)
+    # year_data = {x: v.get(year, 0) for x, v in all_years_data.items()}
+    # ---
+    return calculate_total_views(langcode, year_data)
 
 
 def make_views(languages, year, limit, maxv):
@@ -90,6 +109,10 @@ def start(year, limit, maxv):
     if not views_not_0:
         logger.info("No views found, run `python3 start_views.py` first")
         return
+    # ---
+    # dump views
+    with open(main_dump_path / f"views_{year}.json", "w", encoding="utf-8") as f:
+        f.write(str(views))
     # ---
     newtext = make_text(languages, views)
     # ---
