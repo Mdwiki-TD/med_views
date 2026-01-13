@@ -124,7 +124,7 @@ def start(year, limit):
     # ---
     if "save" not in sys.argv:
         logger.info("Dry run mode, not saving changes.")
-        print(newtext)
+        # print(newtext)
         return
     # ---
     title = f"WikiProjectMed:WikiProject Medicine/Stats/Total pageviews by language {year}"
