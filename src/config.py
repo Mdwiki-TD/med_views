@@ -13,13 +13,13 @@ mdwiki_pass = os.getenv("MDWIKI_PASSWORD", "")
 main_dump_path = Path(__file__).parent.parent / "dumps"
 
 json_titles_path = main_dump_path / "titles"
-views_new_path = main_dump_path / "views_new"
+stats_path = main_dump_path / "stats"
 views_by_year_path = main_dump_path / "views_by_year"
 total_sites_by_year_path = main_dump_path / "total_sites_by_year"
 
 main_dump_path.mkdir(parents=True, exist_ok=True)
 json_titles_path.mkdir(parents=True, exist_ok=True)
-views_new_path.mkdir(parents=True, exist_ok=True)
+stats_path.mkdir(parents=True, exist_ok=True)
 views_by_year_path.mkdir(parents=True, exist_ok=True)
 total_sites_by_year_path.mkdir(parents=True, exist_ok=True)
 
