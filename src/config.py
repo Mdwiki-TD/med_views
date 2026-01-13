@@ -9,8 +9,9 @@ load_dotenv()
 
 my_username = os.getenv("MDWIKI_USERNAME", "")
 mdwiki_pass = os.getenv("MDWIKI_PASSWORD", "")
+MAIN_PATH = os.getenv("MAIN_PATH", "")
 
-main_dump_path = Path(__file__).parent.parent / "dumps"
+main_dump_path = Path(MAIN_PATH) if MAIN_PATH else Path(__file__).parent.parent / "dumps"
 
 json_titles_path = main_dump_path / "titles"
 views_by_year_path = main_dump_path / "views_by_year"
