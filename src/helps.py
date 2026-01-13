@@ -5,9 +5,6 @@
 """
 import json
 import logging
-
-from .config import views_new_path
-
 logger = logging.getLogger(__name__)
 
 
@@ -56,25 +53,3 @@ def json_load(json_file) -> None | dict | list:
         return [x.replace("_", " ") if isinstance(x, str) else x for x in u_data]
 
     return u_data
-
-
-def get_views_all_file(lang, subdir="all"):
-    # ---
-    """
-    Compute the path to a language-specific JSON file under views_new_path, creating the subdirectory if it does not already exist.
-
-    Parameters:
-        lang (str): Language identifier used as the filename (without extension).
-        subdir (str): Subdirectory name under views_new_path where the file resides (defaults to "all").
-
-    Returns:
-        pathlib.Path: Path to the JSON file named "<lang>.json" inside the specified subdirectory.
-    """
-    dir_v = views_new_path / subdir
-    # ---
-    if not dir_v.exists():
-        dir_v.mkdir(parents=True)
-    # ---
-    file = dir_v / f"{lang}.json"
-    # ---
-    return file

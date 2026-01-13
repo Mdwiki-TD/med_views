@@ -4,47 +4,62 @@
 
 """
 import logging
+import json
 
-from .dump_utils import dump_one
-from .helps import is_empty_data
+from .config import main_dump_path
 
 logger = logging.getLogger(__name__)
 
-
-def sum_all_views_new(new_data):
-    views = {}
-    for x in new_data.values():
-        for k, v in x.items():
-            views[k] = views.get(k, 0) + v
-
-    views = dict(sorted(views.items(), key=lambda item: item[0], reverse=False))
-
-    # remove any key < 2015 and not = "all"
-    views = {k: v for k, v in views.items() if (k.isnumeric() and int(k) >= 2015) or k == "all" or v > 0}
-
-    return views
+stats_all_data = {}
 
 
-def dump_stats(json_file_stats, new_data):
+def dump_stats(articles, new_data: dict[str, int], lang: str) -> dict[str, int | dict[str, int]]:
     # ---
     data_hash = [x for x in new_data if x.find("#") != -1]
+    data_hash.extend([x for x in articles if x.find("#") != -1])
+    # ---
+    data_hash = set(data_hash)
     # ---
     data2 = {x: new_data[x] for x in new_data if x not in data_hash}
     # ---
-    empty = [x for x in data2.values() if is_empty_data(x)]
+    empty = [k for k in articles if new_data.get(k, 0) == 0]
     # ---
-    views = sum_all_views_new(new_data)
+    views = sum(v for v in data2.values() if isinstance(v, int))
     # ---
     stats = {
-        "all": len(data2),
+        "articles": len(articles),
         "empty": len(empty),
         "not_empty": len(data2) - len(empty),
         "hash": len(data_hash),
         "views": views,
     }
     # ---
-    # logger.debug(stats)
-    # ---
-    dump_one(json_file_stats, stats)
+    stats_all_data[lang] = stats
     # ---
     return stats
+
+
+def dump_stats_all(year) -> None:
+    # ---
+    all_hash = sum(v["hash"] for v in stats_all_data.values())
+    all_not_empty = sum(v["not_empty"] for v in stats_all_data.values())
+    all_empty = sum(v["empty"] for v in stats_all_data.values())
+    all_views = sum(v["views"] for v in stats_all_data.values())
+    all_articles = sum(v["articles"] for v in stats_all_data.values())
+    # ---
+    summary = {
+        "articles": all_articles,
+        "empty_views": all_empty,
+        "not_empty_views": all_not_empty,
+        "hash": all_hash,
+        "total_views": all_views,
+    }
+    # ---
+    with open(main_dump_path / f"{year}_summary.json", "w", encoding="utf-8") as f:
+        json.dump(summary, f, ensure_ascii=False, indent=4)
+    # ---
+    # sort stats_all_data by "views" descending
+    stats_all_data_sorted = dict(sorted(stats_all_data.items(), key=lambda item: item[1].get("views", 0), reverse=True))
+    # ---
+    with open(main_dump_path / f"{year}_stats_all.json", "w", encoding="utf-8") as f:
+        json.dump(stats_all_data_sorted, f, ensure_ascii=False, indent=4)

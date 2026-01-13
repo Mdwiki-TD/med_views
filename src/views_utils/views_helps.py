@@ -17,31 +17,22 @@ def article_views(site, articles, year=2024):
     site = "be-tarask" if site == "be-x-old" else site
     # ---
     data = view_bot.article_views_new(
-        f"{site}.wikipedia", articles, granularity="monthly", start=f"{year}0101", end=f"{year}1231"
+        f"{site}.wikipedia",
+        articles,
+        granularity="monthly",
+        start=f"{year}0101",
+        end=f"{year}1231",
     )
     # ---
     new_data = {}
     # ---
     for title, views in data.items():
         # ---
-        title = title.replace(" ", "_")
+        title = title.replace("_", " ")
         # ---
         new_data[title] = views.get(year) or views.get(str(year)) or views.get("all", 0)
     # ---
     return new_data
-
-
-def article_all_views(site, articles, year=2024):
-    # ---
-    site = "be-tarask" if site == "be-x-old" else site
-    # ---
-    data = view_bot.article_views_new(
-        f"{site}.wikipedia", articles, granularity="monthly", start="20100101", end="20250627"
-    )
-    # ---
-    # logger.debug(data)
-    # ---
-    return data
 
 
 def get_view_file(lang, year):
@@ -68,6 +59,5 @@ def get_view_file(lang, year):
 
 __all__ = [
     "article_views",
-    "article_all_views",
     "get_view_file",
 ]

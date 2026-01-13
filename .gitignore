@@ -1,4 +1,8 @@
 *.pyc
 .env
 views_all_run_it.py
-/dumps
+*.zip
+dumps/titles
+dumps/all_languages_titles.json
+/dumps/stats
+/dumps/views_by_year/2025

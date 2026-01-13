@@ -1,41 +1,32 @@
 """
 Tests for src.views_utils.views_helps
 """
-from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import MagicMock
 
 from src.views_utils.views_helps import (
-    article_all_views,
     article_views,
     get_view_file,
 )
 
 
-def test_article_views():
-    with patch("src.views_utils.views_helps.view_bot") as mock_bot:
-        mock_bot.article_views_new.return_value = {
-            "Title 1": {2024: 100},
-            "Title 2": {"2024": 200},
-            "Title 3": {"all": 300},
-            "Title 4": {},
-        }
+def test_article_views(monkeypatch):
+    mock_bot = MagicMock()
+    monkeypatch.setattr("src.views_utils.views_helps.view_bot", mock_bot)
 
-        articles = ["Title 1", "Title 2", "Title 3", "Title 4"]
-        result = article_views("en", articles, year=2024)
+    mock_bot.article_views_new.return_value = {
+        "Title_1": {2024: 100},
+        "Title_2": {"2024": 200},
+        "Title_3": {"all": 300},
+        "Title_4": {},
+    }
 
-        assert result["Title_1"] == 100
-        assert result["Title_2"] == 200
-        assert result["Title_3"] == 300
-        assert result["Title_4"] == 0
+    articles = ["Title 1", "Title 2", "Title 3", "Title 4"]
+    result = article_views("en", articles, year=2024)
 
-
-def test_article_all_views():
-    with patch("src.views_utils.views_helps.view_bot") as mock_bot:
-        mock_data = {"Title 1": {"2020": 10}}
-        mock_bot.article_views_new.return_value = mock_data
-
-        result = article_all_views("en", ["Title 1"])
-        assert result == mock_data
+    assert result["Title 1"] == 100
+    assert result["Title 2"] == 200
+    assert result["Title 3"] == 300
+    assert result["Title 4"] == 0
 
 
 def test_get_view_file(tmp_path, monkeypatch):
