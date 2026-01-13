@@ -14,18 +14,21 @@ logger = logging.getLogger(__name__)
 stats_all_data = {}
 
 
-def dump_stats(json_file_stats, new_data, lang="") -> dict[str, int | dict[str, int]]:
+def dump_stats(json_file_stats, articles, new_data, lang="") -> dict[str, int | dict[str, int]]:
     # ---
     data_hash = [x for x in new_data if x.find("#") != -1]
+    data_hash.extend([x for x in articles if x.find("#") != -1])
+    # ---
+    data_hash = set(data_hash)
     # ---
     data2 = {x: new_data[x] for x in new_data if x not in data_hash}
     # ---
-    empty = [v for v in data2.values() if v == 0]
+    empty = [k for k in articles if new_data.get(k, 0) == 0]
     # ---
     views = sum(v for v in data2.values() if isinstance(v, int))
     # ---
     stats = {
-        "all": len(data2),
+        "articles": len(articles),
         "empty": len(empty),
         "not_empty": len(data2) - len(empty),
         "hash": len(data_hash),
@@ -45,7 +48,7 @@ def dump_stats_all(year) -> None:
     all_not_empty = sum(v["not_empty"] for v in stats_all_data.values())
     all_empty = sum(v["empty"] for v in stats_all_data.values())
     all_views = sum(v["views"] for v in stats_all_data.values())
-    all_articles = sum(v["all"] for v in stats_all_data.values())
+    all_articles = sum(v["articles"] for v in stats_all_data.values())
     # ---
     summary = {
         "articles": all_articles,

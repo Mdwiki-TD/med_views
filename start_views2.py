@@ -21,13 +21,15 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
 
-def dump_one_Lang_files(data, lang, year) -> None:
+def dump_one_lang_files(titles, data, lang, year) -> None:
     # ---
     file = get_view_file(lang, year)
     empty_file = get_empty_view_file(lang, year)
     # ---
     if not data:
         return
+    # ---
+    titles = [x.replace("_", " ") for x in titles]
     # ---
     logger.debug(f"dump_one({file}), {len(data)=}")
     # ---
@@ -38,13 +40,14 @@ def dump_one_Lang_files(data, lang, year) -> None:
         data = [x.replace("_", " ") if isinstance(x, str) else x for x in data]
     # ---
     json_file_stats = get_stats_file(lang)
-    dump_stats(json_file_stats, data, lang)
+    dump_stats(json_file_stats, titles, data, lang)
     # ---
     empty_data = {k: v for k, v in data.items() if v == 0}
     not_empty_data = {k: v for k, v in data.items() if v != 0}
     # ---
-    with open(empty_file, "w", encoding="utf-8") as f:
-        json.dump(empty_data, f, ensure_ascii=False)
+    if empty_data:
+        with open(empty_file, "w", encoding="utf-8") as f:
+            json.dump(empty_data, f, ensure_ascii=False)
     # ---
     with open(file, "w", encoding="utf-8") as f:
         json.dump(not_empty_data, f, ensure_ascii=False)
@@ -128,7 +131,7 @@ def make_views(languages, year, limit, maxv) -> dict:
         # ---
         data = get_one_lang_views(lang, titles, year, maxv=maxv)
         # ---
-        dump_one_Lang_files(data, lang, year)
+        dump_one_lang_files(titles, data, lang, year)
         # ---
         views[lang] = data
     # ---
