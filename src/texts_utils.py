@@ -7,7 +7,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def make_text(languages, views) -> str:
+def build_wiki_text(languages, views) -> str:
     # ---
     """
     Produce a MediaWiki-formatted block summarizing medical article counts and views by language.
