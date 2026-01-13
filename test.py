@@ -22,6 +22,6 @@ for arg in sys.argv:
     elif key in ["lang", "-lang"] and val.isalpha():
         lang = val
 
-data = fetch_language_statistics(year, maxv, lang)
+data = fetch_language_statistics(year, lang)
 
 print(data)
