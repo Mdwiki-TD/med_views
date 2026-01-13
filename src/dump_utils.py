@@ -53,6 +53,15 @@ def load_lang_titles_from_dump(lang):
     return []
 
 
+def replace_underscores(data):
+    if isinstance(data, dict):
+        data = {x.replace("_", " "): v for x, v in data.items()}
+
+    if isinstance(data, list):
+        data = [x.replace("_", " ") if isinstance(x, str) else x for x in data]
+    return data
+
+
 def dump_one(file, data) -> None:
     # ---
     if not data:
@@ -60,12 +69,7 @@ def dump_one(file, data) -> None:
     # ---
     logger.debug(f"dump_one({file}), {len(data)=}")
     # ---
-    if isinstance(data, dict):
-        data = {x.replace("_", " "): v for x, v in data.items()}
-
-    if isinstance(data, list):
-        data = [x.replace("_", " ") if isinstance(x, str) else x for x in data]
-
+    data = replace_underscores(data)
     # ---
     with open(file, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False)
@@ -88,7 +92,11 @@ def dump_languages_counts(data: dict[str, int]) -> None:
     data = {k: v for k, v in sorted(data.items(), key=lambda item: item[1], reverse=True)}
     # ---
     if data and len(data) > 200:
-        dump_one(file, data)
+        # ---
+        data = replace_underscores(data)
+        # ---
+        with open(file, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
 
 
 def load_languages_counts() -> dict:
