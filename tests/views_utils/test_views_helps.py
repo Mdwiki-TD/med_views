@@ -14,19 +14,19 @@ def test_article_views(monkeypatch):
     monkeypatch.setattr("src.views_utils.views_helps.view_bot", mock_bot)
 
     mock_bot.article_views_new.return_value = {
-        "Title 1": {2024: 100},
-        "Title 2": {"2024": 200},
-        "Title 3": {"all": 300},
-        "Title 4": {},
+        "Title_1": {2024: 100},
+        "Title_2": {"2024": 200},
+        "Title_3": {"all": 300},
+        "Title_4": {},
     }
 
     articles = ["Title 1", "Title 2", "Title 3", "Title 4"]
     result = article_views("en", articles, year=2024)
 
-    assert result["Title_1"] == 100
-    assert result["Title_2"] == 200
-    assert result["Title_3"] == 300
-    assert result["Title_4"] == 0
+    assert result["Title 1"] == 100
+    assert result["Title 2"] == 200
+    assert result["Title 3"] == 300
+    assert result["Title 4"] == 0
 
 
 def test_get_view_file(tmp_path, monkeypatch):

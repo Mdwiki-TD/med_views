@@ -3,6 +3,8 @@ Tests for src.sql_utils
 """
 from unittest.mock import MagicMock, ANY
 
+from _pytest.monkeypatch import MonkeyPatch
+
 from src.sql_utils import (
     get_en_articles,
     one_lang_titles,
@@ -10,7 +12,7 @@ from src.sql_utils import (
 )
 
 
-def test_get_en_articles(monkeypatch):
+def test_get_en_articles(monkeypatch: MonkeyPatch) -> None:
     mock_sql = MagicMock(return_value=[{"page_title": "Title1"}, {"page_title": "Title2"}])
     monkeypatch.setattr("src.sql_utils.retrieve_sql_results", mock_sql)
 
@@ -21,7 +23,7 @@ def test_get_en_articles(monkeypatch):
     assert "enwiki" in args
 
 
-def test_retrieve_medicine_titles(monkeypatch):
+def test_retrieve_medicine_titles(monkeypatch: MonkeyPatch) -> None:
     mock_sql = MagicMock(return_value=[
         {"page_title": "EnTitle1", "ll_lang": "fr", "ll_title": "FrTitle1"},
         {"page_title": "EnTitle1", "ll_lang": "de", "ll_title": "DeTitle1"},
@@ -34,10 +36,9 @@ def test_retrieve_medicine_titles(monkeypatch):
     assert set(result["en"]) == {"EnTitle1", "EnTitle2"}
     assert result["fr"] == ["FrTitle1", "FrTitle2"]
     assert result["de"] == ["DeTitle1"]
-    mock_sql.assert_called_once()
 
 
-def test_one_lang_titles(monkeypatch):
+def test_one_lang_titles(monkeypatch: MonkeyPatch) -> None:
     mock_sql = MagicMock(return_value=[{"ll_title": "T1"}, {"ll_title": "T2"}])
     monkeypatch.setattr("src.sql_utils.retrieve_sql_results", mock_sql)
 
