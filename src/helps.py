@@ -5,9 +5,6 @@
 """
 import json
 import logging
-
-from .config import stats_path
-
 logger = logging.getLogger(__name__)
 
 
@@ -56,17 +53,3 @@ def json_load(json_file) -> None | dict | list:
         return [x.replace("_", " ") if isinstance(x, str) else x for x in u_data]
 
     return u_data
-
-
-def get_stats_file(lang):
-    # ---
-    """
-    """
-    dir_v = stats_path
-    # ---
-    if not dir_v.exists():
-        dir_v.mkdir(parents=True)
-    # ---
-    file = dir_v / f"{lang}.json"
-    # ---
-    return file

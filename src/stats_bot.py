@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 stats_all_data = {}
 
 
-def dump_stats(json_file_stats, articles, new_data, lang="") -> dict[str, int | dict[str, int]]:
+def dump_stats(articles, new_data, lang="") -> dict[str, int | dict[str, int]]:
     # ---
     data_hash = [x for x in new_data if x.find("#") != -1]
     data_hash.extend([x for x in articles if x.find("#") != -1])

@@ -11,7 +11,7 @@ from src.views import get_one_lang_views_by_titles, update_data
 from src.dump_utils import count_languages_in_json, load_languages_counts
 from src.sql_utils import get_language_article_counts_sql
 from src.titles_utils import load_lang_titles
-from src.helps import get_stats_file, json_load
+from src.helps import json_load
 from src.views_utils.views_helps import (
     get_view_file,
 )
@@ -54,8 +54,7 @@ def dump_one_lang_files(titles, data, lang, year) -> None:
     if isinstance(data, list):
         data = [x.replace("_", " ") if isinstance(x, str) else x for x in data]
     # ---
-    json_file_stats = get_stats_file(lang)
-    dump_stats(json_file_stats, titles, data, lang)
+    dump_stats(titles, data, lang)
     # ---
     empty_data = [k for k in titles if data.get(k, 0) == 0]
     # ---
