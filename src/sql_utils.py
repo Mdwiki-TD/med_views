@@ -102,12 +102,10 @@ def retrieve_medicine_titles() -> dict:
     if en_list:
         titles["en"] = en_list
     # ---
-    ar_list = get_ar_results()
+    # ar_list = get_ar_results()
     # ---
-    if ar_list:
-        titles["ar"].extend(ar_list)
-    # ---
-    titles["ar"] = list(set(titles["ar"]))
+    # if ar_list: titles["ar"].extend(ar_list)
+    # titles["ar"] = list(set(titles["ar"]))
     # ---
     logger.info(f"retrieve_medicine_titles: {len(titles)}")
     # ---
