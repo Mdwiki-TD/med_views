@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 """
+Multi-year Wikipedia article view data collection and processing.
 
+This module handles collecting and processing Wikipedia article views
+for all years from 2015 to 2025, as opposed to single-year collection.
 """
 import logging
 import sys

@@ -137,9 +137,13 @@ def process_language_views(lang, maxv=0) -> dict[str, dict]:
     # ---
     titles = load_lang_titles(lang)
     # ---
-    # For all years, we'll check an existing file from any year to see what titles we already have
-    # We'll use year 2025 as reference
-    json_file = get_view_file(lang, 2025)
+    # For all years, we'll check an existing file from the current year to see what titles we already have
+    # Use the current year or latest available year as reference
+    import datetime
+    current_year = datetime.datetime.now().year
+    # Ensure we don't go beyond 2025
+    reference_year = min(current_year, 2025)
+    json_file = get_view_file(lang, reference_year)
     # ---
     data = get_one_lang_views(lang, titles, json_file, maxv=maxv)
     # ---
