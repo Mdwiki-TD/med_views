@@ -4,6 +4,7 @@ Tests for src.dump_utils
 import json
 from pathlib import Path
 from unittest.mock import mock_open, MagicMock
+from _pytest.monkeypatch import MonkeyPatch
 
 from src.dump_utils import (
     count_languages_in_json,
@@ -14,7 +15,7 @@ from src.dump_utils import (
 )
 
 
-def test_count_languages_in_json(monkeypatch):
+def test_count_languages_in_json(monkeypatch: MonkeyPatch) -> None:
     mock_path = MagicMock()
     monkeypatch.setattr("src.dump_utils.json_titles_path", mock_path)
 
@@ -30,7 +31,7 @@ def test_count_languages_in_json(monkeypatch):
     assert result == {"en": 2, "ar": 2}
 
 
-def test_load_lang_titles_from_dump(monkeypatch):
+def test_load_lang_titles_from_dump(monkeypatch: MonkeyPatch) -> None:
     mock_path = MagicMock()
     monkeypatch.setattr("src.dump_utils.json_titles_path", mock_path)
 
@@ -44,7 +45,7 @@ def test_load_lang_titles_from_dump(monkeypatch):
     assert result == ["Art 1", "Art 2"]
 
 
-def test_dump_one(monkeypatch):
+def test_dump_one(monkeypatch: MonkeyPatch) -> None:
     mock_file = "test.json"
     data = {"key": "value"}
     m = mock_open()
@@ -58,7 +59,7 @@ def test_dump_one(monkeypatch):
     assert json.loads(written) == data
 
 
-def test_dump_languages_counts(monkeypatch):
+def test_dump_languages_counts(monkeypatch: MonkeyPatch) -> None:
     mock_path = MagicMock()
     monkeypatch.setattr("src.dump_utils.main_dump_path", mock_path)
 
@@ -75,7 +76,7 @@ def test_dump_languages_counts(monkeypatch):
     mock_dump.assert_called_once()
 
 
-def test_load_languages_counts(monkeypatch):
+def test_load_languages_counts(monkeypatch: MonkeyPatch) -> None:
     mock_path = MagicMock()
     monkeypatch.setattr("src.dump_utils.main_dump_path", mock_path)
 

@@ -2,6 +2,7 @@
 Tests for src.services.mysql_client
 """
 from unittest.mock import MagicMock
+from _pytest.monkeypatch import MonkeyPatch
 
 from src.services.mysql_client import (
     _sql_connect_pymysql,
@@ -19,7 +20,7 @@ def test_load_db_config():
     assert "replica.my.cnf" in config["read_default_file"]
 
 
-def test__sql_connect_pymysql(monkeypatch):
+def test__sql_connect_pymysql(monkeypatch: MonkeyPatch) -> None:
     mock_connect = MagicMock()
     monkeypatch.setattr("src.services.mysql_client.pymysql.connect", mock_connect)
 
@@ -59,7 +60,7 @@ def test_decode_bytes_in_list():
     assert decode_bytes_in_list(rows) == expected
 
 
-def test_make_sql_connect(monkeypatch):
+def test_make_sql_connect(monkeypatch: MonkeyPatch) -> None:
     mock_sql = MagicMock(return_value=[{"col": b"val"}])
     monkeypatch.setattr("src.services.mysql_client._sql_connect_pymysql", mock_sql)
 

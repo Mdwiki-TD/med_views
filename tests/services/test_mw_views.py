@@ -1,4 +1,5 @@
 from datetime import date, datetime
+from _pytest.monkeypatch import MonkeyPatch
 from unittest.mock import MagicMock
 
 from src.services.mw_views import (
@@ -57,7 +58,7 @@ def test_month_from_day():
     assert month_from_day(dt2) == expected2
 
 
-def test_PageviewsClient(monkeypatch):
+def test_PageviewsClient(monkeypatch: MonkeyPatch) -> None:
     # Setup mock response
     mock_resp = MagicMock()
     mock_resp.json.return_value = {"items": [{"article": "Test_Article", "timestamp": "2023010100", "views": 50}]}
