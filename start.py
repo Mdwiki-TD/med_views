@@ -129,7 +129,7 @@ def start(year, limit):
     if target_page.exists():
         target_page.save(newtext=newtext, summary="update", nocreate=0, minor="")
     else:
-        target_page.Create(newtext, summary="update")
+        target_page.create(newtext, summary="update")
 
 
 def parse_args():
