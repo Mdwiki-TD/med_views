@@ -35,6 +35,29 @@ def article_views(site, articles, year=2024):
     return new_data
 
 
+def article_views_all_years(site, articles):
+    # ---
+    site = "be-tarask" if site == "be-x-old" else site
+    # ---
+    data = view_bot.article_views_new(
+        f"{site}.wikipedia",
+        articles,
+        granularity="monthly",
+        start="20150101",
+        end="20251231",
+    )
+    # ---
+    new_data = {}
+    # ---
+    for title, views in data.items():
+        # ---
+        title = title.replace("_", " ")
+        # ---
+        new_data[title] = views
+    # ---
+    return new_data
+
+
 def get_view_file(lang, year):
     # ---
     """
@@ -59,5 +82,6 @@ def get_view_file(lang, year):
 
 __all__ = [
     "article_views",
+    "article_views_all_years",
     "get_view_file",
 ]
