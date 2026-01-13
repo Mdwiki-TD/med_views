@@ -4,13 +4,17 @@
 
 """
 import logging
+import json
 
 from .dump_utils import dump_one
+from .config import main_dump_path
 
 logger = logging.getLogger(__name__)
 
+stats_all_data = {}
 
-def dump_stats(json_file_stats, new_data) -> dict[str, int | dict[str, int]]:
+
+def dump_stats(json_file_stats, new_data, lang="") -> dict[str, int | dict[str, int]]:
     # ---
     data_hash = [x for x in new_data if x.find("#") != -1]
     # ---
@@ -30,4 +34,17 @@ def dump_stats(json_file_stats, new_data) -> dict[str, int | dict[str, int]]:
     # ---
     dump_one(json_file_stats, stats)
     # ---
+    stats_all_data[lang] = stats
+    # ---
     return stats
+
+
+def dump_stats_all() -> None:
+    # ---
+    json_file = main_dump_path / "stats_all.json"
+    # ---
+    # sort stats_all_data by "views" descending
+    stats_all_data_sorted = dict(sorted(stats_all_data.items(), key=lambda item: item[1].get("views", 0), reverse=True))
+    # ---
+    with open(json_file, "w", encoding="utf-8") as f:
+        json.dump(stats_all_data_sorted, f, ensure_ascii=False)

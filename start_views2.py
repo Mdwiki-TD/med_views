@@ -14,7 +14,7 @@ from src.helps import get_stats_file, json_load
 from src.views_utils.views_helps import (
     get_view_file,
 )
-from src.stats_bot import dump_stats
+from src.stats_bot import dump_stats, dump_stats_all
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -93,7 +93,7 @@ def make_views(languages, year, limit, maxv) -> dict:
             break
         # ---
         json_file = get_view_file(lang, year)
-        json_file_stats = get_stats_file(lang, "stats")
+        json_file_stats = get_stats_file(lang)
         # ---
         titles = load_lang_titles(lang)
         # ---
@@ -101,9 +101,11 @@ def make_views(languages, year, limit, maxv) -> dict:
         # ---
         dump_one(json_file, data)
         # ---
-        dump_stats(json_file_stats, data)
+        dump_stats(json_file_stats, data, lang)
         # ---
         views[lang] = data
+    # ---
+    dump_stats_all()
     # ---
     return views
 
