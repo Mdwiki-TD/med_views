@@ -17,7 +17,7 @@ from src.views_utils.views_helps import (
 from src.stats_bot import dump_stats
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 
 def load_one_lang_views(langcode, titles, year, maxv=0):
