@@ -105,7 +105,7 @@ def make_views(languages, year, limit, maxv) -> dict:
         # ---
         views[lang] = data
     # ---
-    dump_stats_all()
+    dump_stats_all(year)
     # ---
     return views
 

@@ -39,7 +39,7 @@ def dump_stats(json_file_stats, new_data, lang="") -> dict[str, int | dict[str, 
     return stats
 
 
-def dump_stats_all() -> None:
+def dump_stats_all(year) -> None:
     # ---
     all_hash = sum(v["hash"] for v in stats_all_data.values())
     all_not_empty = sum(v["not_empty"] for v in stats_all_data.values())
@@ -55,11 +55,11 @@ def dump_stats_all() -> None:
         "total_views": all_views,
     }
     # ---
-    with open(main_dump_path / "summary.json", "w", encoding="utf-8") as f:
+    with open(main_dump_path / f"{year}_summary.json", "w", encoding="utf-8") as f:
         json.dump(summary, f, ensure_ascii=False, indent=4)
     # ---
     # sort stats_all_data by "views" descending
     stats_all_data_sorted = dict(sorted(stats_all_data.items(), key=lambda item: item[1].get("views", 0), reverse=True))
     # ---
-    with open(main_dump_path / "stats_all.json", "w", encoding="utf-8") as f:
+    with open(main_dump_path / f"{year}_stats_all.json", "w", encoding="utf-8") as f:
         json.dump(stats_all_data_sorted, f, ensure_ascii=False, indent=4)
