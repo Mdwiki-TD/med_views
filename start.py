@@ -108,7 +108,7 @@ def start(year, limit):
     views = {k: v for k, v in sorted(views.items(), key=lambda item: item[1], reverse=True)}
     # ---
     # dump views
-    with open(main_dump_path / f"views_{year}.json", "w", encoding="utf-8") as f:
+    with open(main_dump_path / f"{year}_views_by_lang.json", "w", encoding="utf-8") as f:
         json.dump(views, f, ensure_ascii=False, indent=4)
     # ---
     newtext = make_text(languages, views)
