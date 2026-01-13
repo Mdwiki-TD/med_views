@@ -43,6 +43,7 @@ def article_views_all_years(site, articles):
         f"{site}.wikipedia",
         articles,
         granularity="monthly",
+        agent="user",
         start="20150101",
         end="20251231",
     )
