@@ -53,7 +53,30 @@ def get_view_file(lang, year):
     return file
 
 
+def get_empty_view_file(lang, year):
+    # ---
+    """
+    Compute the filesystem path for the language's views JSON file for a given year, creating the year directory if it does not exist.
+
+    Parameters:
+        lang (str): Language code (used as the JSON filename without extension).
+        year (int | str): Year used to select or create the yearly subdirectory.
+
+    Returns:
+        pathlib.Path: Path to the "{lang}.json" file inside the year directory.
+    """
+    dir_v = views_by_year_path / f"empty_{year}"
+    # ---
+    if not dir_v.exists():
+        dir_v.mkdir(parents=True)
+    # ---
+    file = dir_v / f"{lang}.json"
+    # ---
+    return file
+
+
 __all__ = [
     "article_views",
+    "get_empty_view_file",
     "get_view_file",
 ]

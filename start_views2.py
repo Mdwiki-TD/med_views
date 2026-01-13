@@ -2,6 +2,7 @@
 """
 python3 I:/mdwiki/med_views/start_views2.py
 """
+import json
 import logging
 import sys
 
@@ -9,15 +10,44 @@ from src.views import get_one_lang_views_by_titles, update_data
 from src.dump_utils import count_languages_in_json, load_languages_counts
 from src.sql_utils import get_language_article_counts_sql
 from src.titles_utils import load_lang_titles
-from src.dump_utils import dump_one
 from src.helps import get_stats_file, json_load
 from src.views_utils.views_helps import (
     get_view_file,
+    get_empty_view_file,
 )
 from src.stats_bot import dump_stats, dump_stats_all
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
+
+
+def dump_one_Lang_files(data, lang, year) -> None:
+    # ---
+    file = get_view_file(lang, year)
+    empty_file = get_empty_view_file(lang, year)
+    # ---
+    if not data:
+        return
+    # ---
+    logger.debug(f"dump_one({file}), {len(data)=}")
+    # ---
+    if isinstance(data, dict):
+        data = {x.replace("_", " "): v for x, v in data.items()}
+    # ---
+    if isinstance(data, list):
+        data = [x.replace("_", " ") if isinstance(x, str) else x for x in data]
+    # ---
+    json_file_stats = get_stats_file(lang)
+    dump_stats(json_file_stats, data, lang)
+    # ---
+    empty_data = {k: v for k, v in data.items() if v == 0}
+    not_empty_data = {k: v for k, v in data.items() if v != 0}
+    # ---
+    with open(empty_file, "w", encoding="utf-8") as f:
+        json.dump(empty_data, f, ensure_ascii=False)
+    # ---
+    with open(file, "w", encoding="utf-8") as f:
+        json.dump(not_empty_data, f, ensure_ascii=False)
 
 
 def load_one_lang_views(langcode, titles, year, maxv=0):
@@ -53,7 +83,9 @@ def get_languages_articles_counts():
     return result
 
 
-def get_one_lang_views(langcode, titles, year, json_file, maxv=0) -> dict:
+def get_one_lang_views(langcode, titles, year, maxv=0) -> dict:
+    # ---
+    json_file = get_view_file(langcode, year)
     # ---
     u_data = {}
     titles_not_in_file = titles
@@ -92,16 +124,11 @@ def make_views(languages, year, limit, maxv) -> dict:
             logger.info(f"limit {limit} reached, break")
             break
         # ---
-        json_file = get_view_file(lang, year)
-        json_file_stats = get_stats_file(lang)
-        # ---
         titles = load_lang_titles(lang)
         # ---
-        data = get_one_lang_views(lang, titles, year, json_file, maxv=maxv)
+        data = get_one_lang_views(lang, titles, year, maxv=maxv)
         # ---
-        dump_one(json_file, data)
-        # ---
-        dump_stats(json_file_stats, data, lang)
+        dump_one_Lang_files(data, lang, year)
         # ---
         views[lang] = data
     # ---
