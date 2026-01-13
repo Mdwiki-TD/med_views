@@ -10,7 +10,7 @@ from src.dump_utils import count_languages_in_json, load_languages_counts
 from src.texts_utils import make_text
 from src.helps import json_load
 from src.wiki import page
-from src.config import main_dump_path, total_sites_by_year_path
+from src.config import main_dump_path
 
 from src.views_utils.views_helps import (
     get_view_file,
@@ -108,7 +108,7 @@ def start(year, limit):
     views = {k: v for k, v in sorted(views.items(), key=lambda item: item[1], reverse=True)}
     # ---
     # dump views
-    with open(total_sites_by_year_path / f"views_{year}.json", "w", encoding="utf-8") as f:
+    with open(main_dump_path / f"views_{year}.json", "w", encoding="utf-8") as f:
         json.dump(views, f, ensure_ascii=False, indent=4)
     # ---
     newtext = make_text(languages, views)
