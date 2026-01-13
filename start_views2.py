@@ -6,6 +6,7 @@ import json
 import logging
 import sys
 
+from src.config import main_dump_path
 from src.views import get_one_lang_views_by_titles, update_data
 from src.dump_utils import count_languages_in_json, load_languages_counts
 from src.sql_utils import get_language_article_counts_sql
@@ -13,18 +14,27 @@ from src.titles_utils import load_lang_titles
 from src.helps import get_stats_file, json_load
 from src.views_utils.views_helps import (
     get_view_file,
-    get_empty_view_file,
 )
 from src.stats_bot import dump_stats, dump_stats_all
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
+empty_data_all = {}
+
+
+def dump_empty_data_all() -> None:
+    # ---
+    file = main_dump_path / "empty_views_all.json"
+    logger.debug(f"dump_empty_data_all({file}), {len(empty_data_all)=}")
+    # ---
+    with open(file, "w", encoding="utf-8") as f:
+        json.dump(empty_data_all, f, ensure_ascii=False)
+
 
 def dump_one_lang_files(titles, data, lang, year) -> None:
     # ---
     file = get_view_file(lang, year)
-    empty_file = get_empty_view_file(lang, year)
     # ---
     if not data:
         return
@@ -45,9 +55,7 @@ def dump_one_lang_files(titles, data, lang, year) -> None:
     empty_data = {k: v for k, v in data.items() if v == 0}
     not_empty_data = {k: v for k, v in data.items() if v != 0}
     # ---
-    if empty_data:
-        with open(empty_file, "w", encoding="utf-8") as f:
-            json.dump(empty_data, f, ensure_ascii=False)
+    empty_data_all[lang] = empty_data
     # ---
     with open(file, "w", encoding="utf-8") as f:
         json.dump(not_empty_data, f, ensure_ascii=False)
