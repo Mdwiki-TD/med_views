@@ -5,4 +5,5 @@ views_all_run_it.py
 !dumps/total_sites_by_year/*.json
 dumps/titles
 dumps/views_by_year
-dumps/*.json
+
+dumps/all_languages_titles.json
