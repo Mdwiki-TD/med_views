@@ -1,164 +1,164 @@
 {
     "en": {
-        "articles": 53900,
-        "empty": 45,
-        "not_empty": 53810,
+        "articles": 53901,
+        "empty": 46,
+        "not_empty": 53857,
         "hash": 0,
-        "views": 1717608795
+        "views": 1717614326
     },
     "ru": {
-        "articles": 9778,
+        "articles": 9777,
         "empty": 11,
-        "not_empty": 9750,
+        "not_empty": 9758,
         "hash": 3,
         "views": 255872999
     },
     "de": {
         "articles": 15027,
         "empty": 76,
-        "not_empty": 14839,
+        "not_empty": 14843,
         "hash": 72,
         "views": 220683318
     },
     "es": {
-        "articles": 13581,
-        "empty": 31,
-        "not_empty": 13503,
+        "articles": 13583,
+        "empty": 32,
+        "not_empty": 13532,
         "hash": 5,
-        "views": 183820147
+        "views": 183820280
     },
     "fr": {
-        "articles": 13733,
-        "empty": 39,
-        "not_empty": 13633,
+        "articles": 13734,
+        "empty": 41,
+        "not_empty": 13648,
         "hash": 24,
         "views": 154578624
     },
     "ja": {
-        "articles": 8517,
-        "empty": 14,
-        "not_empty": 8482,
+        "articles": 8518,
+        "empty": 15,
+        "not_empty": 8490,
         "hash": 6,
         "views": 120090370
     },
     "zh": {
-        "articles": 9277,
-        "empty": 19,
-        "not_empty": 9232,
+        "articles": 9278,
+        "empty": 20,
+        "not_empty": 9248,
         "hash": 5,
-        "views": 113605089
+        "views": 113607400
     },
     "fa": {
-        "articles": 10451,
-        "empty": 12,
-        "not_empty": 10427,
+        "articles": 10450,
+        "empty": 11,
+        "not_empty": 10440,
         "hash": 0,
         "views": 96388263
     },
     "it": {
-        "articles": 10690,
+        "articles": 10691,
         "empty": 16,
-        "not_empty": 10644,
+        "not_empty": 10652,
         "hash": 9,
-        "views": 81500212
+        "views": 81518708
     },
     "pl": {
         "articles": 8874,
         "empty": 5,
-        "not_empty": 8841,
+        "not_empty": 8843,
         "hash": 3,
         "views": 62860464
     },
     "ar": {
-        "articles": 20444,
-        "empty": 27,
-        "not_empty": 20390,
+        "articles": 20445,
+        "empty": 29,
+        "not_empty": 20417,
         "hash": 0,
         "views": 61881116
     },
     "pt": {
-        "articles": 10342,
-        "empty": 10,
-        "not_empty": 10308,
+        "articles": 10343,
+        "empty": 13,
+        "not_empty": 10317,
         "hash": 1,
         "views": 56988396
     },
     "nl": {
-        "articles": 6752,
+        "articles": 6751,
         "empty": 9,
-        "not_empty": 6724,
+        "not_empty": 6731,
         "hash": 2,
         "views": 34399620
     },
     "tr": {
         "articles": 6024,
         "empty": 6,
-        "not_empty": 6007,
+        "not_empty": 6013,
         "hash": 0,
         "views": 33581487
     },
     "uk": {
         "articles": 7647,
         "empty": 8,
-        "not_empty": 7631,
+        "not_empty": 7639,
         "hash": 0,
         "views": 27905526
     },
     "ko": {
-        "articles": 6209,
-        "empty": 4,
-        "not_empty": 6200,
+        "articles": 6210,
+        "empty": 5,
+        "not_empty": 6205,
         "hash": 0,
         "views": 25427189
     },
     "cs": {
         "articles": 4251,
         "empty": 1,
-        "not_empty": 4247,
+        "not_empty": 4248,
         "hash": 0,
         "views": 25146456
     },
     "he": {
-        "articles": 5462,
-        "empty": 21,
-        "not_empty": 5411,
+        "articles": 5465,
+        "empty": 24,
+        "not_empty": 5426,
         "hash": 6,
         "views": 24075068
     },
     "id": {
-        "articles": 6436,
-        "empty": 20,
-        "not_empty": 6395,
+        "articles": 6438,
+        "empty": 22,
+        "not_empty": 6415,
         "hash": 0,
         "views": 20425040
     },
     "fi": {
-        "articles": 5195,
+        "articles": 5194,
         "empty": 5,
-        "not_empty": 5177,
+        "not_empty": 5180,
         "hash": 2,
         "views": 18252536
     },
     "sv": {
         "articles": 5963,
         "empty": 15,
-        "not_empty": 5927,
+        "not_empty": 5928,
         "hash": 14,
         "views": 18097574
     },
     "el": {
-        "articles": 2944,
-        "empty": 4,
-        "not_empty": 2936,
+        "articles": 2945,
+        "empty": 5,
+        "not_empty": 2940,
         "hash": 0,
         "views": 16011983
     },
     "hu": {
-        "articles": 2704,
+        "articles": 2705,
         "empty": 5,
-        "not_empty": 2693,
+        "not_empty": 2698,
         "hash": 1,
-        "views": 15254098
+        "views": 15254099
     },
     "vi": {
         "articles": 5125,
@@ -170,51 +170,51 @@
     "ro": {
         "articles": 3482,
         "empty": 4,
-        "not_empty": 3471,
+        "not_empty": 3475,
         "hash": 0,
         "views": 13151727
     },
     "simple": {
-        "articles": 3335,
-        "empty": 2,
-        "not_empty": 3329,
+        "articles": 3334,
+        "empty": 3,
+        "not_empty": 3331,
         "hash": 0,
         "views": 13145443
     },
     "sr": {
         "articles": 6190,
-        "empty": 2,
-        "not_empty": 6183,
+        "empty": 3,
+        "not_empty": 6185,
         "hash": 0,
         "views": 12416755
     },
     "uz": {
         "articles": 2216,
         "empty": 2,
-        "not_empty": 2212,
+        "not_empty": 2214,
         "hash": 0,
         "views": 9132846
     },
     "bg": {
         "articles": 2212,
         "empty": 2,
-        "not_empty": 2205,
+        "not_empty": 2207,
         "hash": 0,
         "views": 8594765
     },
     "bn": {
         "articles": 2652,
         "empty": 59,
-        "not_empty": 2534,
+        "not_empty": 2593,
         "hash": 0,
         "views": 8505758
     },
     "hy": {
-        "articles": 3385,
-        "empty": 3,
-        "not_empty": 3378,
+        "articles": 3397,
+        "empty": 12,
+        "not_empty": 3384,
         "hash": 0,
-        "views": 7753995
+        "views": 7753999
     },
     "th": {
         "articles": 2876,
@@ -231,11 +231,11 @@
         "views": 7705511
     },
     "ca": {
-        "articles": 6763,
+        "articles": 6765,
         "empty": 5,
-        "not_empty": 6749,
+        "not_empty": 6753,
         "hash": 3,
-        "views": 7581442
+        "views": 7581627
     },
     "hr": {
         "articles": 2118,
@@ -247,28 +247,28 @@
     "no": {
         "articles": 3474,
         "empty": 4,
-        "not_empty": 3459,
+        "not_empty": 3462,
         "hash": 1,
         "views": 6571407
     },
     "sk": {
         "articles": 1669,
         "empty": 6,
-        "not_empty": 1656,
+        "not_empty": 1662,
         "hash": 0,
         "views": 5901529
     },
     "da": {
         "articles": 2435,
         "empty": 3,
-        "not_empty": 2427,
+        "not_empty": 2429,
         "hash": 1,
         "views": 5732375
     },
     "az": {
-        "articles": 2270,
-        "empty": 2,
-        "not_empty": 2266,
+        "articles": 2271,
+        "empty": 3,
+        "not_empty": 2268,
         "hash": 0,
         "views": 5471493
     },
@@ -282,49 +282,49 @@
     "ms": {
         "articles": 2468,
         "empty": 2,
-        "not_empty": 2463,
+        "not_empty": 2465,
         "hash": 0,
         "views": 5232499
     },
     "sl": {
         "articles": 2390,
         "empty": 2,
-        "not_empty": 2385,
+        "not_empty": 2387,
         "hash": 0,
         "views": 4979860
     },
     "ta": {
         "articles": 2156,
         "empty": 3,
-        "not_empty": 2150,
+        "not_empty": 2153,
         "hash": 0,
         "views": 3906704
     },
     "bs": {
-        "articles": 2136,
-        "empty": 6,
-        "not_empty": 2123,
+        "articles": 2140,
+        "empty": 9,
+        "not_empty": 2130,
         "hash": 0,
-        "views": 3886698
+        "views": 3886700
     },
     "ml": {
-        "articles": 3145,
+        "articles": 3146,
         "empty": 2,
-        "not_empty": 3141,
+        "not_empty": 3144,
         "hash": 0,
-        "views": 3833494
+        "views": 3833841
     },
     "et": {
         "articles": 2181,
-        "empty": 3,
-        "not_empty": 2173,
+        "empty": 4,
+        "not_empty": 2176,
         "hash": 0,
         "views": 3772117
     },
     "kk": {
-        "articles": 1510,
-        "empty": 5,
-        "not_empty": 1500,
+        "articles": 1509,
+        "empty": 4,
+        "not_empty": 1506,
         "hash": 0,
         "views": 3700574
     },
@@ -338,13 +338,13 @@
     "mk": {
         "articles": 1772,
         "empty": 2,
-        "not_empty": 1768,
+        "not_empty": 1770,
         "hash": 0,
         "views": 3260101
     },
     "sq": {
         "articles": 1040,
-        "empty": 0,
+        "empty": 1,
         "not_empty": 1040,
         "hash": 0,
         "views": 3211450
@@ -359,7 +359,7 @@
     "eu": {
         "articles": 3220,
         "empty": 2,
-        "not_empty": 3215,
+        "not_empty": 3217,
         "hash": 0,
         "views": 2823940
     },
@@ -380,7 +380,7 @@
     "af": {
         "articles": 881,
         "empty": 4,
-        "not_empty": 873,
+        "not_empty": 877,
         "hash": 0,
         "views": 2279609
     },
@@ -394,7 +394,7 @@
     "zh-yue": {
         "articles": 1617,
         "empty": 1,
-        "not_empty": 1613,
+        "not_empty": 1614,
         "hash": 0,
         "views": 1775461
     },
@@ -406,16 +406,16 @@
         "views": 1729275
     },
     "te": {
-        "articles": 1266,
+        "articles": 1267,
         "empty": 7,
-        "not_empty": 1252,
+        "not_empty": 1260,
         "hash": 0,
-        "views": 1695583
+        "views": 1695683
     },
     "eo": {
         "articles": 2322,
         "empty": 3,
-        "not_empty": 2315,
+        "not_empty": 2318,
         "hash": 0,
         "views": 1690403
     },
@@ -429,7 +429,7 @@
     "ur": {
         "articles": 1451,
         "empty": 1,
-        "not_empty": 1448,
+        "not_empty": 1449,
         "hash": 0,
         "views": 1555226
     },
@@ -464,7 +464,7 @@
     "kn": {
         "articles": 728,
         "empty": 2,
-        "not_empty": 724,
+        "not_empty": 726,
         "hash": 0,
         "views": 1335917
     },
@@ -499,21 +499,21 @@
     "cy": {
         "articles": 1630,
         "empty": 1,
-        "not_empty": 1628,
+        "not_empty": 1629,
         "hash": 0,
         "views": 1011894
     },
     "my": {
         "articles": 395,
         "empty": 1,
-        "not_empty": 393,
+        "not_empty": 394,
         "hash": 0,
         "views": 999544
     },
     "be": {
         "articles": 1387,
         "empty": 1,
-        "not_empty": 1385,
+        "not_empty": 1386,
         "hash": 0,
         "views": 982099
     },
@@ -532,9 +532,9 @@
         "views": 968732
     },
     "ga": {
-        "articles": 1331,
-        "empty": 2,
-        "not_empty": 1327,
+        "articles": 1330,
+        "empty": 1,
+        "not_empty": 1330,
         "hash": 0,
         "views": 944898
     },
@@ -555,14 +555,14 @@
     "tg": {
         "articles": 466,
         "empty": 6,
-        "not_empty": 454,
+        "not_empty": 460,
         "hash": 0,
         "views": 750400
     },
     "ha": {
-        "articles": 1064,
-        "empty": 83,
-        "not_empty": 898,
+        "articles": 1068,
+        "empty": 87,
+        "not_empty": 981,
         "hash": 0,
         "views": 749202
     },
@@ -576,7 +576,7 @@
     "io": {
         "articles": 660,
         "empty": 1,
-        "not_empty": 657,
+        "not_empty": 658,
         "hash": 0,
         "views": 692517
     },
@@ -597,7 +597,7 @@
     "oc": {
         "articles": 435,
         "empty": 3,
-        "not_empty": 429,
+        "not_empty": 432,
         "hash": 0,
         "views": 595176
     },
@@ -639,7 +639,7 @@
     "ps": {
         "articles": 510,
         "empty": 1,
-        "not_empty": 508,
+        "not_empty": 509,
         "hash": 0,
         "views": 509689
     },
@@ -744,7 +744,7 @@
     "ig": {
         "articles": 686,
         "empty": 1,
-        "not_empty": 684,
+        "not_empty": 685,
         "hash": 0,
         "views": 295043
     },
@@ -931,9 +931,9 @@
         "views": 183610
     },
     "ks": {
-        "articles": 255,
+        "articles": 254,
         "empty": 2,
-        "not_empty": 251,
+        "not_empty": 253,
         "hash": 0,
         "views": 183566
     },
@@ -952,11 +952,11 @@
         "views": 181582
     },
     "gpe": {
-        "articles": 314,
-        "empty": 34,
-        "not_empty": 246,
+        "articles": 317,
+        "empty": 35,
+        "not_empty": 282,
         "hash": 0,
-        "views": 180820
+        "views": 180822
     },
     "sn": {
         "articles": 96,
@@ -1080,7 +1080,7 @@
     "mad": {
         "articles": 166,
         "empty": 3,
-        "not_empty": 160,
+        "not_empty": 163,
         "hash": 0,
         "views": 127781
     },
@@ -1115,7 +1115,7 @@
     "ary": {
         "articles": 94,
         "empty": 1,
-        "not_empty": 92,
+        "not_empty": 93,
         "hash": 0,
         "views": 119822
     },
@@ -1402,7 +1402,7 @@
     "ki": {
         "articles": 23,
         "empty": 1,
-        "not_empty": 21,
+        "not_empty": 22,
         "hash": 0,
         "views": 53660
     },
@@ -1456,9 +1456,9 @@
         "views": 49515
     },
     "vo": {
-        "articles": 113,
-        "empty": 2,
-        "not_empty": 109,
+        "articles": 114,
+        "empty": 3,
+        "not_empty": 111,
         "hash": 0,
         "views": 49414
     },
@@ -1486,7 +1486,7 @@
     "shi": {
         "articles": 23,
         "empty": 1,
-        "not_empty": 21,
+        "not_empty": 22,
         "hash": 0,
         "views": 48317
     },
@@ -1626,7 +1626,7 @@
     "tn": {
         "articles": 31,
         "empty": 2,
-        "not_empty": 27,
+        "not_empty": 29,
         "hash": 0,
         "views": 36420
     },
@@ -1962,7 +1962,7 @@
     "zgh": {
         "articles": 18,
         "empty": 1,
-        "not_empty": 16,
+        "not_empty": 17,
         "hash": 0,
         "views": 14898
     },
