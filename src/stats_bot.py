@@ -6,7 +6,6 @@
 import logging
 import json
 
-from .dump_utils import dump_one
 from .config import main_dump_path
 
 logger = logging.getLogger(__name__)
@@ -14,7 +13,7 @@ logger = logging.getLogger(__name__)
 stats_all_data = {}
 
 
-def dump_stats(articles, new_data, lang="") -> dict[str, int | dict[str, int]]:
+def dump_stats(articles, new_data: dict[str, int], lang: str) -> dict[str, int | dict[str, int]]:
     # ---
     data_hash = [x for x in new_data if x.find("#") != -1]
     data_hash.extend([x for x in articles if x.find("#") != -1])
@@ -34,8 +33,6 @@ def dump_stats(articles, new_data, lang="") -> dict[str, int | dict[str, int]]:
         "hash": len(data_hash),
         "views": views,
     }
-    # ---
-    dump_one(json_file_stats, stats)
     # ---
     stats_all_data[lang] = stats
     # ---
