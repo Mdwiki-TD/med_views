@@ -101,9 +101,13 @@ def load_languages_counts() -> dict:
     """
     file = main_dump_path / "languages_counts.json"
     # ---
+    data = {}
+    # ---
     if file.exists():
         # ---
         with open(file, "r", encoding="utf-8") as f:
-            return json.load(f)
+            data = json.load(f)
     # ---
-    return {}
+    logger.debug(f"load_languages_counts({file}), {len(data)=}")
+    # ---
+    return data
