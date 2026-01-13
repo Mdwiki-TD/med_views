@@ -3,9 +3,10 @@ Tests for src.config
 """
 import importlib
 import sys
+from _pytest.monkeypatch import MonkeyPatch
 
 
-def test_parallelism_default(monkeypatch):
+def test_parallelism_default(monkeypatch: MonkeyPatch) -> None:
     import src.config
 
     monkeypatch.setattr(sys, "argv", ["script.py"])

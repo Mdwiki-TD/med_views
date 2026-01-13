@@ -2,6 +2,7 @@
 Tests for src.views
 """
 from unittest.mock import MagicMock
+from _pytest.monkeypatch import MonkeyPatch
 
 from src.views import (
     calculate_total_views,
@@ -23,7 +24,7 @@ def test_update_data():
     assert result == {"Art1": 10, "Art2": 5, "Art3": 15}
 
 
-def test_get_one_lang_views_by_titles(monkeypatch):
+def test_get_one_lang_views_by_titles(monkeypatch: MonkeyPatch) -> None:
     mock_article_views = MagicMock(return_value={"Art1": 10})
     monkeypatch.setattr("src.views.article_views", mock_article_views)
 

@@ -7,11 +7,10 @@ import logging
 import sys
 
 from src.config import main_dump_path
-from src.views import get_one_lang_views_by_titles, update_data
+from src.views import get_one_lang_views
 from src.dump_utils import count_languages_in_json, load_languages_counts
 from src.sql_utils import get_language_article_counts_sql
 from src.titles_utils import load_lang_titles
-from src.helps import json_load
 from src.views_utils.views_helps import (
     get_view_file,
 )
@@ -67,21 +66,6 @@ def dump_one_lang_files(titles, data, lang, year) -> None:
         json.dump(not_empty_data, f, ensure_ascii=False)
 
 
-def load_one_lang_views(langcode, titles, year, maxv=0):
-    """
-    Load view statistics for one language and a list of titles.
-    """
-    # ---
-    data = {}
-    # ---
-    if "zero" in sys.argv:
-        data = {x: 0 for x in titles}
-    else:
-        data = get_one_lang_views_by_titles(langcode, titles, year)
-    # ---
-    return data
-
-
 def get_languages_articles_counts():
     # ---
     all_infos = load_languages_counts()
@@ -100,38 +84,7 @@ def get_languages_articles_counts():
     return result
 
 
-def get_one_lang_views(langcode, titles, year, maxv=0) -> dict:
-    # ---
-    json_file = get_view_file(langcode, year)
-    # ---
-    u_data = {}
-    titles_not_in_file = titles
-    # ---
-    if json_file.exists():
-        u_data = json_load(json_file)
-        titles_not_in_file = [
-            x for x in titles if (
-                x not in u_data
-                # or u_data[x] == 0
-            )]
-        logger.info(f"<<yellow>> {langcode}: {len(titles):,} titles, titles_not_in_file: {len(titles_not_in_file):,}")
-    else:
-        logger.info(f"<<yellow>> {json_file} not found.")
-    # ---
-    titles_not_in_file.sort()
-    # ---
-    if maxv > 0 and len(titles_not_in_file) > maxv:
-        logger.info(f"<<yellow>> {langcode}: {len(titles):,} titles > max {maxv}, skipping")
-    elif "local" in sys.argv:
-        logger.info(f"<<green>> load_one_lang_views(lang:{langcode}) \t titles: {len(titles):,}")
-    else:
-        views_t = load_one_lang_views(langcode, titles_not_in_file, year)
-        u_data = update_data(u_data, views_t)
-    # ---
-    return u_data
-
-
-def make_views(languages, year, limit, maxv) -> dict:
+def make_views(languages, year, limit, maxv=0) -> dict[str, int]:
     # ---
     views = {}
     # ---
@@ -141,11 +94,7 @@ def make_views(languages, year, limit, maxv) -> dict:
             logger.info(f"limit {limit} reached, break")
             break
         # ---
-        titles = load_lang_titles(lang)
-        # ---
-        data = get_one_lang_views(lang, titles, year, maxv=maxv)
-        # ---
-        dump_one_lang_files(titles, data, lang, year)
+        data = process_language_views(year, lang, maxv)
         # ---
         views[lang] = data
     # ---
@@ -153,6 +102,19 @@ def make_views(languages, year, limit, maxv) -> dict:
     dump_empty_data_all(year)
     # ---
     return views
+
+
+def process_language_views(year, lang, maxv=0) -> dict[str, int]:
+    # ---
+    titles = load_lang_titles(lang)
+    # ---
+    json_file = get_view_file(lang, year)
+    # ---
+    data = get_one_lang_views(lang, titles, year, json_file, maxv=maxv)
+    # ---
+    dump_one_lang_files(titles, data, lang, year)
+    # ---
+    return data
 
 
 def start(year, limit, maxv):

@@ -1,15 +1,15 @@
 """
 Tests for src.titles_utils
 """
-import sys
 from unittest.mock import MagicMock
+from _pytest.monkeypatch import MonkeyPatch
 
 from src.titles_utils import (
     load_lang_titles,
 )
 
 
-def test_load_lang_titles(monkeypatch):
+def test_load_lang_titles(monkeypatch: MonkeyPatch) -> None:
     # Scenario 1: load_lang_titles_from_dump returns data
     mock_dump = MagicMock(return_value=["Title 1", "Title 2"])
     monkeypatch.setattr("src.titles_utils.load_lang_titles_from_dump", mock_dump)

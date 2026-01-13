@@ -3,6 +3,7 @@ Tests for src.wiki.mdwiki_page
 """
 import sys
 from unittest.mock import MagicMock
+from _pytest.monkeypatch import MonkeyPatch
 
 from src.wiki.mdwiki_page import (
     load_main_api,
@@ -10,7 +11,7 @@ from src.wiki.mdwiki_page import (
 )
 
 
-def test_load_main_api(monkeypatch):
+def test_load_main_api(monkeypatch: MonkeyPatch) -> None:
     monkeypatch.setattr("src.wiki.mdwiki_page.all_apis_valid", True)
     mock_all_apis = MagicMock()
     monkeypatch.setattr("src.wiki.mdwiki_page.ALL_APIS", mock_all_apis)
@@ -26,7 +27,7 @@ def test_load_main_api(monkeypatch):
     assert mock_all_apis.call_count == 1
 
 
-def test_page(monkeypatch):
+def test_page(monkeypatch: MonkeyPatch) -> None:
     mock_api = MagicMock()
     mock_load_api = MagicMock(return_value=mock_api)
     monkeypatch.setattr("src.wiki.mdwiki_page.load_main_api", mock_load_api)

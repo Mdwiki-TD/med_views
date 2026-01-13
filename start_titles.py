@@ -6,6 +6,8 @@ python3 titles.py
 
 """
 
+import json
+import sys
 import logging
 
 from src.config import json_titles_path, main_dump_path
@@ -23,7 +25,15 @@ logging.basicConfig(level=logging.DEBUG)
 
 def start():
     # ---
-    all_links = retrieve_medicine_titles()
+    file = main_dump_path / "all_languages_titles.json"
+    # ---
+    if "local" in sys.argv:
+        logger.info("dump_data: loading from local files")
+        all_links = {}
+        with open(file, "r", encoding="utf-8") as f:
+            all_links = json.load(f)
+    else:
+        all_links = retrieve_medicine_titles()
     # ---
     logger.info(f"dump_data: retrieved langs: {len(all_links)}")
     # ---
@@ -31,7 +41,7 @@ def start():
         logger.warning("No links retrieved from database, aborting.")
         return
     # ---
-    dump_one(main_dump_path / "all_languages_titles.json", all_links)
+    dump_one(file, all_links)
     # ---
     dump_languages_counts({x: len(y) for x, y in all_links.items()})
     # ---

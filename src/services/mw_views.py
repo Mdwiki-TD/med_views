@@ -43,7 +43,45 @@ def month_from_day(dt):
     return datetime(dt.year, dt.month, 1)
 
 
-class PageviewsClient:
+class PageviewsClientHelper:
+    def format_article_title(self, title: str) -> str:
+        return title.replace(" ", "_")
+
+    def filter_data(self, data):
+        # remove any key < 2015 and not = "all"
+        # ---
+        new_data = {}
+        # ---
+        for title, views in data.items():
+            new_data[title] = {
+                k: v for k, v in views.items() if (k.isnumeric() and int(k) >= 2015) or k == "all" or v > 0
+            }
+        # ---
+        return new_data
+
+    def summarize_monthly_views(self, article_monthly_data):
+        new_data = {}
+        # ---
+        for month, y in article_monthly_data.items():
+            # month = datetime.datetime(2024, 5, 1, 0, 0)
+            year_n = month.strftime("%Y")
+            for article, count in y.items():
+                article = article.replace("_", " ")
+                # ensure nested dict & the specific year key both exist
+                article_dict = new_data.setdefault(article, {"all": 0, year_n: 0})
+                # ---
+                if count is not None:
+                    article_dict[year_n] = article_dict.get(year_n, 0) + count
+                    article_dict["all"] = article_dict.get("all", 0) + count
+                # ---
+                # sort article_dict keys
+                article_dict = {k: v for k, v in sorted(article_dict.items(), key=lambda item: item[0])}
+                # ---
+                new_data[article] = article_dict
+        return new_data
+
+
+class PageviewsClient(PageviewsClientHelper):
     def __init__(self, user_agent="", parallelism=10):
         """
         Create a PageviewsClient
@@ -73,9 +111,7 @@ class PageviewsClient:
     ) -> defaultdict[datetime, dict]:
         """
         Get pageview counts for one or more articles
-        See `<https://wikimedia.org/api/rest_v1/metrics/pageviews/?doc\\
-                #!/Pageviews_data/get_metrics_pageviews_per_article_project\\
-                _access_agent_article_granularity_start_end>`_
+        See `<https://wikimedia.org/api/rest_v1/metrics/pageviews/?doc#!/Pageviews_data/get_metrics_pageviews_per_article_project_access_agent_article_granularity_start_end>`_
 
         :Parameters:
             project : str
@@ -127,7 +163,7 @@ class PageviewsClient:
         if isinstance(articles, str):
             articles = [articles]
 
-        articles = [a.replace(" ", "_") for a in articles]
+        articles = [self.format_article_title(a) for a in articles]
         articlesSafe = [quote(a, safe="") for a in articles]
 
         project = "be-tarask.wikipedia" if project == "be-x-old.wikipedia" else project
@@ -206,24 +242,6 @@ class PageviewsClient:
 
             return list(results)
 
-    def filter_data(self, data):
-        # remove any key < 2015 and not = "all"
-        # ---
-        new_data = {}
-        """
-        new_data = {
-            title: {k: v for k, v in views.items() if (k.isnumeric() and int(k) >= 2015) or k == "all" or v > 0}
-            for title, views in data.items()
-        }
-        """
-        # ---
-        for title, views in data.items():
-            new_data[title] = {
-                k: v for k, v in views.items() if (k.isnumeric() and int(k) >= 2015) or k == "all" or v > 0
-            }
-        # ---
-        return new_data
-
     def article_views_new(self, project, articles, **kwargs) -> dict:
         # ---
         """
@@ -236,27 +254,9 @@ class PageviewsClient:
         """
         time_start = time.time()
         # ---
-        dd = self.article_views(project, articles, **kwargs)
+        article_monthly_data = self.article_views(project, articles, **kwargs)
         # ---
-        new_data = {}
-        # ---
-        for month, y in dd.items():
-            # month = datetime.datetime(2024, 5, 1, 0, 0)
-            year_n = month.strftime("%Y")
-            for article, count in y.items():
-                article = article.replace("_", " ")
-                # ensure nested dict & the specific year key both exist
-                article_dict = new_data.setdefault(article, {"all": 0, year_n: 0})
-                # ---
-                if count is not None:
-                    article_dict[year_n] = article_dict.get(year_n, 0) + count
-                    article_dict["all"] = article_dict.get("all", 0) + count
-                # ---
-                # sort article_dict keys
-                article_dict = {k: v for k, v in sorted(article_dict.items(), key=lambda item: item[0])}
-                # ---
-                new_data[article] = article_dict
-        # ---
+        new_data = self.summarize_monthly_views(article_monthly_data)
         new_data = self.filter_data(new_data)
         # ---
         delta = time.time() - time_start

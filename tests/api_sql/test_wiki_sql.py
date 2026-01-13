@@ -2,6 +2,7 @@
 Tests for src.api_sql.wiki_sql
 """
 from unittest.mock import MagicMock
+from _pytest.monkeypatch import MonkeyPatch
 
 from src.api_sql.wiki_sql import (
     GET_SQL,
@@ -10,7 +11,7 @@ from src.api_sql.wiki_sql import (
 )
 
 
-def test_GET_SQL(monkeypatch):
+def test_GET_SQL(monkeypatch: MonkeyPatch) -> None:
     # Clear cache before test
     GET_SQL.cache_clear()
 
@@ -42,7 +43,7 @@ def test_make_labsdb_dbs_p():
     assert db == "be_x_oldwiki_p"
 
 
-def test_retrieve_sql_results(monkeypatch):
+def test_retrieve_sql_results(monkeypatch: MonkeyPatch) -> None:
     mock_get_sql = MagicMock(return_value=True)
     monkeypatch.setattr("src.api_sql.wiki_sql.GET_SQL", mock_get_sql)
 

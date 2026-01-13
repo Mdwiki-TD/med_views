@@ -1,7 +1,7 @@
 import pytest
 
 from src.texts_utils import (
-    make_text,
+    build_wiki_text,
 )
 
 
@@ -12,7 +12,7 @@ def test_make_text():
     # en: 1000 views / 10 articles = 100 avg
     # fr: 500 views / 5 articles = 100 avg
 
-    text = make_text(languages, views)
+    text = build_wiki_text(languages, views)
 
     # Check headers
     assert "Total views for medical content = 1,500" in text

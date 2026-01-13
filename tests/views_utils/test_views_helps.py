@@ -2,6 +2,7 @@
 Tests for src.views_utils.views_helps
 """
 from unittest.mock import MagicMock
+from _pytest.monkeypatch import MonkeyPatch
 
 from src.views_utils.views_helps import (
     article_views,
@@ -9,7 +10,7 @@ from src.views_utils.views_helps import (
 )
 
 
-def test_article_views(monkeypatch):
+def test_article_views(monkeypatch: MonkeyPatch) -> None:
     mock_bot = MagicMock()
     monkeypatch.setattr("src.views_utils.views_helps.view_bot", mock_bot)
 
