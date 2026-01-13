@@ -70,7 +70,7 @@ def make_views_local(languages, year, limit):
     return views
 
 
-def start(year, limit):
+def make_page_text(year, limit):
     # ---
     """
     Orchestrates collection of per-language pageview totals for a given year and updates the corresponding wiki stats page.
@@ -81,7 +81,6 @@ def start(year, limit):
         year (int): Year used in view calculations and included in the target wiki page title.
         limit (int): Maximum number of languages to process (0 means no limit).
     """
-    title = f"WikiProjectMed:WikiProject Medicine/Stats/Total pageviews by language {year}"
     # ---
     languages = get_languages_articles_counts()
     # ---
@@ -116,6 +115,19 @@ def start(year, limit):
     with open(main_dump_path / f"{year}_text.txt", "w", encoding="utf-8") as f:
         f.write(newtext)
     # ---
+    return newtext
+
+
+def start(year, limit):
+    # ---
+    newtext = make_page_text(year, limit)
+    # ---
+    if "save" not in sys.argv:
+        logger.info("Dry run mode, not saving changes.")
+        print(newtext)
+        return
+    # ---
+    title = f"WikiProjectMed:WikiProject Medicine/Stats/Total pageviews by language {year}"
     target_page = page(title)
     # ---
     text = target_page.get_text()
@@ -123,8 +135,6 @@ def start(year, limit):
     if text == newtext:
         logger.info("No change")
         return
-    # ---
-    logger.info(f"Total views not 0: {views_not_0:,}")
     # ---
     if target_page.exists():
         target_page.save(newtext=newtext, summary="update", nocreate=0, minor="")
