@@ -113,7 +113,7 @@ def start(year, limit):
     # ---
     newtext = make_text(languages, views)
     # ---
-    with open(main_dump_path / "text.txt", "w", encoding="utf-8") as f:
+    with open(main_dump_path / f"{year}_text.txt", "w", encoding="utf-8") as f:
         f.write(newtext)
     # ---
     target_page = page(title)
