@@ -4,7 +4,7 @@ python3 I:/mdwiki/med_views/test.py
 """
 import sys
 
-from start import fetch_language_statistics  # (year, maxv, lang)
+from start_views import process_language_views  # (year, maxv, lang)
 
 year = 2025
 limit = 0
@@ -22,6 +22,6 @@ for arg in sys.argv:
     elif key in ["lang", "-lang"] and val.isalpha():
         lang = val
 
-data = fetch_language_statistics(year, lang)
+data = process_language_views(year, lang)
 
 print(data)
