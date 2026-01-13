@@ -41,10 +41,25 @@ def dump_stats(json_file_stats, new_data, lang="") -> dict[str, int | dict[str, 
 
 def dump_stats_all() -> None:
     # ---
-    json_file = main_dump_path / "stats_all.json"
+    all_hash = sum(v["hash"] for v in stats_all_data.values())
+    all_not_empty = sum(v["not_empty"] for v in stats_all_data.values())
+    all_empty = sum(v["empty"] for v in stats_all_data.values())
+    all_views = sum(v["views"] for v in stats_all_data.values())
+    all_articles = sum(v["all"] for v in stats_all_data.values())
+    # ---
+    summary = {
+        "articles": all_articles,
+        "empty_views": all_empty,
+        "not_empty_views": all_not_empty,
+        "hash": all_hash,
+        "total_views": all_views,
+    }
+    # ---
+    with open(main_dump_path / "summary.json", "w", encoding="utf-8") as f:
+        json.dump(summary, f, ensure_ascii=False, indent=4)
     # ---
     # sort stats_all_data by "views" descending
     stats_all_data_sorted = dict(sorted(stats_all_data.items(), key=lambda item: item[1].get("views", 0), reverse=True))
     # ---
-    with open(json_file, "w", encoding="utf-8") as f:
-        json.dump(stats_all_data_sorted, f, ensure_ascii=False)
+    with open(main_dump_path / "stats_all.json", "w", encoding="utf-8") as f:
+        json.dump(stats_all_data_sorted, f, ensure_ascii=False, indent=4)

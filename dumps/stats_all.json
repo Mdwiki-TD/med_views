@@ -1,2299 +1,10 @@
 {
-    "gur": {
-        "all": 1,
-        "empty": 0,
-        "not_empty": 1,
-        "hash": 0,
-        "views": 970
-    },
-    "dsb": {
-        "all": 1,
-        "empty": 0,
-        "not_empty": 1,
-        "hash": 0,
-        "views": 4362
-    },
-    "gag": {
-        "all": 1,
-        "empty": 0,
-        "not_empty": 1,
-        "hash": 0,
-        "views": 505
-    },
-    "kbd": {
-        "all": 2,
-        "empty": 0,
-        "not_empty": 2,
-        "hash": 0,
-        "views": 2911
-    },
-    "sg": {
-        "all": 2,
-        "empty": 0,
-        "not_empty": 2,
-        "hash": 0,
-        "views": 1542
-    },
-    "dga": {
-        "all": 2,
-        "empty": 0,
-        "not_empty": 2,
-        "hash": 0,
-        "views": 2120
-    },
-    "tet": {
-        "all": 2,
-        "empty": 0,
-        "not_empty": 2,
-        "hash": 0,
-        "views": 3767
-    },
-    "tdd": {
-        "all": 2,
-        "empty": 0,
-        "not_empty": 2,
-        "hash": 0,
-        "views": 2544
-    },
-    "avk": {
-        "all": 3,
-        "empty": 0,
-        "not_empty": 3,
-        "hash": 0,
-        "views": 3720
-    },
-    "alt": {
-        "all": 3,
-        "empty": 0,
-        "not_empty": 3,
-        "hash": 0,
-        "views": 8921
-    },
-    "srn": {
-        "all": 3,
-        "empty": 0,
-        "not_empty": 3,
-        "hash": 0,
-        "views": 4126
-    },
-    "sm": {
-        "all": 3,
-        "empty": 0,
-        "not_empty": 3,
-        "hash": 0,
-        "views": 4917
-    },
-    "to": {
-        "all": 3,
-        "empty": 0,
-        "not_empty": 3,
-        "hash": 0,
-        "views": 10171
-    },
-    "pwn": {
-        "all": 3,
-        "empty": 0,
-        "not_empty": 3,
-        "hash": 0,
-        "views": 4480
-    },
-    "fat": {
-        "all": 3,
-        "empty": 0,
-        "not_empty": 3,
-        "hash": 0,
-        "views": 2851
-    },
-    "roa-tara": {
-        "all": 3,
-        "empty": 0,
-        "not_empty": 3,
-        "hash": 0,
-        "views": 2054
-    },
-    "cbk-zam": {
-        "all": 4,
-        "empty": 0,
-        "not_empty": 4,
-        "hash": 0,
-        "views": 9587
-    },
-    "kg": {
-        "all": 4,
-        "empty": 0,
-        "not_empty": 4,
-        "hash": 0,
-        "views": 9294
-    },
-    "bug": {
-        "all": 4,
-        "empty": 0,
-        "not_empty": 4,
-        "hash": 0,
-        "views": 9200
-    },
-    "pag": {
-        "all": 4,
-        "empty": 0,
-        "not_empty": 4,
-        "hash": 0,
-        "views": 5888
-    },
-    "ty": {
-        "all": 4,
-        "empty": 0,
-        "not_empty": 4,
-        "hash": 0,
-        "views": 1317
-    },
-    "ann": {
-        "all": 5,
-        "empty": 0,
-        "not_empty": 5,
-        "hash": 0,
-        "views": 10136
-    },
-    "atj": {
-        "all": 5,
-        "empty": 0,
-        "not_empty": 5,
-        "hash": 0,
-        "views": 7507
-    },
-    "kus": {
-        "all": 5,
-        "empty": 0,
-        "not_empty": 5,
-        "hash": 0,
-        "views": 5331
-    },
-    "rsk": {
-        "all": 5,
-        "empty": 0,
-        "not_empty": 5,
-        "hash": 0,
-        "views": 4002
-    },
-    "krc": {
-        "all": 5,
-        "empty": 0,
-        "not_empty": 5,
-        "hash": 0,
-        "views": 6769
-    },
-    "rm": {
-        "all": 5,
-        "empty": 0,
-        "not_empty": 5,
-        "hash": 0,
-        "views": 8614
-    },
-    "tay": {
-        "all": 5,
-        "empty": 0,
-        "not_empty": 5,
-        "hash": 0,
-        "views": 5585
-    },
-    "mos": {
-        "all": 5,
-        "empty": 0,
-        "not_empty": 5,
-        "hash": 0,
-        "views": 3285
-    },
-    "igl": {
-        "all": 5,
-        "empty": 0,
-        "not_empty": 5,
-        "hash": 0,
-        "views": 861
-    },
-    "dz": {
-        "all": 6,
-        "empty": 0,
-        "not_empty": 6,
-        "hash": 0,
-        "views": 9146
-    },
-    "xal": {
-        "all": 6,
-        "empty": 0,
-        "not_empty": 6,
-        "hash": 0,
-        "views": 9398
-    },
-    "chy": {
-        "all": 6,
-        "empty": 0,
-        "not_empty": 6,
-        "hash": 0,
-        "views": 8698
-    },
-    "got": {
-        "all": 6,
-        "empty": 0,
-        "not_empty": 6,
-        "hash": 0,
-        "views": 4180
-    },
-    "ee": {
-        "all": 6,
-        "empty": 0,
-        "not_empty": 6,
-        "hash": 0,
-        "views": 10003
-    },
-    "bbc": {
-        "all": 6,
-        "empty": 0,
-        "not_empty": 6,
-        "hash": 0,
-        "views": 8336
-    },
-    "rmy": {
-        "all": 6,
-        "empty": 0,
-        "not_empty": 6,
-        "hash": 0,
-        "views": 6351
-    },
-    "ve": {
-        "all": 6,
-        "empty": 0,
-        "not_empty": 6,
-        "hash": 0,
-        "views": 20760
-    },
-    "bdr": {
-        "all": 6,
-        "empty": 0,
-        "not_empty": 6,
-        "hash": 0,
-        "views": 19178
-    },
-    "nup": {
-        "all": 6,
-        "empty": 0,
-        "not_empty": 6,
-        "hash": 0,
-        "views": 14322
-    },
-    "koi": {
-        "all": 7,
-        "empty": 0,
-        "not_empty": 7,
-        "hash": 0,
-        "views": 7109
-    },
-    "mi": {
-        "all": 7,
-        "empty": 0,
-        "not_empty": 7,
-        "hash": 0,
-        "views": 9548
-    },
-    "ab": {
-        "all": 7,
-        "empty": 0,
-        "not_empty": 7,
-        "hash": 0,
-        "views": 5063
-    },
-    "tpi": {
-        "all": 7,
-        "empty": 0,
-        "not_empty": 7,
-        "hash": 0,
-        "views": 17823
-    },
-    "bi": {
-        "all": 8,
-        "empty": 0,
-        "not_empty": 8,
-        "hash": 0,
-        "views": 24306
-    },
-    "cu": {
-        "all": 8,
-        "empty": 0,
-        "not_empty": 8,
-        "hash": 0,
-        "views": 13778
-    },
-    "lad": {
-        "all": 8,
-        "empty": 0,
-        "not_empty": 8,
-        "hash": 0,
-        "views": 17736
-    },
-    "guc": {
-        "all": 8,
-        "empty": 0,
-        "not_empty": 8,
-        "hash": 0,
-        "views": 7970
-    },
-    "shn": {
-        "all": 8,
-        "empty": 0,
-        "not_empty": 8,
-        "hash": 0,
-        "views": 20977
-    },
-    "pfl": {
-        "all": 8,
-        "empty": 0,
-        "not_empty": 8,
-        "hash": 0,
-        "views": 18481
-    },
-    "syl": {
-        "all": 9,
-        "empty": 0,
-        "not_empty": 9,
-        "hash": 0,
-        "views": 8193
-    },
-    "udm": {
-        "all": 9,
-        "empty": 0,
-        "not_empty": 9,
-        "hash": 0,
-        "views": 7277
-    },
-    "ik": {
-        "all": 10,
-        "empty": 0,
-        "not_empty": 10,
-        "hash": 0,
-        "views": 10652
-    },
-    "crh": {
-        "all": 10,
-        "empty": 0,
-        "not_empty": 10,
-        "hash": 0,
-        "views": 13580
-    },
-    "tum": {
-        "all": 10,
-        "empty": 0,
-        "not_empty": 10,
-        "hash": 0,
-        "views": 25637
-    },
-    "zea": {
-        "all": 10,
-        "empty": 0,
-        "not_empty": 10,
-        "hash": 0,
-        "views": 12338
-    },
-    "kv": {
-        "all": 11,
-        "empty": 0,
-        "not_empty": 11,
-        "hash": 0,
-        "views": 11316
-    },
-    "ami": {
-        "all": 11,
-        "empty": 0,
-        "not_empty": 11,
-        "hash": 0,
-        "views": 14886
-    },
-    "kge": {
-        "all": 11,
-        "empty": 0,
-        "not_empty": 11,
-        "hash": 0,
-        "views": 16409
-    },
-    "bm": {
-        "all": 11,
-        "empty": 0,
-        "not_empty": 11,
-        "hash": 0,
-        "views": 17843
-    },
-    "map-bms": {
-        "all": 11,
-        "empty": 0,
-        "not_empty": 11,
-        "hash": 0,
-        "views": 18363
-    },
-    "pdc": {
-        "all": 11,
-        "empty": 0,
-        "not_empty": 11,
-        "hash": 0,
-        "views": 13023
-    },
-    "mrj": {
-        "all": 12,
-        "empty": 0,
-        "not_empty": 12,
-        "hash": 0,
-        "views": 10966
-    },
-    "glk": {
-        "all": 12,
-        "empty": 0,
-        "not_empty": 12,
-        "hash": 0,
-        "views": 12142
-    },
-    "haw": {
-        "all": 12,
-        "empty": 0,
-        "not_empty": 12,
-        "hash": 0,
-        "views": 15304
-    },
-    "bpy": {
-        "all": 12,
-        "empty": 0,
-        "not_empty": 12,
-        "hash": 0,
-        "views": 15712
-    },
-    "fon": {
-        "all": 12,
-        "empty": 0,
-        "not_empty": 12,
-        "hash": 0,
-        "views": 12015
-    },
-    "nqo": {
-        "all": 13,
-        "empty": 0,
-        "not_empty": 13,
-        "hash": 0,
-        "views": 12036
-    },
-    "stq": {
-        "all": 13,
-        "empty": 0,
-        "not_empty": 13,
-        "hash": 0,
-        "views": 49188
-    },
-    "lld": {
-        "all": 13,
-        "empty": 0,
-        "not_empty": 13,
-        "hash": 0,
-        "views": 22079
-    },
-    "lbe": {
-        "all": 13,
-        "empty": 0,
-        "not_empty": 13,
-        "hash": 0,
-        "views": 15400
-    },
-    "nah": {
-        "all": 13,
-        "empty": 0,
-        "not_empty": 13,
-        "hash": 0,
-        "views": 15453
-    },
-    "gor": {
-        "all": 14,
-        "empty": 0,
-        "not_empty": 14,
-        "hash": 0,
-        "views": 53771
-    },
-    "pcd": {
-        "all": 14,
-        "empty": 0,
-        "not_empty": 14,
-        "hash": 0,
-        "views": 18821
-    },
-    "trv": {
-        "all": 14,
-        "empty": 0,
-        "not_empty": 14,
-        "hash": 0,
-        "views": 39954
-    },
-    "olo": {
-        "all": 15,
-        "empty": 0,
-        "not_empty": 15,
-        "hash": 0,
-        "views": 20113
-    },
-    "nov": {
-        "all": 16,
-        "empty": 0,
-        "not_empty": 16,
-        "hash": 0,
-        "views": 69697
-    },
-    "btm": {
-        "all": 16,
-        "empty": 0,
-        "not_empty": 16,
-        "hash": 0,
-        "views": 27751
-    },
-    "iu": {
-        "all": 16,
-        "empty": 0,
-        "not_empty": 16,
-        "hash": 0,
-        "views": 69212
-    },
-    "tly": {
-        "all": 16,
-        "empty": 0,
-        "not_empty": 16,
-        "hash": 0,
-        "views": 61498
-    },
-    "ace": {
-        "all": 16,
-        "empty": 0,
-        "not_empty": 16,
-        "hash": 0,
-        "views": 21529
-    },
-    "pcm": {
-        "all": 16,
-        "empty": 0,
-        "not_empty": 16,
-        "hash": 0,
-        "views": 50585
-    },
-    "nv": {
-        "all": 17,
-        "empty": 0,
-        "not_empty": 17,
-        "hash": 0,
-        "views": 18488
-    },
-    "nr": {
-        "all": 17,
-        "empty": 0,
-        "not_empty": 17,
-        "hash": 0,
-        "views": 16097
-    },
-    "frp": {
-        "all": 18,
-        "empty": 0,
-        "not_empty": 18,
-        "hash": 0,
-        "views": 32736
-    },
-    "mhr": {
-        "all": 18,
-        "empty": 0,
-        "not_empty": 18,
-        "hash": 0,
-        "views": 20299
-    },
-    "nrm": {
-        "all": 18,
-        "empty": 0,
-        "not_empty": 18,
-        "hash": 0,
-        "views": 24378
-    },
-    "smn": {
-        "all": 18,
-        "empty": 0,
-        "not_empty": 18,
-        "hash": 0,
-        "views": 20370
-    },
-    "zgh": {
-        "all": 18,
-        "empty": 1,
-        "not_empty": 17,
-        "hash": 0,
-        "views": 14898
-    },
-    "mni": {
-        "all": 18,
-        "empty": 0,
-        "not_empty": 18,
-        "hash": 0,
-        "views": 41066
-    },
-    "lez": {
-        "all": 19,
-        "empty": 0,
-        "not_empty": 19,
-        "hash": 0,
-        "views": 26196
-    },
-    "ksh": {
-        "all": 19,
-        "empty": 0,
-        "not_empty": 19,
-        "hash": 0,
-        "views": 19305
-    },
-    "nap": {
-        "all": 19,
-        "empty": 0,
-        "not_empty": 19,
-        "hash": 0,
-        "views": 19539
-    },
-    "guw": {
-        "all": 21,
-        "empty": 0,
-        "not_empty": 21,
-        "hash": 0,
-        "views": 26520
-    },
-    "nso": {
-        "all": 21,
-        "empty": 0,
-        "not_empty": 21,
-        "hash": 0,
-        "views": 24005
-    },
-    "fj": {
-        "all": 22,
-        "empty": 0,
-        "not_empty": 22,
-        "hash": 0,
-        "views": 34959
-    },
-    "mdf": {
-        "all": 22,
-        "empty": 0,
-        "not_empty": 22,
-        "hash": 0,
-        "views": 21627
-    },
-    "hsb": {
-        "all": 22,
-        "empty": 0,
-        "not_empty": 22,
-        "hash": 0,
-        "views": 27141
-    },
-    "ang": {
-        "all": 23,
-        "empty": 0,
-        "not_empty": 23,
-        "hash": 0,
-        "views": 29242
-    },
-    "shi": {
-        "all": 23,
-        "empty": 1,
-        "not_empty": 22,
-        "hash": 0,
-        "views": 48317
-    },
-    "vls": {
-        "all": 23,
-        "empty": 0,
-        "not_empty": 23,
-        "hash": 0,
-        "views": 38835
-    },
-    "ki": {
-        "all": 23,
-        "empty": 1,
-        "not_empty": 22,
-        "hash": 0,
-        "views": 53660
-    },
-    "jbo": {
-        "all": 24,
-        "empty": 0,
-        "not_empty": 24,
-        "hash": 0,
-        "views": 32052
-    },
-    "mnw": {
-        "all": 24,
-        "empty": 0,
-        "not_empty": 24,
-        "hash": 0,
-        "views": 49058
-    },
-    "ti": {
-        "all": 24,
-        "empty": 0,
-        "not_empty": 24,
-        "hash": 0,
-        "views": 31504
-    },
-    "co": {
-        "all": 26,
-        "empty": 0,
-        "not_empty": 26,
-        "hash": 0,
-        "views": 42660
-    },
-    "nia": {
-        "all": 26,
-        "empty": 0,
-        "not_empty": 26,
-        "hash": 0,
-        "views": 37832
-    },
-    "chr": {
-        "all": 26,
-        "empty": 0,
-        "not_empty": 26,
-        "hash": 0,
-        "views": 29928
-    },
-    "rn": {
-        "all": 26,
-        "empty": 0,
-        "not_empty": 26,
-        "hash": 0,
-        "views": 49072
-    },
-    "dtp": {
-        "all": 26,
-        "empty": 0,
-        "not_empty": 26,
-        "hash": 0,
-        "views": 25517
-    },
-    "roa-rup": {
-        "all": 27,
-        "empty": 0,
-        "not_empty": 27,
-        "hash": 0,
-        "views": 33221
-    },
-    "ie": {
-        "all": 27,
-        "empty": 0,
-        "not_empty": 27,
-        "hash": 0,
-        "views": 53009
-    },
-    "gom": {
-        "all": 27,
-        "empty": 0,
-        "not_empty": 27,
-        "hash": 0,
-        "views": 40717
-    },
-    "fur": {
-        "all": 28,
-        "empty": 0,
-        "not_empty": 28,
-        "hash": 0,
-        "views": 49732
-    },
-    "ts": {
-        "all": 28,
-        "empty": 0,
-        "not_empty": 28,
-        "hash": 0,
-        "views": 56955
-    },
-    "av": {
-        "all": 29,
-        "empty": 0,
-        "not_empty": 29,
-        "hash": 0,
-        "views": 28669
-    },
-    "wo": {
-        "all": 29,
-        "empty": 0,
-        "not_empty": 29,
-        "hash": 0,
-        "views": 46908
-    },
-    "dty": {
-        "all": 30,
-        "empty": 0,
-        "not_empty": 30,
-        "hash": 0,
-        "views": 41046
-    },
-    "knc": {
-        "all": 31,
-        "empty": 0,
-        "not_empty": 31,
-        "hash": 0,
-        "views": 46409
-    },
-    "pi": {
-        "all": 31,
-        "empty": 0,
-        "not_empty": 31,
-        "hash": 0,
-        "views": 135329
-    },
-    "tn": {
-        "all": 31,
-        "empty": 2,
-        "not_empty": 29,
-        "hash": 0,
-        "views": 36420
-    },
-    "iba": {
-        "all": 32,
-        "empty": 0,
-        "not_empty": 32,
-        "hash": 0,
-        "views": 24203
-    },
-    "awa": {
-        "all": 33,
-        "empty": 0,
-        "not_empty": 33,
-        "hash": 0,
-        "views": 43080
-    },
-    "nds-nl": {
-        "all": 33,
-        "empty": 0,
-        "not_empty": 33,
-        "hash": 0,
-        "views": 58289
-    },
-    "inh": {
-        "all": 34,
-        "empty": 0,
-        "not_empty": 34,
-        "hash": 0,
-        "views": 38284
-    },
-    "mwl": {
-        "all": 34,
-        "empty": 0,
-        "not_empty": 34,
-        "hash": 0,
-        "views": 51745
-    },
-    "st": {
-        "all": 34,
-        "empty": 0,
-        "not_empty": 34,
-        "hash": 0,
-        "views": 48157
-    },
-    "blk": {
-        "all": 35,
-        "empty": 0,
-        "not_empty": 35,
-        "hash": 0,
-        "views": 37504
-    },
-    "gv": {
-        "all": 35,
-        "empty": 0,
-        "not_empty": 35,
-        "hash": 0,
-        "views": 65068
-    },
-    "myv": {
-        "all": 35,
-        "empty": 0,
-        "not_empty": 35,
-        "hash": 0,
-        "views": 30014
-    },
-    "kcg": {
-        "all": 35,
-        "empty": 0,
-        "not_empty": 35,
-        "hash": 0,
-        "views": 35396
-    },
-    "ss": {
-        "all": 36,
-        "empty": 0,
-        "not_empty": 36,
-        "hash": 0,
-        "views": 45368
-    },
-    "arc": {
-        "all": 38,
-        "empty": 0,
-        "not_empty": 38,
-        "hash": 0,
-        "views": 60808
-    },
-    "anp": {
-        "all": 38,
-        "empty": 0,
-        "not_empty": 38,
-        "hash": 0,
-        "views": 58190
-    },
-    "ny": {
-        "all": 39,
-        "empty": 0,
-        "not_empty": 39,
-        "hash": 0,
-        "views": 49515
-    },
-    "tok": {
-        "all": 39,
-        "empty": 0,
-        "not_empty": 39,
-        "hash": 0,
-        "views": 5345
-    },
-    "skr": {
-        "all": 39,
-        "empty": 0,
-        "not_empty": 39,
-        "hash": 0,
-        "views": 19474
-    },
-    "os": {
-        "all": 40,
-        "empty": 0,
-        "not_empty": 40,
-        "hash": 0,
-        "views": 34939
-    },
-    "vep": {
-        "all": 40,
-        "empty": 0,
-        "not_empty": 40,
-        "hash": 0,
-        "views": 71686
-    },
-    "tcy": {
-        "all": 40,
-        "empty": 0,
-        "not_empty": 40,
-        "hash": 0,
-        "views": 48035
-    },
-    "gan": {
-        "all": 40,
-        "empty": 0,
-        "not_empty": 40,
-        "hash": 0,
-        "views": 71001
-    },
-    "mt": {
-        "all": 42,
-        "empty": 0,
-        "not_empty": 42,
-        "hash": 0,
-        "views": 64863
-    },
-    "ay": {
-        "all": 42,
-        "empty": 0,
-        "not_empty": 42,
-        "hash": 0,
-        "views": 66552
-    },
-    "ext": {
-        "all": 43,
-        "empty": 0,
-        "not_empty": 43,
-        "hash": 0,
-        "views": 85258
-    },
-    "din": {
-        "all": 44,
-        "empty": 0,
-        "not_empty": 44,
-        "hash": 0,
-        "views": 46699
-    },
-    "kbp": {
-        "all": 45,
-        "empty": 0,
-        "not_empty": 45,
-        "hash": 0,
-        "views": 58905
-    },
-    "xh": {
-        "all": 45,
-        "empty": 0,
-        "not_empty": 45,
-        "hash": 0,
-        "views": 60189
-    },
-    "kw": {
-        "all": 47,
-        "empty": 0,
-        "not_empty": 47,
-        "hash": 0,
-        "views": 97350
-    },
-    "bew": {
-        "all": 48,
-        "empty": 0,
-        "not_empty": 48,
-        "hash": 0,
-        "views": 41646
-    },
-    "csb": {
-        "all": 49,
-        "empty": 0,
-        "not_empty": 49,
-        "hash": 0,
-        "views": 43267
-    },
-    "lij": {
-        "all": 50,
-        "empty": 0,
-        "not_empty": 50,
-        "hash": 0,
-        "views": 83100
-    },
-    "se": {
-        "all": 50,
-        "empty": 0,
-        "not_empty": 50,
-        "hash": 0,
-        "views": 52909
-    },
-    "tyv": {
-        "all": 51,
-        "empty": 0,
-        "not_empty": 51,
-        "hash": 0,
-        "views": 45757
-    },
-    "kaa": {
-        "all": 55,
-        "empty": 0,
-        "not_empty": 55,
-        "hash": 0,
-        "views": 58653
-    },
-    "ilo": {
-        "all": 56,
-        "empty": 0,
-        "not_empty": 56,
-        "hash": 0,
-        "views": 145468
-    },
-    "bxr": {
-        "all": 58,
-        "empty": 0,
-        "not_empty": 58,
-        "hash": 0,
-        "views": 80947
-    },
-    "rki": {
-        "all": 58,
-        "empty": 0,
-        "not_empty": 58,
-        "hash": 0,
-        "views": 16133
-    },
-    "fiu-vro": {
-        "all": 59,
-        "empty": 0,
-        "not_empty": 59,
-        "hash": 0,
-        "views": 67892
-    },
-    "szl": {
-        "all": 59,
-        "empty": 0,
-        "not_empty": 59,
-        "hash": 0,
-        "views": 49913
-    },
-    "pap": {
-        "all": 61,
-        "empty": 0,
-        "not_empty": 61,
-        "hash": 0,
-        "views": 108823
-    },
-    "ce": {
-        "all": 64,
-        "empty": 0,
-        "not_empty": 64,
-        "hash": 0,
-        "views": 56501
-    },
-    "km": {
-        "all": 65,
-        "empty": 0,
-        "not_empty": 65,
-        "hash": 0,
-        "views": 263750
-    },
-    "szy": {
-        "all": 68,
-        "empty": 0,
-        "not_empty": 68,
-        "hash": 0,
-        "views": 54147
-    },
-    "jam": {
-        "all": 69,
-        "empty": 0,
-        "not_empty": 69,
-        "hash": 0,
-        "views": 118209
-    },
-    "gcr": {
-        "all": 71,
-        "empty": 0,
-        "not_empty": 71,
-        "hash": 0,
-        "views": 96825
-    },
-    "hif": {
-        "all": 74,
-        "empty": 0,
-        "not_empty": 74,
-        "hash": 0,
-        "views": 184766
-    },
-    "om": {
-        "all": 77,
-        "empty": 0,
-        "not_empty": 77,
-        "hash": 0,
-        "views": 197333
-    },
-    "mai": {
-        "all": 77,
-        "empty": 0,
-        "not_empty": 77,
-        "hash": 0,
-        "views": 70963
-    },
-    "pam": {
-        "all": 79,
-        "empty": 0,
-        "not_empty": 79,
-        "hash": 0,
-        "views": 148466
-    },
-    "bar": {
-        "all": 80,
-        "empty": 0,
-        "not_empty": 80,
-        "hash": 0,
-        "views": 121274
-    },
-    "vec": {
-        "all": 81,
-        "empty": 0,
-        "not_empty": 81,
-        "hash": 0,
-        "views": 153193
-    },
-    "fo": {
-        "all": 88,
-        "empty": 0,
-        "not_empty": 88,
-        "hash": 0,
-        "views": 203536
-    },
-    "tk": {
-        "all": 88,
-        "empty": 0,
-        "not_empty": 88,
-        "hash": 0,
-        "views": 345625
-    },
-    "am": {
-        "all": 92,
-        "empty": 0,
-        "not_empty": 92,
-        "hash": 0,
-        "views": 222828
-    },
-    "tw": {
-        "all": 92,
-        "empty": 0,
-        "not_empty": 92,
-        "hash": 0,
-        "views": 111724
-    },
-    "ug": {
-        "all": 92,
-        "empty": 0,
-        "not_empty": 92,
-        "hash": 0,
-        "views": 82891
-    },
-    "hak": {
-        "all": 93,
-        "empty": 0,
-        "not_empty": 93,
-        "hash": 0,
-        "views": 111816
-    },
-    "bjn": {
-        "all": 94,
-        "empty": 0,
-        "not_empty": 94,
-        "hash": 0,
-        "views": 128011
-    },
-    "sc": {
-        "all": 94,
-        "empty": 0,
-        "not_empty": 94,
-        "hash": 0,
-        "views": 117214
-    },
-    "ary": {
-        "all": 94,
-        "empty": 1,
-        "not_empty": 93,
-        "hash": 0,
-        "views": 119822
-    },
-    "sat": {
-        "all": 94,
-        "empty": 0,
-        "not_empty": 94,
-        "hash": 0,
-        "views": 95045
-    },
-    "frr": {
-        "all": 96,
-        "empty": 0,
-        "not_empty": 96,
-        "hash": 0,
-        "views": 143399
-    },
-    "sn": {
-        "all": 96,
-        "empty": 0,
-        "not_empty": 96,
-        "hash": 0,
-        "views": 178210
-    },
-    "lg": {
-        "all": 98,
-        "empty": 0,
-        "not_empty": 98,
-        "hash": 0,
-        "views": 69780
-    },
-    "cdo": {
-        "all": 99,
-        "empty": 0,
-        "not_empty": 99,
-        "hash": 0,
-        "views": 90440
-    },
-    "rue": {
-        "all": 100,
-        "empty": 0,
-        "not_empty": 100,
-        "hash": 0,
-        "views": 108158
-    },
-    "bh": {
-        "all": 103,
-        "empty": 0,
-        "not_empty": 103,
-        "hash": 0,
-        "views": 190222
-    },
-    "gd": {
-        "all": 103,
-        "empty": 0,
-        "not_empty": 103,
-        "hash": 0,
-        "views": 125942
-    },
-    "zu": {
-        "all": 106,
-        "empty": 0,
-        "not_empty": 106,
-        "hash": 0,
-        "views": 168664
-    },
-    "diq": {
-        "all": 107,
-        "empty": 0,
-        "not_empty": 107,
-        "hash": 0,
-        "views": 130496
-    },
-    "zh-classical": {
-        "all": 107,
-        "empty": 0,
-        "not_empty": 107,
-        "hash": 0,
-        "views": 168254
-    },
-    "bat-smg": {
-        "all": 108,
-        "empty": 0,
-        "not_empty": 108,
-        "hash": 0,
-        "views": 123561
-    },
-    "ln": {
-        "all": 108,
-        "empty": 0,
-        "not_empty": 108,
-        "hash": 0,
-        "views": 128043
-    },
-    "pms": {
-        "all": 108,
-        "empty": 0,
-        "not_empty": 108,
-        "hash": 0,
-        "views": 96453
-    },
-    "lo": {
-        "all": 110,
-        "empty": 0,
-        "not_empty": 110,
-        "hash": 0,
-        "views": 92100
-    },
-    "vo": {
-        "all": 113,
-        "empty": 2,
-        "not_empty": 111,
-        "hash": 0,
-        "views": 49414
-    },
-    "ban": {
-        "all": 127,
-        "empty": 0,
-        "not_empty": 127,
-        "hash": 0,
-        "views": 138367
-    },
-    "rw": {
-        "all": 128,
-        "empty": 0,
-        "not_empty": 128,
-        "hash": 0,
-        "views": 167817
-    },
-    "gn": {
-        "all": 131,
-        "empty": 0,
-        "not_empty": 131,
-        "hash": 0,
-        "views": 187221
-    },
-    "li": {
-        "all": 131,
-        "empty": 0,
-        "not_empty": 131,
-        "hash": 0,
-        "views": 202658
-    },
-    "sa": {
-        "all": 132,
-        "empty": 0,
-        "not_empty": 132,
-        "hash": 0,
-        "views": 241170
-    },
-    "eml": {
-        "all": 133,
-        "empty": 0,
-        "not_empty": 133,
-        "hash": 0,
-        "views": 100195
-    },
-    "kab": {
-        "all": 134,
-        "empty": 0,
-        "not_empty": 134,
-        "hash": 0,
-        "views": 128610
-    },
-    "lfn": {
-        "all": 136,
-        "empty": 0,
-        "not_empty": 136,
-        "hash": 0,
-        "views": 274467
-    },
-    "mzn": {
-        "all": 140,
-        "empty": 0,
-        "not_empty": 140,
-        "hash": 0,
-        "views": 103702
-    },
-    "bo": {
-        "all": 141,
-        "empty": 0,
-        "not_empty": 141,
-        "hash": 0,
-        "views": 129531
-    },
-    "so": {
-        "all": 149,
-        "empty": 0,
-        "not_empty": 149,
-        "hash": 0,
-        "views": 205179
-    },
-    "gu": {
-        "all": 155,
-        "empty": 0,
-        "not_empty": 155,
-        "hash": 0,
-        "views": 405456
-    },
-    "mad": {
-        "all": 166,
-        "empty": 3,
-        "not_empty": 163,
-        "hash": 0,
-        "views": 127781
-    },
-    "ceb": {
-        "all": 166,
-        "empty": 0,
-        "not_empty": 166,
-        "hash": 0,
-        "views": 120325
-    },
-    "dag": {
-        "all": 170,
-        "empty": 0,
-        "not_empty": 170,
-        "hash": 0,
-        "views": 181582
-    },
-    "za": {
-        "all": 175,
-        "empty": 0,
-        "not_empty": 175,
-        "hash": 0,
-        "views": 155479
-    },
-    "min": {
-        "all": 177,
-        "empty": 0,
-        "not_empty": 177,
-        "hash": 0,
-        "views": 282983
-    },
-    "als": {
-        "all": 194,
-        "empty": 0,
-        "not_empty": 194,
-        "hash": 0,
-        "views": 355775
-    },
-    "mg": {
-        "all": 196,
-        "empty": 0,
-        "not_empty": 196,
-        "hash": 0,
-        "views": 211145
-    },
-    "sd": {
-        "all": 203,
-        "empty": 0,
-        "not_empty": 203,
-        "hash": 0,
-        "views": 183610
-    },
-    "scn": {
-        "all": 213,
-        "empty": 0,
-        "not_empty": 213,
-        "hash": 0,
-        "views": 247019
-    },
-    "ba": {
-        "all": 221,
-        "empty": 0,
-        "not_empty": 221,
-        "hash": 0,
-        "views": 209159
-    },
-    "sco": {
-        "all": 225,
-        "empty": 0,
-        "not_empty": 225,
-        "hash": 0,
-        "views": 552655
-    },
-    "xmf": {
-        "all": 225,
-        "empty": 0,
-        "not_empty": 225,
-        "hash": 0,
-        "views": 226855
-    },
-    "new": {
-        "all": 225,
-        "empty": 0,
-        "not_empty": 225,
-        "hash": 0,
-        "views": 214325
-    },
-    "cv": {
-        "all": 231,
-        "empty": 0,
-        "not_empty": 231,
-        "hash": 0,
-        "views": 165909
-    },
-    "nds": {
-        "all": 237,
-        "empty": 0,
-        "not_empty": 237,
-        "hash": 0,
-        "views": 313189
-    },
-    "qu": {
-        "all": 241,
-        "empty": 0,
-        "not_empty": 241,
-        "hash": 0,
-        "views": 334969
-    },
-    "lmo": {
-        "all": 244,
-        "empty": 0,
-        "not_empty": 244,
-        "hash": 0,
-        "views": 294169
-    },
-    "yi": {
-        "all": 244,
-        "empty": 0,
-        "not_empty": 244,
-        "hash": 0,
-        "views": 290988
-    },
-    "sah": {
-        "all": 245,
-        "empty": 0,
-        "not_empty": 245,
-        "hash": 0,
-        "views": 207830
-    },
-    "bcl": {
-        "all": 250,
-        "empty": 0,
-        "not_empty": 250,
-        "hash": 0,
-        "views": 360110
-    },
-    "ks": {
-        "all": 255,
-        "empty": 2,
-        "not_empty": 253,
-        "hash": 0,
-        "views": 183566
-    },
-    "wa": {
-        "all": 257,
-        "empty": 0,
-        "not_empty": 257,
-        "hash": 0,
-        "views": 233071
-    },
-    "hyw": {
-        "all": 258,
-        "empty": 0,
-        "not_empty": 258,
-        "hash": 0,
-        "views": 182033
-    },
-    "yo": {
-        "all": 262,
-        "empty": 0,
-        "not_empty": 262,
-        "hash": 0,
-        "views": 187674
-    },
-    "an": {
-        "all": 269,
-        "empty": 0,
-        "not_empty": 269,
-        "hash": 0,
-        "views": 405717
-    },
-    "ht": {
-        "all": 272,
-        "empty": 0,
-        "not_empty": 272,
-        "hash": 0,
-        "views": 286566
-    },
-    "lb": {
-        "all": 273,
-        "empty": 0,
-        "not_empty": 273,
-        "hash": 0,
-        "views": 336996
-    },
-    "br": {
-        "all": 280,
-        "empty": 0,
-        "not_empty": 280,
-        "hash": 0,
-        "views": 306056
-    },
-    "fy": {
-        "all": 288,
-        "empty": 0,
-        "not_empty": 288,
-        "hash": 0,
-        "views": 425570
-    },
-    "ia": {
-        "all": 308,
-        "empty": 0,
-        "not_empty": 308,
-        "hash": 0,
-        "views": 548599
-    },
-    "dv": {
-        "all": 312,
-        "empty": 0,
-        "not_empty": 312,
-        "hash": 0,
-        "views": 282011
-    },
-    "gpe": {
-        "all": 314,
-        "empty": 34,
-        "not_empty": 280,
-        "hash": 0,
-        "views": 180820
-    },
-    "su": {
-        "all": 334,
-        "empty": 0,
-        "not_empty": 334,
-        "hash": 0,
-        "views": 610573
-    },
-    "mn": {
-        "all": 344,
-        "empty": 0,
-        "not_empty": 344,
-        "hash": 0,
-        "views": 865908
-    },
-    "ku": {
-        "all": 351,
-        "empty": 0,
-        "not_empty": 351,
-        "hash": 0,
-        "views": 364700
-    },
-    "ne": {
-        "all": 368,
-        "empty": 0,
-        "not_empty": 368,
-        "hash": 0,
-        "views": 562921
-    },
-    "as": {
-        "all": 371,
-        "empty": 0,
-        "not_empty": 371,
-        "hash": 0,
-        "views": 607440
-    },
-    "pnb": {
-        "all": 385,
-        "empty": 0,
-        "not_empty": 385,
-        "hash": 0,
-        "views": 266354
-    },
-    "my": {
-        "all": 395,
-        "empty": 1,
-        "not_empty": 394,
-        "hash": 0,
-        "views": 999544
-    },
-    "war": {
-        "all": 433,
-        "empty": 0,
-        "not_empty": 433,
-        "hash": 0,
-        "views": 594887
-    },
-    "zh-min-nan": {
-        "all": 434,
-        "empty": 0,
-        "not_empty": 434,
-        "hash": 0,
-        "views": 370120
-    },
-    "oc": {
-        "all": 435,
-        "empty": 3,
-        "not_empty": 432,
-        "hash": 0,
-        "views": 595176
-    },
-    "si": {
-        "all": 464,
-        "empty": 0,
-        "not_empty": 464,
-        "hash": 0,
-        "views": 1159837
-    },
-    "tg": {
-        "all": 466,
-        "empty": 6,
-        "not_empty": 460,
-        "hash": 0,
-        "views": 750400
-    },
-    "mr": {
-        "all": 488,
-        "empty": 0,
-        "not_empty": 488,
-        "hash": 0,
-        "views": 1371357
-    },
-    "ps": {
-        "all": 510,
-        "empty": 1,
-        "not_empty": 509,
-        "hash": 0,
-        "views": 509689
-    },
-    "be-x-old": {
-        "all": 526,
-        "empty": 0,
-        "not_empty": 526,
-        "hash": 0,
-        "views": 509507
-    },
-    "jv": {
-        "all": 544,
-        "empty": 0,
-        "not_empty": 544,
-        "hash": 0,
-        "views": 707454
-    },
-    "ff": {
-        "all": 599,
-        "empty": 0,
-        "not_empty": 599,
-        "hash": 0,
-        "views": 116901
-    },
-    "io": {
-        "all": 659,
-        "empty": 1,
-        "not_empty": 658,
-        "hash": 0,
-        "views": 692517
-    },
-    "ig": {
-        "all": 686,
-        "empty": 1,
-        "not_empty": 685,
-        "hash": 0,
-        "views": 295043
-    },
-    "pa": {
-        "all": 716,
-        "empty": 0,
-        "not_empty": 716,
-        "hash": 0,
-        "views": 516394
-    },
-    "kn": {
-        "all": 728,
-        "empty": 2,
-        "not_empty": 726,
-        "hash": 0,
-        "views": 1335917
-    },
-    "sw": {
-        "all": 749,
-        "empty": 0,
-        "not_empty": 749,
-        "hash": 0,
-        "views": 1457754
-    },
-    "wuu": {
-        "all": 751,
-        "empty": 0,
-        "not_empty": 751,
-        "hash": 0,
-        "views": 1375474
-    },
-    "is": {
-        "all": 786,
-        "empty": 0,
-        "not_empty": 786,
-        "hash": 0,
-        "views": 968732
-    },
-    "ast": {
-        "all": 817,
-        "empty": 0,
-        "not_empty": 817,
-        "hash": 0,
-        "views": 1122939
-    },
-    "tl": {
-        "all": 845,
-        "empty": 0,
-        "not_empty": 845,
-        "hash": 0,
-        "views": 2263286
-    },
-    "af": {
-        "all": 881,
-        "empty": 4,
-        "not_empty": 877,
-        "hash": 0,
-        "views": 2279609
-    },
-    "tt": {
-        "all": 887,
-        "empty": 0,
-        "not_empty": 887,
-        "hash": 0,
-        "views": 424089
-    },
-    "nn": {
-        "all": 909,
-        "empty": 0,
-        "not_empty": 909,
-        "hash": 0,
-        "views": 1090584
-    },
-    "ky": {
-        "all": 943,
-        "empty": 0,
-        "not_empty": 943,
-        "hash": 0,
-        "views": 1729275
-    },
-    "ckb": {
-        "all": 984,
-        "empty": 0,
-        "not_empty": 984,
-        "hash": 0,
-        "views": 981201
-    },
-    "sq": {
-        "all": 1040,
-        "empty": 0,
-        "not_empty": 1040,
-        "hash": 0,
-        "views": 3211450
-    },
-    "ha": {
-        "all": 1064,
-        "empty": 83,
-        "not_empty": 981,
-        "hash": 0,
-        "views": 749202
-    },
-    "ka": {
-        "all": 1094,
-        "empty": 0,
-        "not_empty": 1094,
-        "hash": 0,
-        "views": 3078866
-    },
-    "la": {
-        "all": 1235,
-        "empty": 0,
-        "not_empty": 1235,
-        "hash": 0,
-        "views": 1370154
-    },
-    "lv": {
-        "all": 1235,
-        "empty": 0,
-        "not_empty": 1235,
-        "hash": 0,
-        "views": 2286806
-    },
-    "te": {
-        "all": 1266,
-        "empty": 7,
-        "not_empty": 1259,
-        "hash": 0,
-        "views": 1695583
-    },
-    "ga": {
-        "all": 1331,
-        "empty": 2,
-        "not_empty": 1329,
-        "hash": 0,
-        "views": 944898
-    },
-    "be": {
-        "all": 1387,
-        "empty": 1,
-        "not_empty": 1386,
-        "hash": 0,
-        "views": 982099
-    },
-    "lt": {
-        "all": 1411,
-        "empty": 0,
-        "not_empty": 1411,
-        "hash": 0,
-        "views": 3672384
-    },
-    "ur": {
-        "all": 1450,
-        "empty": 1,
-        "not_empty": 1449,
-        "hash": 0,
-        "views": 1555226
-    },
-    "kk": {
-        "all": 1510,
-        "empty": 5,
-        "not_empty": 1505,
-        "hash": 0,
-        "views": 3700574
-    },
-    "zh-yue": {
-        "all": 1615,
-        "empty": 1,
-        "not_empty": 1614,
-        "hash": 0,
-        "views": 1775461
-    },
-    "cy": {
-        "all": 1630,
-        "empty": 1,
-        "not_empty": 1629,
-        "hash": 0,
-        "views": 1011894
-    },
-    "sk": {
-        "all": 1668,
-        "empty": 6,
-        "not_empty": 1662,
-        "hash": 0,
-        "views": 5901529
-    },
-    "azb": {
-        "all": 1751,
-        "empty": 0,
-        "not_empty": 1751,
-        "hash": 0,
-        "views": 780149
-    },
-    "mk": {
-        "all": 1772,
-        "empty": 2,
-        "not_empty": 1770,
-        "hash": 0,
-        "views": 3260101
-    },
-    "hr": {
-        "all": 2113,
-        "empty": 0,
-        "not_empty": 2113,
-        "hash": 0,
-        "views": 7372035
-    },
-    "bs": {
-        "all": 2135,
-        "empty": 6,
-        "not_empty": 2129,
-        "hash": 0,
-        "views": 3886698
-    },
-    "ta": {
-        "all": 2156,
-        "empty": 3,
-        "not_empty": 2153,
-        "hash": 0,
-        "views": 3906704
-    },
-    "et": {
-        "all": 2179,
-        "empty": 3,
-        "not_empty": 2176,
-        "hash": 0,
-        "views": 3772117
-    },
-    "bg": {
-        "all": 2209,
-        "empty": 2,
-        "not_empty": 2207,
-        "hash": 0,
-        "views": 8594765
-    },
-    "uz": {
-        "all": 2216,
-        "empty": 2,
-        "not_empty": 2214,
-        "hash": 0,
-        "views": 9132846
-    },
-    "hi": {
-        "all": 2228,
-        "empty": 0,
-        "not_empty": 2228,
-        "hash": 1,
-        "views": 7705511
-    },
-    "az": {
-        "all": 2270,
-        "empty": 2,
-        "not_empty": 2268,
-        "hash": 0,
-        "views": 5471493
-    },
-    "eo": {
-        "all": 2321,
-        "empty": 3,
-        "not_empty": 2318,
-        "hash": 0,
-        "views": 1690403
-    },
-    "sl": {
-        "all": 2389,
-        "empty": 2,
-        "not_empty": 2387,
-        "hash": 0,
-        "views": 4979860
-    },
-    "da": {
-        "all": 2432,
-        "empty": 2,
-        "not_empty": 2430,
-        "hash": 1,
-        "views": 5732375
-    },
-    "gl": {
-        "all": 2458,
-        "empty": 0,
-        "not_empty": 2458,
-        "hash": 0,
-        "views": 2507848
-    },
-    "ms": {
-        "all": 2467,
-        "empty": 2,
-        "not_empty": 2465,
-        "hash": 0,
-        "views": 5232499
-    },
-    "bn": {
-        "all": 2652,
-        "empty": 59,
-        "not_empty": 2593,
-        "hash": 0,
-        "views": 8505758
-    },
-    "hu": {
-        "all": 2702,
-        "empty": 4,
-        "not_empty": 2698,
-        "hash": 1,
-        "views": 15254098
-    },
-    "th": {
-        "all": 2875,
-        "empty": 0,
-        "not_empty": 2875,
-        "hash": 0,
-        "views": 7726673
-    },
-    "or": {
-        "all": 2891,
-        "empty": 0,
-        "not_empty": 2891,
-        "hash": 0,
-        "views": 1682692
-    },
-    "el": {
-        "all": 2944,
-        "empty": 4,
-        "not_empty": 2940,
-        "hash": 0,
-        "views": 16011983
-    },
-    "ml": {
-        "all": 3145,
-        "empty": 2,
-        "not_empty": 3143,
-        "hash": 0,
-        "views": 3833494
-    },
-    "eu": {
-        "all": 3219,
-        "empty": 2,
-        "not_empty": 3217,
-        "hash": 0,
-        "views": 2823940
-    },
-    "simple": {
-        "all": 3333,
-        "empty": 2,
-        "not_empty": 3331,
-        "hash": 0,
-        "views": 13145443
-    },
-    "hy": {
-        "all": 3384,
-        "empty": 3,
-        "not_empty": 3381,
-        "hash": 0,
-        "views": 7753995
-    },
-    "no": {
-        "all": 3466,
-        "empty": 3,
-        "not_empty": 3463,
-        "hash": 1,
-        "views": 6571407
-    },
-    "ro": {
-        "all": 3479,
-        "empty": 4,
-        "not_empty": 3475,
-        "hash": 0,
-        "views": 13151727
-    },
-    "sh": {
-        "all": 3598,
-        "empty": 0,
-        "not_empty": 3598,
-        "hash": 0,
-        "views": 5410619
-    },
-    "cs": {
-        "all": 4249,
-        "empty": 1,
-        "not_empty": 4248,
-        "hash": 0,
-        "views": 25146456
-    },
-    "arz": {
-        "all": 4435,
-        "empty": 0,
-        "not_empty": 4435,
-        "hash": 0,
-        "views": 1238148
-    },
-    "vi": {
-        "all": 5124,
-        "empty": 0,
-        "not_empty": 5124,
-        "hash": 0,
-        "views": 13590890
-    },
-    "fi": {
-        "all": 5185,
-        "empty": 3,
-        "not_empty": 5182,
-        "hash": 2,
-        "views": 18252536
-    },
-    "he": {
-        "all": 5447,
-        "empty": 15,
-        "not_empty": 5432,
-        "hash": 6,
-        "views": 24075068
-    },
-    "sv": {
-        "all": 5943,
-        "empty": 1,
-        "not_empty": 5942,
-        "hash": 14,
-        "views": 18097574
-    },
-    "tr": {
-        "all": 6019,
-        "empty": 6,
-        "not_empty": 6013,
-        "hash": 0,
-        "views": 33581487
-    },
-    "sr": {
-        "all": 6187,
-        "empty": 2,
-        "not_empty": 6185,
-        "hash": 0,
-        "views": 12416755
-    },
-    "ko": {
-        "all": 6208,
-        "empty": 4,
-        "not_empty": 6204,
-        "hash": 0,
-        "views": 25427189
-    },
-    "id": {
-        "all": 6435,
-        "empty": 20,
-        "not_empty": 6415,
-        "hash": 0,
-        "views": 20425040
-    },
-    "nl": {
-        "all": 6740,
-        "empty": 7,
-        "not_empty": 6733,
-        "hash": 2,
-        "views": 34399620
-    },
-    "ca": {
-        "all": 6756,
-        "empty": 2,
-        "not_empty": 6754,
-        "hash": 3,
-        "views": 7581442
-    },
-    "uk": {
-        "all": 7647,
-        "empty": 8,
-        "not_empty": 7639,
-        "hash": 0,
-        "views": 27905526
-    },
-    "ja": {
-        "all": 8504,
-        "empty": 8,
-        "not_empty": 8496,
-        "hash": 6,
-        "views": 120090370
-    },
-    "pl": {
-        "all": 8848,
-        "empty": 2,
-        "not_empty": 8846,
-        "hash": 3,
-        "views": 62860464
-    },
-    "zh": {
-        "all": 9265,
-        "empty": 14,
-        "not_empty": 9251,
-        "hash": 5,
-        "views": 113605089
+    "en": {
+        "all": 53900,
+        "empty": 45,
+        "not_empty": 53855,
+        "hash": 0,
+        "views": 1717608795
     },
     "ru": {
         "all": 9769,
@@ -2302,26 +13,12 @@
         "hash": 3,
         "views": 255872999
     },
-    "pt": {
-        "all": 10327,
-        "empty": 9,
-        "not_empty": 10318,
-        "hash": 1,
-        "views": 56988396
-    },
-    "fa": {
-        "all": 10451,
-        "empty": 12,
-        "not_empty": 10439,
-        "hash": 0,
-        "views": 96388263
-    },
-    "it": {
-        "all": 10667,
-        "empty": 7,
-        "not_empty": 10660,
-        "hash": 9,
-        "views": 81500212
+    "de": {
+        "all": 14919,
+        "empty": 4,
+        "not_empty": 14915,
+        "hash": 72,
+        "views": 220683318
     },
     "es": {
         "all": 13560,
@@ -2337,12 +34,40 @@
         "hash": 24,
         "views": 154578624
     },
-    "de": {
-        "all": 14919,
-        "empty": 4,
-        "not_empty": 14915,
-        "hash": 72,
-        "views": 220683318
+    "ja": {
+        "all": 8504,
+        "empty": 8,
+        "not_empty": 8496,
+        "hash": 6,
+        "views": 120090370
+    },
+    "zh": {
+        "all": 9265,
+        "empty": 14,
+        "not_empty": 9251,
+        "hash": 5,
+        "views": 113605089
+    },
+    "fa": {
+        "all": 10451,
+        "empty": 12,
+        "not_empty": 10439,
+        "hash": 0,
+        "views": 96388263
+    },
+    "it": {
+        "all": 10667,
+        "empty": 7,
+        "not_empty": 10660,
+        "hash": 9,
+        "views": 81500212
+    },
+    "pl": {
+        "all": 8848,
+        "empty": 2,
+        "not_empty": 8846,
+        "hash": 3,
+        "views": 62860464
     },
     "ar": {
         "all": 20444,
@@ -2351,11 +76,2286 @@
         "hash": 0,
         "views": 61881116
     },
-    "en": {
-        "all": 53900,
-        "empty": 45,
-        "not_empty": 53855,
+    "pt": {
+        "all": 10327,
+        "empty": 9,
+        "not_empty": 10318,
+        "hash": 1,
+        "views": 56988396
+    },
+    "nl": {
+        "all": 6740,
+        "empty": 7,
+        "not_empty": 6733,
+        "hash": 2,
+        "views": 34399620
+    },
+    "tr": {
+        "all": 6019,
+        "empty": 6,
+        "not_empty": 6013,
         "hash": 0,
-        "views": 1717608795
+        "views": 33581487
+    },
+    "uk": {
+        "all": 7647,
+        "empty": 8,
+        "not_empty": 7639,
+        "hash": 0,
+        "views": 27905526
+    },
+    "ko": {
+        "all": 6208,
+        "empty": 4,
+        "not_empty": 6204,
+        "hash": 0,
+        "views": 25427189
+    },
+    "cs": {
+        "all": 4249,
+        "empty": 1,
+        "not_empty": 4248,
+        "hash": 0,
+        "views": 25146456
+    },
+    "he": {
+        "all": 5447,
+        "empty": 15,
+        "not_empty": 5432,
+        "hash": 6,
+        "views": 24075068
+    },
+    "id": {
+        "all": 6435,
+        "empty": 20,
+        "not_empty": 6415,
+        "hash": 0,
+        "views": 20425040
+    },
+    "fi": {
+        "all": 5185,
+        "empty": 3,
+        "not_empty": 5182,
+        "hash": 2,
+        "views": 18252536
+    },
+    "sv": {
+        "all": 5943,
+        "empty": 1,
+        "not_empty": 5942,
+        "hash": 14,
+        "views": 18097574
+    },
+    "el": {
+        "all": 2944,
+        "empty": 4,
+        "not_empty": 2940,
+        "hash": 0,
+        "views": 16011983
+    },
+    "hu": {
+        "all": 2702,
+        "empty": 4,
+        "not_empty": 2698,
+        "hash": 1,
+        "views": 15254098
+    },
+    "vi": {
+        "all": 5124,
+        "empty": 0,
+        "not_empty": 5124,
+        "hash": 0,
+        "views": 13590890
+    },
+    "ro": {
+        "all": 3479,
+        "empty": 4,
+        "not_empty": 3475,
+        "hash": 0,
+        "views": 13151727
+    },
+    "simple": {
+        "all": 3333,
+        "empty": 2,
+        "not_empty": 3331,
+        "hash": 0,
+        "views": 13145443
+    },
+    "sr": {
+        "all": 6187,
+        "empty": 2,
+        "not_empty": 6185,
+        "hash": 0,
+        "views": 12416755
+    },
+    "uz": {
+        "all": 2216,
+        "empty": 2,
+        "not_empty": 2214,
+        "hash": 0,
+        "views": 9132846
+    },
+    "bg": {
+        "all": 2209,
+        "empty": 2,
+        "not_empty": 2207,
+        "hash": 0,
+        "views": 8594765
+    },
+    "bn": {
+        "all": 2652,
+        "empty": 59,
+        "not_empty": 2593,
+        "hash": 0,
+        "views": 8505758
+    },
+    "hy": {
+        "all": 3384,
+        "empty": 3,
+        "not_empty": 3381,
+        "hash": 0,
+        "views": 7753995
+    },
+    "th": {
+        "all": 2875,
+        "empty": 0,
+        "not_empty": 2875,
+        "hash": 0,
+        "views": 7726673
+    },
+    "hi": {
+        "all": 2228,
+        "empty": 0,
+        "not_empty": 2228,
+        "hash": 1,
+        "views": 7705511
+    },
+    "ca": {
+        "all": 6756,
+        "empty": 2,
+        "not_empty": 6754,
+        "hash": 3,
+        "views": 7581442
+    },
+    "hr": {
+        "all": 2113,
+        "empty": 0,
+        "not_empty": 2113,
+        "hash": 0,
+        "views": 7372035
+    },
+    "no": {
+        "all": 3466,
+        "empty": 3,
+        "not_empty": 3463,
+        "hash": 1,
+        "views": 6571407
+    },
+    "sk": {
+        "all": 1668,
+        "empty": 6,
+        "not_empty": 1662,
+        "hash": 0,
+        "views": 5901529
+    },
+    "da": {
+        "all": 2432,
+        "empty": 2,
+        "not_empty": 2430,
+        "hash": 1,
+        "views": 5732375
+    },
+    "az": {
+        "all": 2270,
+        "empty": 2,
+        "not_empty": 2268,
+        "hash": 0,
+        "views": 5471493
+    },
+    "sh": {
+        "all": 3598,
+        "empty": 0,
+        "not_empty": 3598,
+        "hash": 0,
+        "views": 5410619
+    },
+    "ms": {
+        "all": 2467,
+        "empty": 2,
+        "not_empty": 2465,
+        "hash": 0,
+        "views": 5232499
+    },
+    "sl": {
+        "all": 2389,
+        "empty": 2,
+        "not_empty": 2387,
+        "hash": 0,
+        "views": 4979860
+    },
+    "ta": {
+        "all": 2156,
+        "empty": 3,
+        "not_empty": 2153,
+        "hash": 0,
+        "views": 3906704
+    },
+    "bs": {
+        "all": 2135,
+        "empty": 6,
+        "not_empty": 2129,
+        "hash": 0,
+        "views": 3886698
+    },
+    "ml": {
+        "all": 3145,
+        "empty": 2,
+        "not_empty": 3143,
+        "hash": 0,
+        "views": 3833494
+    },
+    "et": {
+        "all": 2179,
+        "empty": 3,
+        "not_empty": 2176,
+        "hash": 0,
+        "views": 3772117
+    },
+    "kk": {
+        "all": 1510,
+        "empty": 5,
+        "not_empty": 1505,
+        "hash": 0,
+        "views": 3700574
+    },
+    "lt": {
+        "all": 1411,
+        "empty": 0,
+        "not_empty": 1411,
+        "hash": 0,
+        "views": 3672384
+    },
+    "mk": {
+        "all": 1772,
+        "empty": 2,
+        "not_empty": 1770,
+        "hash": 0,
+        "views": 3260101
+    },
+    "sq": {
+        "all": 1040,
+        "empty": 0,
+        "not_empty": 1040,
+        "hash": 0,
+        "views": 3211450
+    },
+    "ka": {
+        "all": 1094,
+        "empty": 0,
+        "not_empty": 1094,
+        "hash": 0,
+        "views": 3078866
+    },
+    "eu": {
+        "all": 3219,
+        "empty": 2,
+        "not_empty": 3217,
+        "hash": 0,
+        "views": 2823940
+    },
+    "gl": {
+        "all": 2458,
+        "empty": 0,
+        "not_empty": 2458,
+        "hash": 0,
+        "views": 2507848
+    },
+    "lv": {
+        "all": 1235,
+        "empty": 0,
+        "not_empty": 1235,
+        "hash": 0,
+        "views": 2286806
+    },
+    "af": {
+        "all": 881,
+        "empty": 4,
+        "not_empty": 877,
+        "hash": 0,
+        "views": 2279609
+    },
+    "tl": {
+        "all": 845,
+        "empty": 0,
+        "not_empty": 845,
+        "hash": 0,
+        "views": 2263286
+    },
+    "zh-yue": {
+        "all": 1615,
+        "empty": 1,
+        "not_empty": 1614,
+        "hash": 0,
+        "views": 1775461
+    },
+    "ky": {
+        "all": 943,
+        "empty": 0,
+        "not_empty": 943,
+        "hash": 0,
+        "views": 1729275
+    },
+    "te": {
+        "all": 1266,
+        "empty": 7,
+        "not_empty": 1259,
+        "hash": 0,
+        "views": 1695583
+    },
+    "eo": {
+        "all": 2321,
+        "empty": 3,
+        "not_empty": 2318,
+        "hash": 0,
+        "views": 1690403
+    },
+    "or": {
+        "all": 2891,
+        "empty": 0,
+        "not_empty": 2891,
+        "hash": 0,
+        "views": 1682692
+    },
+    "ur": {
+        "all": 1450,
+        "empty": 1,
+        "not_empty": 1449,
+        "hash": 0,
+        "views": 1555226
+    },
+    "sw": {
+        "all": 749,
+        "empty": 0,
+        "not_empty": 749,
+        "hash": 0,
+        "views": 1457754
+    },
+    "wuu": {
+        "all": 751,
+        "empty": 0,
+        "not_empty": 751,
+        "hash": 0,
+        "views": 1375474
+    },
+    "mr": {
+        "all": 488,
+        "empty": 0,
+        "not_empty": 488,
+        "hash": 0,
+        "views": 1371357
+    },
+    "la": {
+        "all": 1235,
+        "empty": 0,
+        "not_empty": 1235,
+        "hash": 0,
+        "views": 1370154
+    },
+    "kn": {
+        "all": 728,
+        "empty": 2,
+        "not_empty": 726,
+        "hash": 0,
+        "views": 1335917
+    },
+    "arz": {
+        "all": 4435,
+        "empty": 0,
+        "not_empty": 4435,
+        "hash": 0,
+        "views": 1238148
+    },
+    "si": {
+        "all": 464,
+        "empty": 0,
+        "not_empty": 464,
+        "hash": 0,
+        "views": 1159837
+    },
+    "ast": {
+        "all": 817,
+        "empty": 0,
+        "not_empty": 817,
+        "hash": 0,
+        "views": 1122939
+    },
+    "nn": {
+        "all": 909,
+        "empty": 0,
+        "not_empty": 909,
+        "hash": 0,
+        "views": 1090584
+    },
+    "cy": {
+        "all": 1630,
+        "empty": 1,
+        "not_empty": 1629,
+        "hash": 0,
+        "views": 1011894
+    },
+    "my": {
+        "all": 395,
+        "empty": 1,
+        "not_empty": 394,
+        "hash": 0,
+        "views": 999544
+    },
+    "be": {
+        "all": 1387,
+        "empty": 1,
+        "not_empty": 1386,
+        "hash": 0,
+        "views": 982099
+    },
+    "ckb": {
+        "all": 984,
+        "empty": 0,
+        "not_empty": 984,
+        "hash": 0,
+        "views": 981201
+    },
+    "is": {
+        "all": 786,
+        "empty": 0,
+        "not_empty": 786,
+        "hash": 0,
+        "views": 968732
+    },
+    "ga": {
+        "all": 1331,
+        "empty": 2,
+        "not_empty": 1329,
+        "hash": 0,
+        "views": 944898
+    },
+    "mn": {
+        "all": 344,
+        "empty": 0,
+        "not_empty": 344,
+        "hash": 0,
+        "views": 865908
+    },
+    "azb": {
+        "all": 1751,
+        "empty": 0,
+        "not_empty": 1751,
+        "hash": 0,
+        "views": 780149
+    },
+    "tg": {
+        "all": 466,
+        "empty": 6,
+        "not_empty": 460,
+        "hash": 0,
+        "views": 750400
+    },
+    "ha": {
+        "all": 1064,
+        "empty": 83,
+        "not_empty": 981,
+        "hash": 0,
+        "views": 749202
+    },
+    "jv": {
+        "all": 544,
+        "empty": 0,
+        "not_empty": 544,
+        "hash": 0,
+        "views": 707454
+    },
+    "io": {
+        "all": 659,
+        "empty": 1,
+        "not_empty": 658,
+        "hash": 0,
+        "views": 692517
+    },
+    "su": {
+        "all": 334,
+        "empty": 0,
+        "not_empty": 334,
+        "hash": 0,
+        "views": 610573
+    },
+    "as": {
+        "all": 371,
+        "empty": 0,
+        "not_empty": 371,
+        "hash": 0,
+        "views": 607440
+    },
+    "oc": {
+        "all": 435,
+        "empty": 3,
+        "not_empty": 432,
+        "hash": 0,
+        "views": 595176
+    },
+    "war": {
+        "all": 433,
+        "empty": 0,
+        "not_empty": 433,
+        "hash": 0,
+        "views": 594887
+    },
+    "ne": {
+        "all": 368,
+        "empty": 0,
+        "not_empty": 368,
+        "hash": 0,
+        "views": 562921
+    },
+    "sco": {
+        "all": 225,
+        "empty": 0,
+        "not_empty": 225,
+        "hash": 0,
+        "views": 552655
+    },
+    "ia": {
+        "all": 308,
+        "empty": 0,
+        "not_empty": 308,
+        "hash": 0,
+        "views": 548599
+    },
+    "pa": {
+        "all": 716,
+        "empty": 0,
+        "not_empty": 716,
+        "hash": 0,
+        "views": 516394
+    },
+    "ps": {
+        "all": 510,
+        "empty": 1,
+        "not_empty": 509,
+        "hash": 0,
+        "views": 509689
+    },
+    "be-x-old": {
+        "all": 526,
+        "empty": 0,
+        "not_empty": 526,
+        "hash": 0,
+        "views": 509507
+    },
+    "fy": {
+        "all": 288,
+        "empty": 0,
+        "not_empty": 288,
+        "hash": 0,
+        "views": 425570
+    },
+    "tt": {
+        "all": 887,
+        "empty": 0,
+        "not_empty": 887,
+        "hash": 0,
+        "views": 424089
+    },
+    "an": {
+        "all": 269,
+        "empty": 0,
+        "not_empty": 269,
+        "hash": 0,
+        "views": 405717
+    },
+    "gu": {
+        "all": 155,
+        "empty": 0,
+        "not_empty": 155,
+        "hash": 0,
+        "views": 405456
+    },
+    "zh-min-nan": {
+        "all": 434,
+        "empty": 0,
+        "not_empty": 434,
+        "hash": 0,
+        "views": 370120
+    },
+    "ku": {
+        "all": 351,
+        "empty": 0,
+        "not_empty": 351,
+        "hash": 0,
+        "views": 364700
+    },
+    "bcl": {
+        "all": 250,
+        "empty": 0,
+        "not_empty": 250,
+        "hash": 0,
+        "views": 360110
+    },
+    "als": {
+        "all": 194,
+        "empty": 0,
+        "not_empty": 194,
+        "hash": 0,
+        "views": 355775
+    },
+    "tk": {
+        "all": 88,
+        "empty": 0,
+        "not_empty": 88,
+        "hash": 0,
+        "views": 345625
+    },
+    "lb": {
+        "all": 273,
+        "empty": 0,
+        "not_empty": 273,
+        "hash": 0,
+        "views": 336996
+    },
+    "qu": {
+        "all": 241,
+        "empty": 0,
+        "not_empty": 241,
+        "hash": 0,
+        "views": 334969
+    },
+    "nds": {
+        "all": 237,
+        "empty": 0,
+        "not_empty": 237,
+        "hash": 0,
+        "views": 313189
+    },
+    "br": {
+        "all": 280,
+        "empty": 0,
+        "not_empty": 280,
+        "hash": 0,
+        "views": 306056
+    },
+    "ig": {
+        "all": 686,
+        "empty": 1,
+        "not_empty": 685,
+        "hash": 0,
+        "views": 295043
+    },
+    "lmo": {
+        "all": 244,
+        "empty": 0,
+        "not_empty": 244,
+        "hash": 0,
+        "views": 294169
+    },
+    "yi": {
+        "all": 244,
+        "empty": 0,
+        "not_empty": 244,
+        "hash": 0,
+        "views": 290988
+    },
+    "ht": {
+        "all": 272,
+        "empty": 0,
+        "not_empty": 272,
+        "hash": 0,
+        "views": 286566
+    },
+    "min": {
+        "all": 177,
+        "empty": 0,
+        "not_empty": 177,
+        "hash": 0,
+        "views": 282983
+    },
+    "dv": {
+        "all": 312,
+        "empty": 0,
+        "not_empty": 312,
+        "hash": 0,
+        "views": 282011
+    },
+    "lfn": {
+        "all": 136,
+        "empty": 0,
+        "not_empty": 136,
+        "hash": 0,
+        "views": 274467
+    },
+    "pnb": {
+        "all": 385,
+        "empty": 0,
+        "not_empty": 385,
+        "hash": 0,
+        "views": 266354
+    },
+    "km": {
+        "all": 65,
+        "empty": 0,
+        "not_empty": 65,
+        "hash": 0,
+        "views": 263750
+    },
+    "scn": {
+        "all": 213,
+        "empty": 0,
+        "not_empty": 213,
+        "hash": 0,
+        "views": 247019
+    },
+    "sa": {
+        "all": 132,
+        "empty": 0,
+        "not_empty": 132,
+        "hash": 0,
+        "views": 241170
+    },
+    "wa": {
+        "all": 257,
+        "empty": 0,
+        "not_empty": 257,
+        "hash": 0,
+        "views": 233071
+    },
+    "xmf": {
+        "all": 225,
+        "empty": 0,
+        "not_empty": 225,
+        "hash": 0,
+        "views": 226855
+    },
+    "am": {
+        "all": 92,
+        "empty": 0,
+        "not_empty": 92,
+        "hash": 0,
+        "views": 222828
+    },
+    "new": {
+        "all": 225,
+        "empty": 0,
+        "not_empty": 225,
+        "hash": 0,
+        "views": 214325
+    },
+    "mg": {
+        "all": 196,
+        "empty": 0,
+        "not_empty": 196,
+        "hash": 0,
+        "views": 211145
+    },
+    "ba": {
+        "all": 221,
+        "empty": 0,
+        "not_empty": 221,
+        "hash": 0,
+        "views": 209159
+    },
+    "sah": {
+        "all": 245,
+        "empty": 0,
+        "not_empty": 245,
+        "hash": 0,
+        "views": 207830
+    },
+    "so": {
+        "all": 149,
+        "empty": 0,
+        "not_empty": 149,
+        "hash": 0,
+        "views": 205179
+    },
+    "fo": {
+        "all": 88,
+        "empty": 0,
+        "not_empty": 88,
+        "hash": 0,
+        "views": 203536
+    },
+    "li": {
+        "all": 131,
+        "empty": 0,
+        "not_empty": 131,
+        "hash": 0,
+        "views": 202658
+    },
+    "om": {
+        "all": 77,
+        "empty": 0,
+        "not_empty": 77,
+        "hash": 0,
+        "views": 197333
+    },
+    "bh": {
+        "all": 103,
+        "empty": 0,
+        "not_empty": 103,
+        "hash": 0,
+        "views": 190222
+    },
+    "yo": {
+        "all": 262,
+        "empty": 0,
+        "not_empty": 262,
+        "hash": 0,
+        "views": 187674
+    },
+    "gn": {
+        "all": 131,
+        "empty": 0,
+        "not_empty": 131,
+        "hash": 0,
+        "views": 187221
+    },
+    "hif": {
+        "all": 74,
+        "empty": 0,
+        "not_empty": 74,
+        "hash": 0,
+        "views": 184766
+    },
+    "sd": {
+        "all": 203,
+        "empty": 0,
+        "not_empty": 203,
+        "hash": 0,
+        "views": 183610
+    },
+    "ks": {
+        "all": 255,
+        "empty": 2,
+        "not_empty": 253,
+        "hash": 0,
+        "views": 183566
+    },
+    "hyw": {
+        "all": 258,
+        "empty": 0,
+        "not_empty": 258,
+        "hash": 0,
+        "views": 182033
+    },
+    "dag": {
+        "all": 170,
+        "empty": 0,
+        "not_empty": 170,
+        "hash": 0,
+        "views": 181582
+    },
+    "gpe": {
+        "all": 314,
+        "empty": 34,
+        "not_empty": 280,
+        "hash": 0,
+        "views": 180820
+    },
+    "sn": {
+        "all": 96,
+        "empty": 0,
+        "not_empty": 96,
+        "hash": 0,
+        "views": 178210
+    },
+    "zu": {
+        "all": 106,
+        "empty": 0,
+        "not_empty": 106,
+        "hash": 0,
+        "views": 168664
+    },
+    "zh-classical": {
+        "all": 107,
+        "empty": 0,
+        "not_empty": 107,
+        "hash": 0,
+        "views": 168254
+    },
+    "rw": {
+        "all": 128,
+        "empty": 0,
+        "not_empty": 128,
+        "hash": 0,
+        "views": 167817
+    },
+    "cv": {
+        "all": 231,
+        "empty": 0,
+        "not_empty": 231,
+        "hash": 0,
+        "views": 165909
+    },
+    "za": {
+        "all": 175,
+        "empty": 0,
+        "not_empty": 175,
+        "hash": 0,
+        "views": 155479
+    },
+    "vec": {
+        "all": 81,
+        "empty": 0,
+        "not_empty": 81,
+        "hash": 0,
+        "views": 153193
+    },
+    "pam": {
+        "all": 79,
+        "empty": 0,
+        "not_empty": 79,
+        "hash": 0,
+        "views": 148466
+    },
+    "ilo": {
+        "all": 56,
+        "empty": 0,
+        "not_empty": 56,
+        "hash": 0,
+        "views": 145468
+    },
+    "frr": {
+        "all": 96,
+        "empty": 0,
+        "not_empty": 96,
+        "hash": 0,
+        "views": 143399
+    },
+    "ban": {
+        "all": 127,
+        "empty": 0,
+        "not_empty": 127,
+        "hash": 0,
+        "views": 138367
+    },
+    "pi": {
+        "all": 31,
+        "empty": 0,
+        "not_empty": 31,
+        "hash": 0,
+        "views": 135329
+    },
+    "diq": {
+        "all": 107,
+        "empty": 0,
+        "not_empty": 107,
+        "hash": 0,
+        "views": 130496
+    },
+    "bo": {
+        "all": 141,
+        "empty": 0,
+        "not_empty": 141,
+        "hash": 0,
+        "views": 129531
+    },
+    "kab": {
+        "all": 134,
+        "empty": 0,
+        "not_empty": 134,
+        "hash": 0,
+        "views": 128610
+    },
+    "ln": {
+        "all": 108,
+        "empty": 0,
+        "not_empty": 108,
+        "hash": 0,
+        "views": 128043
+    },
+    "bjn": {
+        "all": 94,
+        "empty": 0,
+        "not_empty": 94,
+        "hash": 0,
+        "views": 128011
+    },
+    "mad": {
+        "all": 166,
+        "empty": 3,
+        "not_empty": 163,
+        "hash": 0,
+        "views": 127781
+    },
+    "gd": {
+        "all": 103,
+        "empty": 0,
+        "not_empty": 103,
+        "hash": 0,
+        "views": 125942
+    },
+    "bat-smg": {
+        "all": 108,
+        "empty": 0,
+        "not_empty": 108,
+        "hash": 0,
+        "views": 123561
+    },
+    "bar": {
+        "all": 80,
+        "empty": 0,
+        "not_empty": 80,
+        "hash": 0,
+        "views": 121274
+    },
+    "ceb": {
+        "all": 166,
+        "empty": 0,
+        "not_empty": 166,
+        "hash": 0,
+        "views": 120325
+    },
+    "ary": {
+        "all": 94,
+        "empty": 1,
+        "not_empty": 93,
+        "hash": 0,
+        "views": 119822
+    },
+    "jam": {
+        "all": 69,
+        "empty": 0,
+        "not_empty": 69,
+        "hash": 0,
+        "views": 118209
+    },
+    "sc": {
+        "all": 94,
+        "empty": 0,
+        "not_empty": 94,
+        "hash": 0,
+        "views": 117214
+    },
+    "ff": {
+        "all": 599,
+        "empty": 0,
+        "not_empty": 599,
+        "hash": 0,
+        "views": 116901
+    },
+    "hak": {
+        "all": 93,
+        "empty": 0,
+        "not_empty": 93,
+        "hash": 0,
+        "views": 111816
+    },
+    "tw": {
+        "all": 92,
+        "empty": 0,
+        "not_empty": 92,
+        "hash": 0,
+        "views": 111724
+    },
+    "pap": {
+        "all": 61,
+        "empty": 0,
+        "not_empty": 61,
+        "hash": 0,
+        "views": 108823
+    },
+    "rue": {
+        "all": 100,
+        "empty": 0,
+        "not_empty": 100,
+        "hash": 0,
+        "views": 108158
+    },
+    "mzn": {
+        "all": 140,
+        "empty": 0,
+        "not_empty": 140,
+        "hash": 0,
+        "views": 103702
+    },
+    "eml": {
+        "all": 133,
+        "empty": 0,
+        "not_empty": 133,
+        "hash": 0,
+        "views": 100195
+    },
+    "kw": {
+        "all": 47,
+        "empty": 0,
+        "not_empty": 47,
+        "hash": 0,
+        "views": 97350
+    },
+    "gcr": {
+        "all": 71,
+        "empty": 0,
+        "not_empty": 71,
+        "hash": 0,
+        "views": 96825
+    },
+    "pms": {
+        "all": 108,
+        "empty": 0,
+        "not_empty": 108,
+        "hash": 0,
+        "views": 96453
+    },
+    "sat": {
+        "all": 94,
+        "empty": 0,
+        "not_empty": 94,
+        "hash": 0,
+        "views": 95045
+    },
+    "lo": {
+        "all": 110,
+        "empty": 0,
+        "not_empty": 110,
+        "hash": 0,
+        "views": 92100
+    },
+    "cdo": {
+        "all": 99,
+        "empty": 0,
+        "not_empty": 99,
+        "hash": 0,
+        "views": 90440
+    },
+    "ext": {
+        "all": 43,
+        "empty": 0,
+        "not_empty": 43,
+        "hash": 0,
+        "views": 85258
+    },
+    "lij": {
+        "all": 50,
+        "empty": 0,
+        "not_empty": 50,
+        "hash": 0,
+        "views": 83100
+    },
+    "ug": {
+        "all": 92,
+        "empty": 0,
+        "not_empty": 92,
+        "hash": 0,
+        "views": 82891
+    },
+    "bxr": {
+        "all": 58,
+        "empty": 0,
+        "not_empty": 58,
+        "hash": 0,
+        "views": 80947
+    },
+    "vep": {
+        "all": 40,
+        "empty": 0,
+        "not_empty": 40,
+        "hash": 0,
+        "views": 71686
+    },
+    "gan": {
+        "all": 40,
+        "empty": 0,
+        "not_empty": 40,
+        "hash": 0,
+        "views": 71001
+    },
+    "mai": {
+        "all": 77,
+        "empty": 0,
+        "not_empty": 77,
+        "hash": 0,
+        "views": 70963
+    },
+    "lg": {
+        "all": 98,
+        "empty": 0,
+        "not_empty": 98,
+        "hash": 0,
+        "views": 69780
+    },
+    "nov": {
+        "all": 16,
+        "empty": 0,
+        "not_empty": 16,
+        "hash": 0,
+        "views": 69697
+    },
+    "iu": {
+        "all": 16,
+        "empty": 0,
+        "not_empty": 16,
+        "hash": 0,
+        "views": 69212
+    },
+    "fiu-vro": {
+        "all": 59,
+        "empty": 0,
+        "not_empty": 59,
+        "hash": 0,
+        "views": 67892
+    },
+    "ay": {
+        "all": 42,
+        "empty": 0,
+        "not_empty": 42,
+        "hash": 0,
+        "views": 66552
+    },
+    "gv": {
+        "all": 35,
+        "empty": 0,
+        "not_empty": 35,
+        "hash": 0,
+        "views": 65068
+    },
+    "mt": {
+        "all": 42,
+        "empty": 0,
+        "not_empty": 42,
+        "hash": 0,
+        "views": 64863
+    },
+    "tly": {
+        "all": 16,
+        "empty": 0,
+        "not_empty": 16,
+        "hash": 0,
+        "views": 61498
+    },
+    "arc": {
+        "all": 38,
+        "empty": 0,
+        "not_empty": 38,
+        "hash": 0,
+        "views": 60808
+    },
+    "xh": {
+        "all": 45,
+        "empty": 0,
+        "not_empty": 45,
+        "hash": 0,
+        "views": 60189
+    },
+    "kbp": {
+        "all": 45,
+        "empty": 0,
+        "not_empty": 45,
+        "hash": 0,
+        "views": 58905
+    },
+    "kaa": {
+        "all": 55,
+        "empty": 0,
+        "not_empty": 55,
+        "hash": 0,
+        "views": 58653
+    },
+    "nds-nl": {
+        "all": 33,
+        "empty": 0,
+        "not_empty": 33,
+        "hash": 0,
+        "views": 58289
+    },
+    "anp": {
+        "all": 38,
+        "empty": 0,
+        "not_empty": 38,
+        "hash": 0,
+        "views": 58190
+    },
+    "ts": {
+        "all": 28,
+        "empty": 0,
+        "not_empty": 28,
+        "hash": 0,
+        "views": 56955
+    },
+    "ce": {
+        "all": 64,
+        "empty": 0,
+        "not_empty": 64,
+        "hash": 0,
+        "views": 56501
+    },
+    "szy": {
+        "all": 68,
+        "empty": 0,
+        "not_empty": 68,
+        "hash": 0,
+        "views": 54147
+    },
+    "gor": {
+        "all": 14,
+        "empty": 0,
+        "not_empty": 14,
+        "hash": 0,
+        "views": 53771
+    },
+    "ki": {
+        "all": 23,
+        "empty": 1,
+        "not_empty": 22,
+        "hash": 0,
+        "views": 53660
+    },
+    "ie": {
+        "all": 27,
+        "empty": 0,
+        "not_empty": 27,
+        "hash": 0,
+        "views": 53009
+    },
+    "se": {
+        "all": 50,
+        "empty": 0,
+        "not_empty": 50,
+        "hash": 0,
+        "views": 52909
+    },
+    "mwl": {
+        "all": 34,
+        "empty": 0,
+        "not_empty": 34,
+        "hash": 0,
+        "views": 51745
+    },
+    "pcm": {
+        "all": 16,
+        "empty": 0,
+        "not_empty": 16,
+        "hash": 0,
+        "views": 50585
+    },
+    "szl": {
+        "all": 59,
+        "empty": 0,
+        "not_empty": 59,
+        "hash": 0,
+        "views": 49913
+    },
+    "fur": {
+        "all": 28,
+        "empty": 0,
+        "not_empty": 28,
+        "hash": 0,
+        "views": 49732
+    },
+    "ny": {
+        "all": 39,
+        "empty": 0,
+        "not_empty": 39,
+        "hash": 0,
+        "views": 49515
+    },
+    "vo": {
+        "all": 113,
+        "empty": 2,
+        "not_empty": 111,
+        "hash": 0,
+        "views": 49414
+    },
+    "stq": {
+        "all": 13,
+        "empty": 0,
+        "not_empty": 13,
+        "hash": 0,
+        "views": 49188
+    },
+    "rn": {
+        "all": 26,
+        "empty": 0,
+        "not_empty": 26,
+        "hash": 0,
+        "views": 49072
+    },
+    "mnw": {
+        "all": 24,
+        "empty": 0,
+        "not_empty": 24,
+        "hash": 0,
+        "views": 49058
+    },
+    "shi": {
+        "all": 23,
+        "empty": 1,
+        "not_empty": 22,
+        "hash": 0,
+        "views": 48317
+    },
+    "st": {
+        "all": 34,
+        "empty": 0,
+        "not_empty": 34,
+        "hash": 0,
+        "views": 48157
+    },
+    "tcy": {
+        "all": 40,
+        "empty": 0,
+        "not_empty": 40,
+        "hash": 0,
+        "views": 48035
+    },
+    "wo": {
+        "all": 29,
+        "empty": 0,
+        "not_empty": 29,
+        "hash": 0,
+        "views": 46908
+    },
+    "din": {
+        "all": 44,
+        "empty": 0,
+        "not_empty": 44,
+        "hash": 0,
+        "views": 46699
+    },
+    "knc": {
+        "all": 31,
+        "empty": 0,
+        "not_empty": 31,
+        "hash": 0,
+        "views": 46409
+    },
+    "tyv": {
+        "all": 51,
+        "empty": 0,
+        "not_empty": 51,
+        "hash": 0,
+        "views": 45757
+    },
+    "ss": {
+        "all": 36,
+        "empty": 0,
+        "not_empty": 36,
+        "hash": 0,
+        "views": 45368
+    },
+    "csb": {
+        "all": 49,
+        "empty": 0,
+        "not_empty": 49,
+        "hash": 0,
+        "views": 43267
+    },
+    "awa": {
+        "all": 33,
+        "empty": 0,
+        "not_empty": 33,
+        "hash": 0,
+        "views": 43080
+    },
+    "co": {
+        "all": 26,
+        "empty": 0,
+        "not_empty": 26,
+        "hash": 0,
+        "views": 42660
+    },
+    "bew": {
+        "all": 48,
+        "empty": 0,
+        "not_empty": 48,
+        "hash": 0,
+        "views": 41646
+    },
+    "mni": {
+        "all": 18,
+        "empty": 0,
+        "not_empty": 18,
+        "hash": 0,
+        "views": 41066
+    },
+    "dty": {
+        "all": 30,
+        "empty": 0,
+        "not_empty": 30,
+        "hash": 0,
+        "views": 41046
+    },
+    "gom": {
+        "all": 27,
+        "empty": 0,
+        "not_empty": 27,
+        "hash": 0,
+        "views": 40717
+    },
+    "trv": {
+        "all": 14,
+        "empty": 0,
+        "not_empty": 14,
+        "hash": 0,
+        "views": 39954
+    },
+    "vls": {
+        "all": 23,
+        "empty": 0,
+        "not_empty": 23,
+        "hash": 0,
+        "views": 38835
+    },
+    "inh": {
+        "all": 34,
+        "empty": 0,
+        "not_empty": 34,
+        "hash": 0,
+        "views": 38284
+    },
+    "nia": {
+        "all": 26,
+        "empty": 0,
+        "not_empty": 26,
+        "hash": 0,
+        "views": 37832
+    },
+    "blk": {
+        "all": 35,
+        "empty": 0,
+        "not_empty": 35,
+        "hash": 0,
+        "views": 37504
+    },
+    "tn": {
+        "all": 31,
+        "empty": 2,
+        "not_empty": 29,
+        "hash": 0,
+        "views": 36420
+    },
+    "kcg": {
+        "all": 35,
+        "empty": 0,
+        "not_empty": 35,
+        "hash": 0,
+        "views": 35396
+    },
+    "fj": {
+        "all": 22,
+        "empty": 0,
+        "not_empty": 22,
+        "hash": 0,
+        "views": 34959
+    },
+    "os": {
+        "all": 40,
+        "empty": 0,
+        "not_empty": 40,
+        "hash": 0,
+        "views": 34939
+    },
+    "roa-rup": {
+        "all": 27,
+        "empty": 0,
+        "not_empty": 27,
+        "hash": 0,
+        "views": 33221
+    },
+    "frp": {
+        "all": 18,
+        "empty": 0,
+        "not_empty": 18,
+        "hash": 0,
+        "views": 32736
+    },
+    "jbo": {
+        "all": 24,
+        "empty": 0,
+        "not_empty": 24,
+        "hash": 0,
+        "views": 32052
+    },
+    "ti": {
+        "all": 24,
+        "empty": 0,
+        "not_empty": 24,
+        "hash": 0,
+        "views": 31504
+    },
+    "myv": {
+        "all": 35,
+        "empty": 0,
+        "not_empty": 35,
+        "hash": 0,
+        "views": 30014
+    },
+    "chr": {
+        "all": 26,
+        "empty": 0,
+        "not_empty": 26,
+        "hash": 0,
+        "views": 29928
+    },
+    "ang": {
+        "all": 23,
+        "empty": 0,
+        "not_empty": 23,
+        "hash": 0,
+        "views": 29242
+    },
+    "av": {
+        "all": 29,
+        "empty": 0,
+        "not_empty": 29,
+        "hash": 0,
+        "views": 28669
+    },
+    "btm": {
+        "all": 16,
+        "empty": 0,
+        "not_empty": 16,
+        "hash": 0,
+        "views": 27751
+    },
+    "hsb": {
+        "all": 22,
+        "empty": 0,
+        "not_empty": 22,
+        "hash": 0,
+        "views": 27141
+    },
+    "guw": {
+        "all": 21,
+        "empty": 0,
+        "not_empty": 21,
+        "hash": 0,
+        "views": 26520
+    },
+    "lez": {
+        "all": 19,
+        "empty": 0,
+        "not_empty": 19,
+        "hash": 0,
+        "views": 26196
+    },
+    "tum": {
+        "all": 10,
+        "empty": 0,
+        "not_empty": 10,
+        "hash": 0,
+        "views": 25637
+    },
+    "dtp": {
+        "all": 26,
+        "empty": 0,
+        "not_empty": 26,
+        "hash": 0,
+        "views": 25517
+    },
+    "nrm": {
+        "all": 18,
+        "empty": 0,
+        "not_empty": 18,
+        "hash": 0,
+        "views": 24378
+    },
+    "bi": {
+        "all": 8,
+        "empty": 0,
+        "not_empty": 8,
+        "hash": 0,
+        "views": 24306
+    },
+    "iba": {
+        "all": 32,
+        "empty": 0,
+        "not_empty": 32,
+        "hash": 0,
+        "views": 24203
+    },
+    "nso": {
+        "all": 21,
+        "empty": 0,
+        "not_empty": 21,
+        "hash": 0,
+        "views": 24005
+    },
+    "lld": {
+        "all": 13,
+        "empty": 0,
+        "not_empty": 13,
+        "hash": 0,
+        "views": 22079
+    },
+    "mdf": {
+        "all": 22,
+        "empty": 0,
+        "not_empty": 22,
+        "hash": 0,
+        "views": 21627
+    },
+    "ace": {
+        "all": 16,
+        "empty": 0,
+        "not_empty": 16,
+        "hash": 0,
+        "views": 21529
+    },
+    "shn": {
+        "all": 8,
+        "empty": 0,
+        "not_empty": 8,
+        "hash": 0,
+        "views": 20977
+    },
+    "ve": {
+        "all": 6,
+        "empty": 0,
+        "not_empty": 6,
+        "hash": 0,
+        "views": 20760
+    },
+    "smn": {
+        "all": 18,
+        "empty": 0,
+        "not_empty": 18,
+        "hash": 0,
+        "views": 20370
+    },
+    "mhr": {
+        "all": 18,
+        "empty": 0,
+        "not_empty": 18,
+        "hash": 0,
+        "views": 20299
+    },
+    "olo": {
+        "all": 15,
+        "empty": 0,
+        "not_empty": 15,
+        "hash": 0,
+        "views": 20113
+    },
+    "nap": {
+        "all": 19,
+        "empty": 0,
+        "not_empty": 19,
+        "hash": 0,
+        "views": 19539
+    },
+    "skr": {
+        "all": 39,
+        "empty": 0,
+        "not_empty": 39,
+        "hash": 0,
+        "views": 19474
+    },
+    "ksh": {
+        "all": 19,
+        "empty": 0,
+        "not_empty": 19,
+        "hash": 0,
+        "views": 19305
+    },
+    "bdr": {
+        "all": 6,
+        "empty": 0,
+        "not_empty": 6,
+        "hash": 0,
+        "views": 19178
+    },
+    "pcd": {
+        "all": 14,
+        "empty": 0,
+        "not_empty": 14,
+        "hash": 0,
+        "views": 18821
+    },
+    "nv": {
+        "all": 17,
+        "empty": 0,
+        "not_empty": 17,
+        "hash": 0,
+        "views": 18488
+    },
+    "pfl": {
+        "all": 8,
+        "empty": 0,
+        "not_empty": 8,
+        "hash": 0,
+        "views": 18481
+    },
+    "map-bms": {
+        "all": 11,
+        "empty": 0,
+        "not_empty": 11,
+        "hash": 0,
+        "views": 18363
+    },
+    "bm": {
+        "all": 11,
+        "empty": 0,
+        "not_empty": 11,
+        "hash": 0,
+        "views": 17843
+    },
+    "tpi": {
+        "all": 7,
+        "empty": 0,
+        "not_empty": 7,
+        "hash": 0,
+        "views": 17823
+    },
+    "lad": {
+        "all": 8,
+        "empty": 0,
+        "not_empty": 8,
+        "hash": 0,
+        "views": 17736
+    },
+    "kge": {
+        "all": 11,
+        "empty": 0,
+        "not_empty": 11,
+        "hash": 0,
+        "views": 16409
+    },
+    "rki": {
+        "all": 58,
+        "empty": 0,
+        "not_empty": 58,
+        "hash": 0,
+        "views": 16133
+    },
+    "nr": {
+        "all": 17,
+        "empty": 0,
+        "not_empty": 17,
+        "hash": 0,
+        "views": 16097
+    },
+    "bpy": {
+        "all": 12,
+        "empty": 0,
+        "not_empty": 12,
+        "hash": 0,
+        "views": 15712
+    },
+    "nah": {
+        "all": 13,
+        "empty": 0,
+        "not_empty": 13,
+        "hash": 0,
+        "views": 15453
+    },
+    "lbe": {
+        "all": 13,
+        "empty": 0,
+        "not_empty": 13,
+        "hash": 0,
+        "views": 15400
+    },
+    "haw": {
+        "all": 12,
+        "empty": 0,
+        "not_empty": 12,
+        "hash": 0,
+        "views": 15304
+    },
+    "zgh": {
+        "all": 18,
+        "empty": 1,
+        "not_empty": 17,
+        "hash": 0,
+        "views": 14898
+    },
+    "ami": {
+        "all": 11,
+        "empty": 0,
+        "not_empty": 11,
+        "hash": 0,
+        "views": 14886
+    },
+    "nup": {
+        "all": 6,
+        "empty": 0,
+        "not_empty": 6,
+        "hash": 0,
+        "views": 14322
+    },
+    "cu": {
+        "all": 8,
+        "empty": 0,
+        "not_empty": 8,
+        "hash": 0,
+        "views": 13778
+    },
+    "crh": {
+        "all": 10,
+        "empty": 0,
+        "not_empty": 10,
+        "hash": 0,
+        "views": 13580
+    },
+    "pdc": {
+        "all": 11,
+        "empty": 0,
+        "not_empty": 11,
+        "hash": 0,
+        "views": 13023
+    },
+    "zea": {
+        "all": 10,
+        "empty": 0,
+        "not_empty": 10,
+        "hash": 0,
+        "views": 12338
+    },
+    "glk": {
+        "all": 12,
+        "empty": 0,
+        "not_empty": 12,
+        "hash": 0,
+        "views": 12142
+    },
+    "nqo": {
+        "all": 13,
+        "empty": 0,
+        "not_empty": 13,
+        "hash": 0,
+        "views": 12036
+    },
+    "fon": {
+        "all": 12,
+        "empty": 0,
+        "not_empty": 12,
+        "hash": 0,
+        "views": 12015
+    },
+    "kv": {
+        "all": 11,
+        "empty": 0,
+        "not_empty": 11,
+        "hash": 0,
+        "views": 11316
+    },
+    "mrj": {
+        "all": 12,
+        "empty": 0,
+        "not_empty": 12,
+        "hash": 0,
+        "views": 10966
+    },
+    "ik": {
+        "all": 10,
+        "empty": 0,
+        "not_empty": 10,
+        "hash": 0,
+        "views": 10652
+    },
+    "to": {
+        "all": 3,
+        "empty": 0,
+        "not_empty": 3,
+        "hash": 0,
+        "views": 10171
+    },
+    "ann": {
+        "all": 5,
+        "empty": 0,
+        "not_empty": 5,
+        "hash": 0,
+        "views": 10136
+    },
+    "ee": {
+        "all": 6,
+        "empty": 0,
+        "not_empty": 6,
+        "hash": 0,
+        "views": 10003
+    },
+    "cbk-zam": {
+        "all": 4,
+        "empty": 0,
+        "not_empty": 4,
+        "hash": 0,
+        "views": 9587
+    },
+    "mi": {
+        "all": 7,
+        "empty": 0,
+        "not_empty": 7,
+        "hash": 0,
+        "views": 9548
+    },
+    "xal": {
+        "all": 6,
+        "empty": 0,
+        "not_empty": 6,
+        "hash": 0,
+        "views": 9398
+    },
+    "kg": {
+        "all": 4,
+        "empty": 0,
+        "not_empty": 4,
+        "hash": 0,
+        "views": 9294
+    },
+    "bug": {
+        "all": 4,
+        "empty": 0,
+        "not_empty": 4,
+        "hash": 0,
+        "views": 9200
+    },
+    "dz": {
+        "all": 6,
+        "empty": 0,
+        "not_empty": 6,
+        "hash": 0,
+        "views": 9146
+    },
+    "alt": {
+        "all": 3,
+        "empty": 0,
+        "not_empty": 3,
+        "hash": 0,
+        "views": 8921
+    },
+    "chy": {
+        "all": 6,
+        "empty": 0,
+        "not_empty": 6,
+        "hash": 0,
+        "views": 8698
+    },
+    "rm": {
+        "all": 5,
+        "empty": 0,
+        "not_empty": 5,
+        "hash": 0,
+        "views": 8614
+    },
+    "bbc": {
+        "all": 6,
+        "empty": 0,
+        "not_empty": 6,
+        "hash": 0,
+        "views": 8336
+    },
+    "syl": {
+        "all": 9,
+        "empty": 0,
+        "not_empty": 9,
+        "hash": 0,
+        "views": 8193
+    },
+    "guc": {
+        "all": 8,
+        "empty": 0,
+        "not_empty": 8,
+        "hash": 0,
+        "views": 7970
+    },
+    "atj": {
+        "all": 5,
+        "empty": 0,
+        "not_empty": 5,
+        "hash": 0,
+        "views": 7507
+    },
+    "udm": {
+        "all": 9,
+        "empty": 0,
+        "not_empty": 9,
+        "hash": 0,
+        "views": 7277
+    },
+    "koi": {
+        "all": 7,
+        "empty": 0,
+        "not_empty": 7,
+        "hash": 0,
+        "views": 7109
+    },
+    "krc": {
+        "all": 5,
+        "empty": 0,
+        "not_empty": 5,
+        "hash": 0,
+        "views": 6769
+    },
+    "rmy": {
+        "all": 6,
+        "empty": 0,
+        "not_empty": 6,
+        "hash": 0,
+        "views": 6351
+    },
+    "pag": {
+        "all": 4,
+        "empty": 0,
+        "not_empty": 4,
+        "hash": 0,
+        "views": 5888
+    },
+    "tay": {
+        "all": 5,
+        "empty": 0,
+        "not_empty": 5,
+        "hash": 0,
+        "views": 5585
+    },
+    "tok": {
+        "all": 39,
+        "empty": 0,
+        "not_empty": 39,
+        "hash": 0,
+        "views": 5345
+    },
+    "kus": {
+        "all": 5,
+        "empty": 0,
+        "not_empty": 5,
+        "hash": 0,
+        "views": 5331
+    },
+    "ab": {
+        "all": 7,
+        "empty": 0,
+        "not_empty": 7,
+        "hash": 0,
+        "views": 5063
+    },
+    "sm": {
+        "all": 3,
+        "empty": 0,
+        "not_empty": 3,
+        "hash": 0,
+        "views": 4917
+    },
+    "pwn": {
+        "all": 3,
+        "empty": 0,
+        "not_empty": 3,
+        "hash": 0,
+        "views": 4480
+    },
+    "dsb": {
+        "all": 1,
+        "empty": 0,
+        "not_empty": 1,
+        "hash": 0,
+        "views": 4362
+    },
+    "got": {
+        "all": 6,
+        "empty": 0,
+        "not_empty": 6,
+        "hash": 0,
+        "views": 4180
+    },
+    "srn": {
+        "all": 3,
+        "empty": 0,
+        "not_empty": 3,
+        "hash": 0,
+        "views": 4126
+    },
+    "rsk": {
+        "all": 5,
+        "empty": 0,
+        "not_empty": 5,
+        "hash": 0,
+        "views": 4002
+    },
+    "tet": {
+        "all": 2,
+        "empty": 0,
+        "not_empty": 2,
+        "hash": 0,
+        "views": 3767
+    },
+    "avk": {
+        "all": 3,
+        "empty": 0,
+        "not_empty": 3,
+        "hash": 0,
+        "views": 3720
+    },
+    "mos": {
+        "all": 5,
+        "empty": 0,
+        "not_empty": 5,
+        "hash": 0,
+        "views": 3285
+    },
+    "kbd": {
+        "all": 2,
+        "empty": 0,
+        "not_empty": 2,
+        "hash": 0,
+        "views": 2911
+    },
+    "fat": {
+        "all": 3,
+        "empty": 0,
+        "not_empty": 3,
+        "hash": 0,
+        "views": 2851
+    },
+    "tdd": {
+        "all": 2,
+        "empty": 0,
+        "not_empty": 2,
+        "hash": 0,
+        "views": 2544
+    },
+    "dga": {
+        "all": 2,
+        "empty": 0,
+        "not_empty": 2,
+        "hash": 0,
+        "views": 2120
+    },
+    "roa-tara": {
+        "all": 3,
+        "empty": 0,
+        "not_empty": 3,
+        "hash": 0,
+        "views": 2054
+    },
+    "sg": {
+        "all": 2,
+        "empty": 0,
+        "not_empty": 2,
+        "hash": 0,
+        "views": 1542
+    },
+    "ty": {
+        "all": 4,
+        "empty": 0,
+        "not_empty": 4,
+        "hash": 0,
+        "views": 1317
+    },
+    "gur": {
+        "all": 1,
+        "empty": 0,
+        "not_empty": 1,
+        "hash": 0,
+        "views": 970
+    },
+    "igl": {
+        "all": 5,
+        "empty": 0,
+        "not_empty": 5,
+        "hash": 0,
+        "views": 861
+    },
+    "gag": {
+        "all": 1,
+        "empty": 0,
+        "not_empty": 1,
+        "hash": 0,
+        "views": 505
     }
 }
