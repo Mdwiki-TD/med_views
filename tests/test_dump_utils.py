@@ -63,17 +63,21 @@ def test_dump_languages_counts(monkeypatch: MonkeyPatch) -> None:
     mock_path = MagicMock()
     monkeypatch.setattr("src.dump_utils.main_dump_path", mock_path)
 
-    mock_dump = MagicMock()
-    monkeypatch.setattr("src.dump_utils.dump_one", mock_dump)
+    # Mock open to prevent actual file writes
+    m = mock_open()
+    monkeypatch.setattr("builtins.open", m)
 
-    # Should not dump if < 200 items (based on source code)
+    # Should not dump if <= 200 items (based on source code)
     dump_languages_counts({"en": 10})
-    mock_dump.assert_not_called()
+    m.assert_not_called()
+
+    # Reset the mock
+    m.reset_mock()
 
     # Should dump if > 200 items
     large_data = {f"l{i}": i for i in range(205)}
     dump_languages_counts(large_data)
-    mock_dump.assert_called_once()
+    m.assert_called_once()
 
 
 def test_load_languages_counts(monkeypatch: MonkeyPatch) -> None:
