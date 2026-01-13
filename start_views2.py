@@ -23,9 +23,9 @@ logging.basicConfig(level=logging.DEBUG)
 empty_data_all = {}
 
 
-def dump_empty_data_all() -> None:
+def dump_empty_data_all(year) -> None:
     # ---
-    file = main_dump_path / "empty_views_all.json"
+    file = main_dump_path / f"empty_views_{year}.json"
     logger.debug(f"dump_empty_data_all({file}), {len(empty_data_all)=}")
     # ---
     with open(file, "w", encoding="utf-8") as f:
@@ -144,6 +144,7 @@ def make_views(languages, year, limit, maxv) -> dict:
         views[lang] = data
     # ---
     dump_stats_all(year)
+    dump_empty_data_all(year)
     # ---
     return views
 
