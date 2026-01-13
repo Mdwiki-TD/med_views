@@ -68,7 +68,7 @@ def get_ar_results():
     # ---
     result = retrieve_sql_results(qua, "arwiki")
     # ---
-    ar_titles = [x["page_title"] for x in result]
+    ar_titles = [x["page_title"].replace("_", " ") for x in result]
     # ---
     return ar_titles
 
