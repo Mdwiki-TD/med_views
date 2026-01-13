@@ -49,17 +49,18 @@ def test_article_views_all_years(monkeypatch: MonkeyPatch) -> None:
     assert "Title 1" in result
     assert "Title 2" in result
     assert "Title 3" in result
-    
+
     # Check multi-year data structure is preserved
     assert result["Title 1"] == {2020: 50, 2021: 100, 2022: 150}
     assert result["Title 2"] == {2020: 25, 2021: 75}
     assert result["Title 3"] == {}
-    
+
     # Verify the bot was called with correct parameters
     mock_bot.article_views_new.assert_called_once_with(
         "en.wikipedia",
         articles,
         granularity="monthly",
+        agent="user",
         start="20150101",
         end="20251231",
     )
