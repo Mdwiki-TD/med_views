@@ -16,9 +16,9 @@ main_dump_path = Path(MAIN_PATH) if MAIN_PATH else Path(__file__).parent.parent 
 json_titles_path = main_dump_path / "titles"
 views_by_year_path = main_dump_path / "views_by_year"
 
-main_dump_path.mkdir(parents=True, exist_ok=True)
-json_titles_path.mkdir(parents=True, exist_ok=True)
-views_by_year_path.mkdir(parents=True, exist_ok=True)
+main_dump_path.mkdir(exist_ok=True)
+json_titles_path.mkdir(exist_ok=True)
+views_by_year_path.mkdir(exist_ok=True)
 
 parallelism = 10
 
