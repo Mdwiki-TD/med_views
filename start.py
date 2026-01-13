@@ -135,18 +135,15 @@ def start(year, limit):
 def parse_args():
     year = 2025
     limit = 0
-    maxv = 0
     for arg in sys.argv:
         key, _, val = arg.partition(":")
         if key in ["limit", "-limit"] and val.isdigit():
             limit = int(val)
         elif key in ["year", "-year"] and val.isdigit():
             year = int(val)
-        elif key in ["max", "-max"] and val.isdigit():
-            maxv = int(val)
-    return year, limit, maxv
+    return year, limit
 
 
 if __name__ == "__main__":
-    year, limit, maxv = parse_args()
-    start(year, limit, maxv)
+    year, limit = parse_args()
+    start(year, limit)

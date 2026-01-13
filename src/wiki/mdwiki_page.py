@@ -11,7 +11,8 @@ from typing import Any
 from ..config import mdwiki_pass, my_username
 
 ALL_APIS = None
-all_apis_valid = None
+all_apis_valid = True
+
 try:
     from newapi import ALL_APIS
 except ImportError:

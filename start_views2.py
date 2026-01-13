@@ -28,8 +28,13 @@ def dump_empty_data_all(year) -> None:
     file = main_dump_path / f"empty_views_{year}.json"
     logger.debug(f"dump_empty_data_all({file}), {len(empty_data_all)=}")
     # ---
+    # sort empty_data_all by len of values desc
+    empty_data_all_sorted = dict(
+        sorted(empty_data_all.items(), key=lambda item: len(item[1]), reverse=True)
+    )
+    # ---
     with open(file, "w", encoding="utf-8") as f:
-        json.dump(empty_data_all, f, ensure_ascii=False)
+        json.dump(empty_data_all_sorted, f, ensure_ascii=False, indent=4)
 
 
 def dump_one_lang_files(titles, data, lang, year) -> None:
@@ -52,10 +57,12 @@ def dump_one_lang_files(titles, data, lang, year) -> None:
     json_file_stats = get_stats_file(lang)
     dump_stats(json_file_stats, titles, data, lang)
     # ---
-    empty_data = {k: v for k, v in data.items() if v == 0}
+    empty_data = [k for k in titles if data.get(k, 0) == 0]
+    # ---
     not_empty_data = {k: v for k, v in data.items() if v != 0}
     # ---
-    empty_data_all[lang] = empty_data
+    if empty_data:
+        empty_data_all[lang] = empty_data
     # ---
     with open(file, "w", encoding="utf-8") as f:
         json.dump(not_empty_data, f, ensure_ascii=False)
