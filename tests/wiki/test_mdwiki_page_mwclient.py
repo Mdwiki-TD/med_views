@@ -29,7 +29,7 @@ def test_page_mwclient(monkeypatch: MonkeyPatch) -> None:
 
     # Test save
     p.save("new text", "summary")
-    mock_page.save.assert_called_once_with("new text", summary="summary", minor=False)
+    mock_page.save.assert_called_once_with("new text", summary="summary")
 
     # Test create
     p.create("created text", "created summary")
