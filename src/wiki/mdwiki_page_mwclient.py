@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class page_mwclient:
-    def __init__(self, title: str):
+    def __init__(self, title: str) -> None:
         self.site_mw = mwclient.Site("www.mdwiki.org")
         self.username = my_username
         self.password = mdwiki_pass
@@ -30,8 +30,8 @@ class page_mwclient:
     def exists(self):
         return self.page.exists
 
-    def save(self, newtext: str, summary: str, minor: bool = False):
+    def save(self, newtext: str, summary: str, minor: bool = False) -> None:
         self.page.save(newtext, summary=summary)
 
-    def create(self, newtext: str, summary: str):
+    def create(self, newtext: str, summary: str) -> None:
         self.page.save(newtext, summary=summary)

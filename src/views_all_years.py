@@ -69,7 +69,7 @@ def load_one_lang_views(langcode, titles) -> dict[str, dict]:
     return data
 
 
-def get_one_lang_views(langcode, titles, json_file, maxv=0) -> dict:
+def get_one_lang_views(langcode, titles, json_file, maxv: int=0) -> dict:
     # ---
     u_data = {}
     titles_not_in_file = titles

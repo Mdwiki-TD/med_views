@@ -8,7 +8,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def is_empty_data(data):
+def is_empty_data(data) -> bool:
     # ---
     # logger.debug(data)
     # ---

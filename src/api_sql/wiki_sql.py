@@ -68,7 +68,7 @@ def make_labsdb_dbs_p(wiki):
     return host, dbs_p
 
 
-def retrieve_sql_results(queries, wiki="", values=None):
+def retrieve_sql_results(queries, wiki: str="", values=None):
     # ---
     """
     Retrieve SQL query results for a specified wiki's analytics database.

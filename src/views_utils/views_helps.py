@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 view_bot = PageviewsClient(parallelism=parallelism)
 
 
-def article_views(site, articles, year=2024):
+def article_views(site, articles, year: int=2024):
     # ---
     site = "be-tarask" if site == "be-x-old" else site
     # ---
