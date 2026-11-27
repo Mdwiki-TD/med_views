@@ -1,12 +1,12 @@
 """
-Tests for src.app.views_all_years
+Tests for src.app.all_years.views_all_years
 """
 
 from unittest.mock import MagicMock
 
 from _pytest.monkeypatch import MonkeyPatch
 
-from src.app.views_all_years import (
+from src.app.all_years.views_all_years import (
     calculate_total_views,
     get_one_lang_views_by_titles,
     update_data,
@@ -65,7 +65,7 @@ def test_get_one_lang_views_by_titles(monkeypatch: MonkeyPatch) -> None:
             "Art2": {2020: 30, 2021: 40},
         }
     )
-    monkeypatch.setattr("src.app.views_all_years.article_views_all_years", mock_article_views_all_years)
+    monkeypatch.setattr("src.app.all_years.views_all_years.article_views_all_years", mock_article_views_all_years)
 
     result = get_one_lang_views_by_titles("en", ["Art1", "Art2"])
 
@@ -86,7 +86,7 @@ def test_get_one_lang_views_by_titles_batching(monkeypatch: MonkeyPatch) -> None
         # Return mock data for each batch
         return {title: {2020: call_count * 10} for title in titles}
 
-    monkeypatch.setattr("src.app.views_all_years.article_views_all_years", mock_article_views_all_years)
+    monkeypatch.setattr("src.app.all_years.views_all_years.article_views_all_years", mock_article_views_all_years)
 
     # Create 1200 titles to test batching (should be 3 batches of 500, 500, 200)
     titles = [f"Art{i}" for i in range(1200)]

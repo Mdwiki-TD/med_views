@@ -2,7 +2,7 @@
 Tests for src.app.stats_bot_all_years
 """
 
-from src.app.stats_bot_all_years import dump_stats
+from src.app.all_years.stats_bot_all_years import dump_stats
 
 
 def test_dump_stats_with_single_year_data():
