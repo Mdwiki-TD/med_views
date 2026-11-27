@@ -54,7 +54,7 @@ class MultiYearViewsPipeline:
 
         titles = [x.replace("_", " ") for x in titles]
 
-        logger.debug(f"dump_one_lang_files for {lang}, {len(data)=}")
+        logger.debug(f"{lang=}, {len(data)=}")
 
         data = {x.replace("_", " "): v for x, v in data.items()}
 

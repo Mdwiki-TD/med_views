@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-"""Single-year statistics calculation and dumping."""
+"""
+Single-year statistics calculation and dumping.
+"""
 
 from __future__ import annotations
 
@@ -69,11 +71,7 @@ class SingleYearStatsService:
         return stats
 
     def dump_stats_all(self, year) -> None:
-        """Write all statistics to summary files.
-
-        Parameters:
-            year: Year for the summary file names.
-        """
+        """Write all statistics to summary files."""
         all_hash = sum(v["hash"] for v in self._stats_all_data.values())
         all_not_empty = sum(v["not_empty"] for v in self._stats_all_data.values())
         all_empty = sum(v["empty"] for v in self._stats_all_data.values())

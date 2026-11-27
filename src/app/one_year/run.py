@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-python src/start_views.py
+Collects and stores article views for single year.
 """
 
 from __future__ import annotations
