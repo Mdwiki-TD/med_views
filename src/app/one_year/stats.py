@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 import logging
+from pathlib import Path
 
 from ..config import Config, get_config
 
@@ -28,15 +29,16 @@ class SingleYearStatsService:
         Parameters:
             config: Optional configuration object. Defaults to get_config().
         """
-        self._config = config or get_config()
-        self._stats_all_data: dict = {}
+        _config = config or get_config()
+        self.stats_all_data: dict = {}
+        self.main_dump_path = _config.main_dump_path
 
-    @property
-    def stats_all_data(self) -> dict:
-        """Get the accumulated statistics data."""
-        return self._stats_all_data
-
-    def dump_stats(self, articles: list, new_data: dict[str, int], lang: str) -> dict[str, int]:
+    def dump_stats(
+        self,
+        articles: list,
+        new_data: dict[str, int],
+        lang: str,
+    ) -> dict[str, int]:
         """Calculate and store statistics for one language.
 
         Parameters:
@@ -66,17 +68,34 @@ class SingleYearStatsService:
             "views": views,
         }
 
-        self._stats_all_data[lang] = stats
+        self.stats_all_data[lang] = stats
 
         return stats
 
-    def dump_stats_all(self, year) -> None:
+    def dump_stats_all(
+        self,
+        year: int | str,
+        data: dict[str, dict],
+    ) -> None:
         """Write all statistics to summary files."""
-        all_hash = sum(v["hash"] for v in self._stats_all_data.values())
-        all_not_empty = sum(v["not_empty"] for v in self._stats_all_data.values())
-        all_empty = sum(v["empty"] for v in self._stats_all_data.values())
-        all_views = sum(v["views"] for v in self._stats_all_data.values())
-        all_articles = sum(v["articles"] for v in self._stats_all_data.values())
+        self._dump_stats_all(
+            self.main_dump_path / f"{year}_summary.json",
+            self.main_dump_path / f"{year}_stats_all.json",
+            data,
+        )
+
+    def _dump_stats_all(
+        self,
+        file1: Path,
+        file2: Path,
+        data: dict[str, dict],
+    ) -> None:
+        """Write all statistics to summary files."""
+        all_hash = sum(v["hash"] for v in data.values())
+        all_not_empty = sum(v["not_empty"] for v in data.values())
+        all_empty = sum(v["empty"] for v in data.values())
+        all_views = sum(v["views"] for v in data.values())
+        all_articles = sum(v["articles"] for v in data.values())
 
         summary = {
             "articles": all_articles,
@@ -86,15 +105,13 @@ class SingleYearStatsService:
             "total_views": all_views,
         }
 
-        with open(self._config.main_dump_path / f"{year}_summary.json", "w", encoding="utf-8") as f:
+        with open(file1, "w", encoding="utf-8") as f:
             json.dump(summary, f, ensure_ascii=False, indent=4)
 
         # sort stats_all_data by "views" descending
-        stats_all_data_sorted = dict(
-            sorted(self._stats_all_data.items(), key=lambda item: item[1].get("views", 0), reverse=True)
-        )
+        stats_all_data_sorted = dict(sorted(data.items(), key=lambda item: item[1].get("views", 0), reverse=True))
 
-        with open(self._config.main_dump_path / f"{year}_stats_all.json", "w", encoding="utf-8") as f:
+        with open(file2, "w", encoding="utf-8") as f:
             json.dump(stats_all_data_sorted, f, ensure_ascii=False, indent=4)
 
 

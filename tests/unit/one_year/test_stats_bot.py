@@ -57,12 +57,12 @@ class TestSingleYearStatsService:
             service = SingleYearStatsService(config=mock_config)
 
             # Add some stats
-            service._stats_all_data = {
+            service.stats_all_data = {
                 "en": {"articles": 100, "empty": 10, "not_empty": 90, "hash": 5, "views": 5000},
                 "ar": {"articles": 50, "empty": 5, "not_empty": 45, "hash": 2, "views": 2500},
             }
 
-            service.dump_stats_all(2024)
+            service.dump_stats_all(2024, service.stats_all_data)
 
             # Check files were created
             summary_file = Path(tmpdir) / "2024_summary.json"
