@@ -180,46 +180,6 @@ class MySQLClient:
         return rows
 
 
-# Legacy compatibility layer
-_default_client: MySQLClient | None = None
-
-
-def _get_default_client() -> MySQLClient:
-    """Get or create the default MySQL client instance."""
-    global _default_client
-    if _default_client is None:
-        _default_client = MySQLClient()
-    return _default_client
-
-
-def make_sql_connect(query: str, db: str = "", host: str = "", values=None):
-    """Legacy entry point. Use MySQLClient.execute instead.
-
-    Parameters:
-        query: SQL query string to execute.
-        db: Database name.
-        host: Database host.
-        values: Optional parameter values for parameterized queries.
-
-    Returns:
-        List of result rows as dictionaries with decoded values.
-    """
-    return _get_default_client().execute(query, db=db, host=host, values=values)
-
-
-def decode_value(value: bytes | Any) -> str:
-    """Legacy entry point. Use MySQLClient.decode_value instead."""
-    return MySQLClient.decode_value(value)
-
-
-def decode_bytes_in_list(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Legacy entry point. Use MySQLClient.decode_bytes_in_list instead."""
-    return MySQLClient.decode_bytes_in_list(rows)
-
-
 __all__ = [
     "MySQLClient",
-    "make_sql_connect",
-    "decode_value",
-    "decode_bytes_in_list",
 ]

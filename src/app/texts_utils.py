@@ -54,24 +54,6 @@ class WikiTextBuilder:
         return text
 
 
-# Legacy compatibility layer
-_default_builder: WikiTextBuilder | None = None
-
-
-def _get_default_builder() -> WikiTextBuilder:
-    """Get or create the default WikiTextBuilder instance."""
-    global _default_builder
-    if _default_builder is None:
-        _default_builder = WikiTextBuilder()
-    return _default_builder
-
-
-def build_wiki_text(languages, views) -> str:
-    """Legacy entry point. Use WikiTextBuilder.build_wiki_text instead."""
-    return _get_default_builder().build_wiki_text(languages, views)
-
-
 __all__ = [
     "WikiTextBuilder",
-    "build_wiki_text",
 ]

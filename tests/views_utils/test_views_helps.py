@@ -91,6 +91,7 @@ def test_get_view_file(tmp_path, monkeypatch):
 
     # Reset the default fetcher so it picks up the mocked config
     import src.app.views_utils.views_helps as views_helps
+
     views_helps._default_fetcher = None
 
     lang = "en"

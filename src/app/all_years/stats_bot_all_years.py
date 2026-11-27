@@ -118,37 +118,6 @@ class MultiYearStatsService:
             json.dump(stats_all_data_sorted, f, ensure_ascii=False, indent=4)
 
 
-# Legacy compatibility layer
-_default_service: MultiYearStatsService | None = None
-stats_all_data: dict = {}
-
-
-def _get_default_service() -> MultiYearStatsService:
-    """Get or create the default MultiYearStatsService instance."""
-    global _default_service
-    if _default_service is None:
-        _default_service = MultiYearStatsService()
-    return _default_service
-
-
-def dump_stats(articles, new_data: dict[str, dict | int], lang: str) -> dict[str, int | dict[str, int]]:
-    """Legacy entry point. Use MultiYearStatsService.dump_stats instead."""
-    global stats_all_data
-    service = _get_default_service()
-    result = service.dump_stats(articles, new_data, lang)
-    # Sync the module-level variable for legacy callers
-    stats_all_data = service.stats_all_data
-    return result
-
-
-def dump_stats_all() -> None:
-    """Legacy entry point. Use MultiYearStatsService.dump_stats_all instead."""
-    _get_default_service().dump_stats_all()
-
-
 __all__ = [
     "MultiYearStatsService",
-    "dump_stats",
-    "dump_stats_all",
-    "stats_all_data",
 ]

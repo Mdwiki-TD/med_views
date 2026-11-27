@@ -114,36 +114,6 @@ class ViewsFetcher:
         return file
 
 
-# Legacy compatibility layer
-_default_fetcher: ViewsFetcher | None = None
-
-
-def _get_default_fetcher() -> ViewsFetcher:
-    """Get or create the default ViewsFetcher instance."""
-    global _default_fetcher
-    if _default_fetcher is None:
-        _default_fetcher = ViewsFetcher()
-    return _default_fetcher
-
-
-def article_views(site, articles, year: int = 2024):
-    """Legacy entry point. Use ViewsFetcher.article_views instead."""
-    return _get_default_fetcher().article_views(site, articles, year)
-
-
-def article_views_all_years(site, articles):
-    """Legacy entry point. Use ViewsFetcher.article_views_all_years instead."""
-    return _get_default_fetcher().article_views_all_years(site, articles)
-
-
-def get_view_file(lang, year):
-    """Legacy entry point. Use ViewsFetcher.get_view_file instead."""
-    return _get_default_fetcher().get_view_file(lang, year)
-
-
 __all__ = [
     "ViewsFetcher",
-    "article_views",
-    "article_views_all_years",
-    "get_view_file",
 ]

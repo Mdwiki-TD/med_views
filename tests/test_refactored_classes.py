@@ -5,7 +5,6 @@ import tempfile
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-
 from src.app.api_sql.wiki_sql import WikiDatabaseMapper, WikiSQLClient
 from src.app.dump_utils import DumpManager
 from src.app.helps import JsonHelper

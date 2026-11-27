@@ -2,7 +2,7 @@
 Tests for src.app.sql_utils
 """
 
-from unittest.mock import ANY, MagicMock
+from unittest.mock import MagicMock
 
 from _pytest.monkeypatch import MonkeyPatch
 
@@ -49,9 +49,7 @@ def test_retrieve_medicine_titles(monkeypatch: MonkeyPatch) -> None:
 
 def test_one_lang_titles(monkeypatch: MonkeyPatch) -> None:
     mock_repo = MagicMock(spec=MedicalTitlesRepository)
-    mock_repo.one_lang_titles.side_effect = lambda lang: (
-        ["EnT"] if lang == "en" else ["T1", "T2"]
-    )
+    mock_repo.one_lang_titles.side_effect = lambda lang: ["EnT"] if lang == "en" else ["T1", "T2"]
 
     monkeypatch.setattr(
         "src.app.sql_utils._get_default_repo",

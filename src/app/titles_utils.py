@@ -63,24 +63,6 @@ class TitlesLoader:
         return data
 
 
-# Legacy compatibility layer
-_default_loader: TitlesLoader | None = None
-
-
-def _get_default_loader() -> TitlesLoader:
-    """Get or create the default TitlesLoader instance."""
-    global _default_loader
-    if _default_loader is None:
-        _default_loader = TitlesLoader()
-    return _default_loader
-
-
-def load_lang_titles(lang):
-    """Legacy entry point. Use TitlesLoader.load_lang_titles instead."""
-    return _get_default_loader().load_lang_titles(lang)
-
-
 __all__ = [
     "TitlesLoader",
-    "load_lang_titles",
 ]

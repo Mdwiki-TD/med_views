@@ -5,7 +5,6 @@ import tempfile
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-
 from src.app.all_years.stats_bot_all_years import MultiYearStatsService
 from src.app.all_years.views_all_years import MultiYearViewsService
 from src.app.one_year.stats_bot import SingleYearStatsService

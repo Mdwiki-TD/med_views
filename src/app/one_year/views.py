@@ -161,48 +161,6 @@ class SingleYearViewsService:
         return u_data
 
 
-# Legacy compatibility layer
-_default_service: SingleYearViewsService | None = None
-
-
-def _get_default_service() -> SingleYearViewsService:
-    """Get or create the default SingleYearViewsService instance."""
-    global _default_service
-    if _default_service is None:
-        _default_service = SingleYearViewsService()
-    return _default_service
-
-
-def calculate_total_views(langcode, u_data):
-    """Legacy entry point. Use SingleYearViewsService.calculate_total_views instead."""
-    return SingleYearViewsService.calculate_total_views(langcode, u_data)
-
-
-def update_data(all_data, data) -> dict:
-    """Legacy entry point. Use SingleYearViewsService.update_data instead."""
-    return SingleYearViewsService.update_data(all_data, data)
-
-
-def get_one_lang_views_by_titles(langcode, titles, year):
-    """Legacy entry point. Use SingleYearViewsService.get_one_lang_views_by_titles instead."""
-    return _get_default_service().get_one_lang_views_by_titles(langcode, titles, year)
-
-
-def load_one_lang_views(langcode, titles, year) -> dict[str, int]:
-    """Legacy entry point. Use SingleYearViewsService.load_one_lang_views instead."""
-    return _get_default_service().load_one_lang_views(langcode, titles, year)
-
-
-def get_one_lang_views(langcode, titles, year, json_file, maxv: int = 0) -> dict:
-    """Legacy entry point. Use SingleYearViewsService.get_one_lang_views instead."""
-    return _get_default_service().get_one_lang_views(langcode, titles, year, json_file, maxv)
-
-
 __all__ = [
     "SingleYearViewsService",
-    "calculate_total_views",
-    "update_data",
-    "get_one_lang_views_by_titles",
-    "load_one_lang_views",
-    "get_one_lang_views",
 ]

@@ -134,32 +134,7 @@ class WikiSQLClient:
         return rows
 
 
-# Legacy compatibility layer
-_default_client: WikiSQLClient | None = None
-
-
-def _get_default_client() -> WikiSQLClient:
-    """Get or create the default WikiSQL client instance."""
-    global _default_client
-    if _default_client is None:
-        _default_client = WikiSQLClient()
-    return _default_client
-
-
-def make_labsdb_dbs_p(wiki):
-    """Legacy entry point. Use WikiDatabaseMapper.map_wiki_to_database instead."""
-    return WikiDatabaseMapper().map_wiki_to_database(wiki)
-
-
-def retrieve_sql_results(queries, wiki: str = "", values=None):
-    """Legacy entry point. Use WikiSQLClient.retrieve_sql_results instead."""
-    return _get_default_client().retrieve_sql_results(queries, wiki=wiki, values=values)
-
-
 __all__ = [
     "WikiDatabaseMapper",
     "WikiSQLClient",
-    "get_sql",
-    "make_labsdb_dbs_p",
-    "retrieve_sql_results",
 ]

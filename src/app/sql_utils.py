@@ -173,48 +173,6 @@ class MedicalTitlesRepository:
         return titles
 
 
-# Legacy compatibility layer
-_default_repo: MedicalTitlesRepository | None = None
-
-
-def _get_default_repo() -> MedicalTitlesRepository:
-    """Get or create the default MedicalTitlesRepository instance."""
-    global _default_repo
-    if _default_repo is None:
-        _default_repo = MedicalTitlesRepository()
-    return _default_repo
-
-
-def get_en_articles():
-    """Legacy entry point. Use MedicalTitlesRepository.get_en_articles instead."""
-    return _get_default_repo().get_en_articles()
-
-
-def get_language_article_counts_sql():
-    """Legacy entry point. Use MedicalTitlesRepository.get_language_article_counts_sql instead."""
-    return _get_default_repo().get_language_article_counts_sql()
-
-
-def get_ar_results():
-    """Legacy entry point. Use MedicalTitlesRepository.get_ar_results instead."""
-    return _get_default_repo().get_ar_results()
-
-
-def retrieve_medicine_titles() -> dict:
-    """Legacy entry point. Use MedicalTitlesRepository.retrieve_medicine_titles instead."""
-    return _get_default_repo().retrieve_medicine_titles()
-
-
-def one_lang_titles(langcode):
-    """Legacy entry point. Use MedicalTitlesRepository.one_lang_titles instead."""
-    return _get_default_repo().one_lang_titles(langcode)
-
-
 __all__ = [
     "MedicalTitlesRepository",
-    "get_en_articles",
-    "get_language_article_counts_sql",
-    "get_ar_results",
-    "retrieve_medicine_titles",
-    "one_lang_titles",
 ]
