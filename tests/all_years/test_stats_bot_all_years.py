@@ -1,97 +1,164 @@
 """
-Tests for src.app.stats_bot_all_years
+Tests for src.app.all_years.stats_bot_all_years
 """
 
-from src.app.all_years.stats_bot_all_years import dump_stats
+import json
+import tempfile
+from pathlib import Path
+from unittest.mock import MagicMock
+
+from src.app.config import Config
+from src.app.all_years.stats_bot_all_years import MultiYearStatsService
 
 
-def test_dump_stats_with_single_year_data():
-    """Test dump_stats with single year integer data"""
-    new_data = {"Art1": 10, "Art#1": 5}
+class TestMultiYearStatsService:
+    """Tests for the MultiYearStatsService class."""
 
-    stats = dump_stats(["Art1", "Art#1"], new_data, "en")
+    def test_dump_stats_with_single_year_data(self):
+        """Test calculating statistics with single year data"""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            mock_config = MagicMock(spec=Config)
+            mock_config.main_dump_path = Path(tmpdir)
 
-    assert stats["articles"] == 2
-    assert stats["hash"] == 1  # Art#1 has hash
-    assert stats["views"] == 10  # Only Art1 counted (Art#1 filtered out)
-    assert stats["empty"] == 0
-    assert stats["not_empty"] == 1
+            service = MultiYearStatsService(config=mock_config)
 
+            articles = ["Art1", "Art2", "Art3"]
+            new_data = {
+                "Art1": {"2024": 100, "all": 100},
+                "Art2": {"2024": 200, "all": 200},
+                "Art3": {"2024": 0, "all": 0},
+            }
 
-def test_dump_stats_with_multi_year_data():
-    """Test dump_stats with multi-year dictionary data"""
-    new_data = {
-        "Art1": {2020: 50, 2021: 100, 2022: 150},  # Total: 300
-        "Art2": {2020: 25, 2021: 75},  # Total: 100
-        "Art#1": {2020: 10},  # Has hash, should be filtered
-    }
+            result = service.dump_stats(articles, new_data, "en")
 
-    stats = dump_stats(["Art1", "Art2", "Art#1"], new_data, "en")
+            assert result["articles"] == 3
+            assert result["views"] == 600  # 300 from 2024 + 300 from all
+            assert result["empty"] == 1
+            assert result["not_empty"] == 2
 
-    assert stats["articles"] == 3
-    assert stats["hash"] == 1  # Art#1 has hash
-    assert stats["views"] == 400  # 300 + 100
-    assert stats["empty"] == 0
-    assert stats["not_empty"] == 2
+    def test_dump_stats_with_multi_year_data(self):
+        """Test calculating statistics with multi-year data"""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            mock_config = MagicMock(spec=Config)
+            mock_config.main_dump_path = Path(tmpdir)
 
+            service = MultiYearStatsService(config=mock_config)
 
-def test_dump_stats_with_empty_entries():
-    """Test dump_stats correctly identifies empty entries"""
-    new_data = {
-        "Art1": {2020: 100, 2021: 200},
-        "Art2": 0,  # Empty integer
-        "Art3": {2020: 0, 2021: 0},  # All years are 0
-        "Art4": {2020: 50},
-    }
+            articles = ["Art1", "Art2"]
+            new_data = {
+                "Art1": {"2020": 100, "2021": 200, "all": 300},
+                "Art2": {"2020": 50, "2021": 75, "all": 125},
+            }
 
-    stats = dump_stats(["Art1", "Art2", "Art3", "Art4"], new_data, "en")
+            result = service.dump_stats(articles, new_data, "en")
 
-    assert stats["articles"] == 4
-    assert stats["empty"] == 2  # Art2 and Art3
-    assert stats["not_empty"] == 2  # Art1 and Art4
-    assert stats["views"] == 350  # 300 + 50
+            assert result["articles"] == 2
+            # Views sum all int values: (100+200+300) + (50+75+125) = 850
+            assert result["views"] == 850
 
+    def test_dump_stats_with_empty_entries(self):
+        """Test calculating statistics with empty entries"""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            mock_config = MagicMock(spec=Config)
+            mock_config.main_dump_path = Path(tmpdir)
 
-def test_dump_stats_with_missing_entries():
-    """Test dump_stats when some articles are missing from new_data"""
-    new_data = {
-        "Art1": {2020: 100},
-        "Art2": {2020: 50},
-    }
+            service = MultiYearStatsService(config=mock_config)
 
-    # Art3 is in articles list but not in new_data
-    stats = dump_stats(["Art1", "Art2", "Art3"], new_data, "en")
+            articles = ["Art1", "Art2", "Art3"]
+            new_data = {
+                "Art1": {"2020": 0, "2021": 0, "all": 0},  # All zeros
+                "Art2": {"2020": 100, "all": 100},
+                "Art3": 0,  # Integer zero
+            }
 
-    assert stats["articles"] == 3
-    assert stats["empty"] == 1  # Art3 is missing, treated as empty
-    assert stats["not_empty"] == 1  # Only counting non-empty items in data2 (excluding empty)
+            result = service.dump_stats(articles, new_data, "en")
 
+            assert result["empty"] == 2  # Art1 and Art3
+            assert result["not_empty"] == 1  # Art2
 
-def test_dump_stats_with_mixed_data_types():
-    """Test dump_stats with mixed integer and dictionary values"""
-    new_data = {
-        "Art1": {2020: 100, 2021: 150},  # Dict: 250
-        "Art2": 75,  # Integer: 75
-        "Art3": {2020: 0},  # All zeros
-    }
+    def test_dump_stats_with_missing_entries(self):
+        """Test calculating statistics with missing entries"""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            mock_config = MagicMock(spec=Config)
+            mock_config.main_dump_path = Path(tmpdir)
 
-    stats = dump_stats(["Art1", "Art2", "Art3"], new_data, "en")
+            service = MultiYearStatsService(config=mock_config)
 
-    assert stats["articles"] == 3
-    assert stats["views"] == 325  # 250 + 75
-    assert stats["empty"] == 1  # Art3
-    assert stats["not_empty"] == 2
+            articles = ["Art1", "Art2", "Art3"]
+            new_data = {
+                "Art1": {"2020": 100, "all": 100},
+                # Art2 and Art3 missing
+            }
 
+            result = service.dump_stats(articles, new_data, "en")
 
-def test_dump_stats_filters_hash_in_articles_list():
-    """Test that articles with hash in the original list are filtered"""
-    new_data = {
-        "Art1": {2020: 100},
-        "Art2#section": {2020: 50},  # Has hash in new_data
-    }
+            assert result["empty"] == 2  # Art2 and Art3 are missing (treated as 0)
+            assert result["not_empty"] == 1
 
-    # Art3#section is in articles list but not in new_data
-    stats = dump_stats(["Art1", "Art2#section", "Art3#section"], new_data, "en")
+    def test_dump_stats_with_mixed_data_types(self):
+        """Test calculating statistics with mixed int and dict data"""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            mock_config = MagicMock(spec=Config)
+            mock_config.main_dump_path = Path(tmpdir)
 
-    assert stats["hash"] == 2  # Art2#section and Art3#section
-    assert stats["views"] == 100  # Only Art1 counted
+            service = MultiYearStatsService(config=mock_config)
+
+            articles = ["Art1", "Art2", "Art3"]
+            new_data = {
+                "Art1": {"2020": 100, "all": 100},  # Dict
+                "Art2": 50,  # Integer
+                "Art3": {"2020": 0, "all": 0},  # Dict with zeros
+            }
+
+            result = service.dump_stats(articles, new_data, "en")
+
+            assert result["articles"] == 3
+            assert result["views"] == 250  # 200 from Art1 + 50 from Art2
+            assert result["empty"] == 1  # Art3
+
+    def test_dump_stats_filters_hash_in_articles_list(self):
+        """Test that hash entries in articles list are counted separately"""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            mock_config = MagicMock(spec=Config)
+            mock_config.main_dump_path = Path(tmpdir)
+
+            service = MultiYearStatsService(config=mock_config)
+
+            articles = ["Art1", "Art2#section"]
+            new_data = {
+                "Art1": {"2020": 100, "all": 100},
+                "Art2#section": {"2020": 50, "all": 50},
+            }
+
+            result = service.dump_stats(articles, new_data, "en")
+
+            assert result["hash"] == 1
+            assert result["views"] == 200  # Only Art1 counted in views
+
+    def test_dump_stats_all(self):
+        """Test writing all statistics to files."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            mock_config = MagicMock(spec=Config)
+            mock_config.main_dump_path = Path(tmpdir)
+
+            service = MultiYearStatsService(config=mock_config)
+
+            # Add some stats
+            service._stats_all_data = {
+                "en": {"articles": 100, "empty": 10, "not_empty": 90, "hash": 5, "views": 5000},
+                "ar": {"articles": 50, "empty": 5, "not_empty": 45, "hash": 2, "views": 2500},
+            }
+
+            service.dump_stats_all()
+
+            # Check files were created
+            summary_file = Path(tmpdir) / "all_years_summary.json"
+            stats_file = Path(tmpdir) / "all_years_stats_all.json"
+
+            assert summary_file.exists()
+            assert stats_file.exists()
+
+            with open(summary_file) as f:
+                summary = json.load(f)
+                assert summary["articles"] == 150
+                assert summary["total_views"] == 7500

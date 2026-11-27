@@ -2,104 +2,78 @@
 Tests for src.app.views_utils.views_helps
 """
 
+import tempfile
+from pathlib import Path
 from unittest.mock import MagicMock
 
-from _pytest.monkeypatch import MonkeyPatch
-
-from src.app.views_utils.views_helps import (
-    ViewsFetcher,
-    article_views,
-    article_views_all_years,
-    get_view_file,
-)
+from src.app.config import Config
+from src.app.views_utils.views_helps import ViewsFetcher
 
 
-def test_article_views(monkeypatch: MonkeyPatch) -> None:
-    mock_fetcher = MagicMock(spec=ViewsFetcher)
-    mock_fetcher.article_views.return_value = {
-        "Title 1": 100,
-        "Title 2": 200,
-        "Title 3": 300,
-        "Title 4": 0,
-    }
+class TestViewsFetcher:
+    """Tests for the ViewsFetcher class."""
 
-    monkeypatch.setattr(
-        "src.app.views_utils.views_helps._get_default_fetcher",
-        lambda: mock_fetcher,
-    )
+    def test_article_views(self):
+        """Test fetching article views for a year."""
+        mock_client = MagicMock()
+        mock_client.article_views_new.return_value = {
+            "Cancer": {"2024": 1000, "all": 1000},
+            "Diabetes": {"2024": 500, "all": 500},
+        }
 
-    articles = ["Title 1", "Title 2", "Title 3", "Title 4"]
-    result = article_views("en", articles, year=2024)
+        fetcher = ViewsFetcher(pageviews_client=mock_client)
+        result = fetcher.article_views("en", ["Cancer", "Diabetes"], 2024)
 
-    assert result["Title 1"] == 100
-    assert result["Title 2"] == 200
-    assert result["Title 3"] == 300
-    assert result["Title 4"] == 0
+        assert result == {"Cancer": 1000, "Diabetes": 500}
 
+    def test_article_views_all_years(self):
+        """Test fetching article views for all years."""
+        mock_client = MagicMock()
+        mock_client.article_views_new.return_value = {
+            "Cancer": {"2020": 800, "2021": 900, "all": 1700},
+        }
 
-def test_article_views_all_years(monkeypatch: MonkeyPatch) -> None:
-    """Test article_views_all_years returns multi-year data structure"""
-    mock_fetcher = MagicMock(spec=ViewsFetcher)
-    mock_fetcher.article_views_all_years.return_value = {
-        "Title 1": {2020: 50, 2021: 100, 2022: 150},
-        "Title 2": {2020: 25, 2021: 75},
-        "Title 3": {},
-    }
+        fetcher = ViewsFetcher(pageviews_client=mock_client)
+        result = fetcher.article_views_all_years("en", ["Cancer"])
 
-    monkeypatch.setattr(
-        "src.app.views_utils.views_helps._get_default_fetcher",
-        lambda: mock_fetcher,
-    )
+        assert "Cancer" in result
+        assert result["Cancer"]["all"] == 1700
 
-    articles = ["Title 1", "Title 2", "Title 3"]
-    result = article_views_all_years("en", articles)
+    def test_article_views_be_x_old_mapping(self):
+        """Test be-x-old is mapped to be-tarask."""
+        mock_client = MagicMock()
+        mock_client.article_views_new.return_value = {}
 
-    # Check that underscores are replaced with spaces
-    assert "Title 1" in result
-    assert "Title 2" in result
-    assert "Title 3" in result
+        fetcher = ViewsFetcher(pageviews_client=mock_client)
+        fetcher.article_views("be-x-old", ["Test"], 2024)
 
-    # Check multi-year data structure is preserved
-    assert result["Title 1"] == {2020: 50, 2021: 100, 2022: 150}
-    assert result["Title 2"] == {2020: 25, 2021: 75}
-    assert result["Title 3"] == {}
+        # Check that the project was mapped correctly
+        call_args = mock_client.article_views_new.call_args
+        assert call_args[0][0] == "be-tarask.wikipedia"
 
+    def test_article_views_all_years_be_x_old_mapping(self):
+        """Test be-x-old is mapped to be-tarask for all years."""
+        mock_client = MagicMock()
+        mock_client.article_views_new.return_value = {}
 
-def test_article_views_all_years_be_x_old(monkeypatch: MonkeyPatch) -> None:
-    """Test that be-x-old is correctly converted to be-tarask"""
-    mock_fetcher = MagicMock(spec=ViewsFetcher)
-    mock_fetcher.article_views_all_years.return_value = {"Title 1": {2020: 100}}
+        fetcher = ViewsFetcher(pageviews_client=mock_client)
+        fetcher.article_views_all_years("be-x-old", ["Test"])
 
-    monkeypatch.setattr(
-        "src.app.views_utils.views_helps._get_default_fetcher",
-        lambda: mock_fetcher,
-    )
+        # Check that the project was mapped correctly
+        call_args = mock_client.article_views_new.call_args
+        assert call_args[0][0] == "be-tarask.wikipedia"
 
-    articles = ["Title 1"]
-    article_views_all_years("be-x-old", articles)
+    def test_get_view_file(self):
+        """Test computing view file path."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            mock_config = MagicMock(spec=Config)
+            mock_config.views_by_year_path = Path(tmpdir)
 
-    # Verify the fetcher was called
-    mock_fetcher.article_views_all_years.assert_called_once()
+            fetcher = ViewsFetcher(config=mock_config)
+            result = fetcher.get_view_file("en", 2024)
 
+            expected_dir = Path(tmpdir) / "2024"
+            expected_file = expected_dir / "en.json"
 
-def test_get_view_file(tmp_path, monkeypatch):
-    # Mock get_config to return a config with views_by_year_path
-    mock_config = MagicMock()
-    mock_config.views_by_year_path = tmp_path
-
-    monkeypatch.setattr("src.app.views_utils.views_helps.get_config", lambda: mock_config)
-
-    # Reset the default fetcher so it picks up the mocked config
-    import src.app.views_utils.views_helps as views_helps
-
-    views_helps._default_fetcher = None
-
-    lang = "en"
-    year = 2024
-    result = get_view_file(lang, year)
-
-    expected_dir = tmp_path / "2024"
-    expected_file = expected_dir / "en.json"
-
-    assert result == expected_file
-    assert expected_dir.exists()
+            assert result == expected_file
+            assert expected_dir.exists()

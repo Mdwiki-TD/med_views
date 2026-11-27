@@ -137,7 +137,7 @@ class MultiYearViewsService:
         titles_not_in_file = titles
 
         if json_file.exists():
-            u_data = self._json_helper.json_load(json_file)
+            u_data: dict = self._json_helper.json_load(json_file)  # pyright: ignore[reportAssignmentType]
             titles_not_in_file = [
                 x
                 for x in titles
