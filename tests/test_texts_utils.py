@@ -37,12 +37,22 @@ class TestWikiTextBuilder:
 
         result = builder.build_wiki_text(languages, views)
 
+        # Check that all languages are present
+        assert "fr" in result
+        assert "en" in result
+        assert "de" in result
+
         # fr should appear before en, en before de
         fr_pos = result.find("fr")
         en_pos = result.find("en")
         de_pos = result.find("de")
 
         assert fr_pos < en_pos < de_pos
+
+        # Check total counts are correct
+        assert "200" in result  # fr articles
+        assert "100" in result  # en articles
+        assert "50" in result  # de articles
 
     def test_build_wiki_text_average_views(self):
         """Test average views calculation."""
