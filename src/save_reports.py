@@ -5,146 +5,12 @@ python src/save_reports.py
 
 from __future__ import annotations
 
-import json
 import logging
 import sys
 
-from app.config import get_config
-from app.dump_utils import count_languages_in_json, load_languages_counts
-from app.helps import json_load
-from app.texts_utils import build_wiki_text
-from app.views_utils.views_helps import (
-    get_view_file,
-)
-from app.wiki import MwclientPage
+from app.report_generator import ReportGenerator
 
 logger = logging.getLogger(__name__)
-
-
-def get_languages_articles_counts() -> dict:
-
-    all_infos = load_languages_counts()
-
-    if all_infos:
-        return all_infos
-
-    result = count_languages_in_json()
-
-    logger.debug(f"get_languages_articles_counts local: {len(result)}")
-
-    return result
-
-
-def calculate_total_views(langcode, u_data):
-
-    total = 0
-
-    for _, views in u_data.items():
-        if isinstance(views, dict):
-            views = views.get("all", 0)
-        total += views
-
-    if total == 0:
-        logger.info(f"<<yellow>> No views for {langcode}")
-    return total
-
-
-def fetch_language_statistics(year, langcode):
-
-    json_file = get_view_file(langcode, year)
-    year_data = json_load(json_file)
-
-    return calculate_total_views(langcode, year_data)
-
-
-def make_views_local(languages, year, limit):
-
-    views = {}
-
-    for n, (lang, _) in enumerate(languages.items(), start=1):
-        if limit > 0 and n > limit:
-            logger.info(f"limit {limit} reached, break")
-            break
-
-        views[lang] = fetch_language_statistics(year, lang)
-
-    return views
-
-
-def make_page_text(year, limit):
-    """
-    Orchestrates collection of per-language pageview totals for a given year and updates the corresponding wiki stats page.
-
-    Retrieves stored language article counts, computes pageviews (respecting `limit`), generates page text, and saves the page if content changed. The function logs progress and exits early without modifying the wiki when no language data or no non-zero views are available.
-
-    Parameters:
-        year (int): Year used in view calculations and included in the target wiki page title.
-        limit (int): Maximum number of languages to process (0 means no limit).
-    """
-
-    languages = get_languages_articles_counts()
-
-    logger.info(f"get_languages_articles_counts local: {len(languages)}")
-
-    if not languages or list(set(languages.values())) == [0]:
-        logger.error("No languages found, run `python3 start_titles.py` first")
-        return None
-
-    # sort languages ASC
-    languages = dict(sorted(languages.items(), key=lambda item: item[1], reverse=False))
-
-    views = make_views_local(languages, year, limit)
-
-    views_not_0 = len([x for x in views.values() if x > 0])
-
-    logger.info(f"<<yellow>> Total views not 0: {views_not_0:,}")
-
-    if not views_not_0:
-        logger.info("No views found, run `python3 start_views.py` first")
-        return None
-
-    # sort views by value DESC
-    views = dict(sorted(views.items(), key=lambda item: item[1], reverse=True))
-
-    # dump views
-    config = get_config()
-    with open(config.main_dump_path / f"{year}_views_by_lang.json", "w", encoding="utf-8") as f:
-        json.dump(views, f, ensure_ascii=False, indent=4)
-
-    newtext = build_wiki_text(languages, views)
-
-    with open(config.main_dump_path / f"{year}_text.txt", "w", encoding="utf-8") as f:
-        f.write(newtext)
-
-    return newtext
-
-
-def start(year, limit):
-
-    newtext = make_page_text(year, limit)
-
-    if "save" not in sys.argv:
-        logger.info("Dry run mode, not saving changes.")
-        # print(newtext)
-        return
-
-    title = f"WikiProjectMed:WikiProject Medicine/Stats/Total pageviews by language {year}"
-    target_page = MwclientPage(title)
-
-    text = target_page.get_text()
-
-    if not newtext:
-        logger.info("no text")
-        return
-
-    if text == newtext:
-        logger.info("no change")
-        return
-
-    if target_page.exists():
-        target_page.save(newtext=newtext, summary="update")
-    else:
-        target_page.create(newtext, summary="update")
 
 
 def parse_args():
@@ -162,4 +28,7 @@ def parse_args():
 
 if __name__ == "__main__":
     year, limit = parse_args()
-    start(year, limit)
+    generator = ReportGenerator(
+        save="save" in sys.argv,
+    )
+    generator.start(year, limit)

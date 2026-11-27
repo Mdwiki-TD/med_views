@@ -163,24 +163,34 @@ med_views/
 │   ├── start_views.py              # Entry point: single-year view collection
 │   ├── start_views_all_years.py    # Entry point: multi-year view collection
 │   ├── save_reports.py             # Entry point: report generation
-
+|   |
 │   └── app/
 │       ├── config.py           # Centralized configuration
 │       ├── services/
 │       │   ├── mw_views.py     # Pageviews API client
 │       │   └── mysql_client.py # Database client
+│       │   └── mdwiki_page_mwclient.py  # MDWiki operations
+|       |
 │       ├── api_sql/
 │       │   └── wiki_sql.py     # SQL query executor
-│       ├── wiki/
-│       │   └── mdwiki_page_mwclient.py  # MDWiki operations
+|       |
+│       ├── wikitext/
+│       │   └── texts_utils.py  # MediaWiki table generation
+|       |
 │       ├── views_utils/
 │       │   └── views_helps.py  # View processing utilities
-│       ├── views.py            # Single-year processing
-│       ├── views_all_years.py  # Multi-year processing
-│       ├── stats_bot.py        # Single-year statistics
-│       ├── stats_bot_all_years.py  # Multi-year statistics
+|       |
+│       ├── one_year/
+│       |   ├── run.py          # Single-year processing
+│       |   ├── views.py        # Single-year processing
+│       |   └── stats.py        # Single-year statistics
+|       |
+│       ├── all_years/
+│       |   ├── run.py          # Multi-year processing
+│       |   ├── views.py        # Multi-year processing
+│       |   └── stats.py        # Multi-year statistics
+|       |
 │       ├── sql_utils.py        # SQL query definitions
-│       ├── texts_utils.py      # MediaWiki table generation
 │       ├── titles_utils.py     # Title processing
 │       ├── dump_utils.py       # File I/O utilities
 │       └── helps.py            # General utilities

@@ -1,10 +1,11 @@
 #!/usr/bin/python3
-""" """
+"""MySQL client for executing SQL queries on Wikimedia analytics databases."""
 
 from __future__ import annotations
 
 import functools
 import logging
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
@@ -45,89 +46,140 @@ def load_db_config(db: str, host: str) -> dict[str, Any]:
     }
 
 
-def _sql_connect_pymysql(query: str, db: str = "", host: str = "", values: tuple = None) -> list:
+class MySQLClient:
+    """Client for executing SQL queries on MySQL databases.
 
-    logger.debug("start _sql_connect_pymysql:")
+    This class encapsulates database connection and query execution logic,
+    with proper dependency injection for testing and configuration.
+    """
 
-    params = None
+    def __init__(
+        self,
+        db_config_loader: Callable | None = None,
+    ) -> None:
+        """Initialize the MySQL client.
 
-    if values:
-        params = values
+        Parameters:
+            db_config_loader: Optional callable that returns a dict of connection
+                parameters. Defaults to load_db_config.
+        """
+        self._db_config_loader = db_config_loader or load_db_config
 
-    # connect to the database server without error
+    def _sql_connect_pymysql(self, query: str, db: str = "", host: str = "", values: tuple = None) -> list:
+        """Execute a SQL query and return results.
 
-    db_config = load_db_config(db, host)
+        Parameters:
+            query: SQL query string to execute.
+            db: Database name.
+            host: Database host.
+            values: Optional parameter values for parameterized queries.
 
-    try:
-        connection = pymysql.connect(**db_config)
-    except pymysql.Error as e:
-        logger.exception(e)
-        return []
+        Returns:
+            List of result rows as dictionaries, or empty list on error.
+        """
+        logger.debug("start _sql_connect_pymysql:")
 
-    with connection as conn, conn.cursor() as cursor:
-        # skip sql errors
+        params = None
+
+        if values:
+            params = values
+
+        # connect to the database server without error
+        db_config = self._db_config_loader(db, host)
+
         try:
-            cursor.execute(query, params)
-
-        except Exception as e:
+            connection = pymysql.connect(**db_config)
+        except pymysql.Error as e:
             logger.exception(e)
             return []
 
-        results = []
+        with connection as conn, conn.cursor() as cursor:
+            # skip sql errors
+            try:
+                cursor.execute(query, params)
 
+            except Exception as e:
+                logger.exception(e)
+                return []
+
+            results = []
+
+            try:
+                results = cursor.fetchall()
+
+            except Exception as e:
+                logger.exception(e)
+                return []
+
+            return results
+
+    @staticmethod
+    def decode_value(value: bytes | Any) -> str:
+        """Decode a bytes value to string.
+
+        Parameters:
+            value: Value to decode (bytes or other type).
+
+        Returns:
+            Decoded string, or string representation, or empty string on failure.
+        """
         try:
-            results = cursor.fetchall()
-
-        except Exception as e:
-            logger.exception(e)
-            return []
-
-        # yield from cursor
-        return results
-
-
-def decode_value(value: bytes | Any) -> str:
-    try:
-        value = value.decode("utf-8")  # Assuming UTF-8 encoding
-    except Exception:
-        try:
-            value = str(value)
+            value = value.decode("utf-8")  # Assuming UTF-8 encoding
         except Exception:
-            return ""
-    return value
+            try:
+                value = str(value)
+            except Exception:
+                return ""
+        return value
 
+    @classmethod
+    def decode_bytes_in_list(cls, rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        """Decode all bytes values in a list of dictionaries.
 
-def decode_bytes_in_list(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    decoded_rows = []
+        Parameters:
+            rows: List of dictionaries potentially containing bytes values.
 
-    for row in rows:
-        decoded_row = {}
-        for key, value in row.items():
-            if isinstance(value, bytes):
-                value = decode_value(value)
-            decoded_row[key] = value
-        decoded_rows.append(decoded_row)
+        Returns:
+            List of dictionaries with bytes decoded to strings.
+        """
+        decoded_rows = []
 
-    return decoded_rows
+        for row in rows:
+            decoded_row = {}
+            for key, value in row.items():
+                if isinstance(value, bytes):
+                    value = cls.decode_value(value)
+                decoded_row[key] = value
+            decoded_rows.append(decoded_row)
 
+        return decoded_rows
 
-def make_sql_connect(query: str, db: str = "", host: str = "", values=None):
+    def execute(self, query: str, db: str = "", host: str = "", values=None) -> list:
+        """Execute a SQL query and return decoded results.
 
-    if not query:
-        logger.debug("query == ''")
-        return []
+        This is the main entry point for executing queries.
 
-    logger.debug("<<lightyellow>> newsql::")
+        Parameters:
+            query: SQL query string to execute.
+            db: Database name.
+            host: Database host.
+            values: Optional parameter values for parameterized queries.
 
-    rows = _sql_connect_pymysql(query, db=db, host=host, values=values)
+        Returns:
+            List of result rows as dictionaries with decoded values.
+        """
+        if not query:
+            logger.debug("query == ''")
+            return []
 
-    rows = decode_bytes_in_list(rows)
+        logger.debug("newsql::")
 
-    return rows
+        rows = self._sql_connect_pymysql(query, db=db, host=host, values=values)
+        rows = self.decode_bytes_in_list(rows)
+
+        return rows
 
 
 __all__ = [
-    "make_sql_connect",
-    "decode_value",
-    "decode_bytes_in_list",
+    "MySQLClient",
 ]

@@ -52,7 +52,7 @@ This plan creates a parallel system to the existing one that collects and stores
 - Store data in `views_by_year_path` for each year separately
 - Process data for each year and save in appropriate folder
 
-### 4. src/stats_bot_all_years.py
+### 4. src/all_years/stats.py
 
 **نسخة من / Copy of:** `src/stats_bot.py`
 **التغييرات / Changes:**
@@ -100,18 +100,18 @@ This plan creates a parallel system to the existing one that collects and stores
 - [ ] Modify `load_one_lang_views` if needed
 - [ ] Modify `get_one_lang_views` to remove `year` parameter where not needed
 
-### الخطوة 3: إنشاء src/stats_bot_all_years.py
+### الخطوة 3: إنشاء src/all_years/stats.py
 
-- [ ] نسخ `src/stats_bot.py` إلى `src/stats_bot_all_years.py`
+- [ ] نسخ `src/stats_bot.py` إلى `src/all_years/stats.py`
 - [ ] تعديل دالة `dump_stats` للتعامل مع بيانات متعددة السنوات
 - [ ] تعديل دالة `dump_stats_all` لحفظ البيانات في:
     - `all_years_summary.json`
     - `all_years_stats_all.json`
 - [ ] التأكد من حساب المجاميع بشكل صحيح للبيانات متعددة السنوات
 
-**Step 3: Create src/stats_bot_all_years.py**
+**Step 3: Create src/all_years/stats.py**
 
-- [ ] Copy `src/stats_bot.py` to `src/stats_bot_all_years.py`
+- [ ] Copy `src/stats_bot.py` to `src/all_years/stats.py`
 - [ ] Modify `dump_stats` to handle multi-year data
 - [ ] Modify `dump_stats_all` to save data to:
     - `all_years_summary.json`
@@ -122,7 +122,7 @@ This plan creates a parallel system to the existing one that collects and stores
 
 - [ ] نسخ `start_views.py` إلى `start_views_all_years.py`
 - [ ] استبدال استيراد من `src.views` إلى `src.app.views_all_years`
-- [ ] استبدال استيراد من `src.stats_bot` إلى `src.app.stats_bot_all_years`
+- [ ] استبدال استيراد من `src.stats_bot` إلى `src.app.all_years/stats`
 - [ ] تعديل دالة `dump_one_lang_files` لمعالجة البيانات متعددة السنوات
 - [ ] تعديل دالة `dump_one_lang_files` لحفظ كل سنة في المجلد المناسب
 - [ ] تعديل دالة `process_language_views` لإزالة معامل `year` عند استدعاء الدوال الجديدة
@@ -133,7 +133,7 @@ This plan creates a parallel system to the existing one that collects and stores
 
 - [ ] Copy `start_views.py` to `start_views_all_years.py`
 - [ ] Replace import from `src.views` to `src.app.views_all_years`
-- [ ] Replace import from `src.stats_bot` to `src.app.stats_bot_all_years`
+- [ ] Replace import from `src.stats_bot` to `src.app.all_years/stats`
 - [ ] Modify `dump_one_lang_files` to process multi-year data
 - [ ] Modify `dump_one_lang_files` to save each year in appropriate folder
 - [ ] Modify `process_language_views` to remove `year` parameter

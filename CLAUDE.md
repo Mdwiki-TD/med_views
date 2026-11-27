@@ -37,8 +37,8 @@ DB Query → Titles JSON → API Fetch → Views JSON → Aggregation → Wiki R
 
 Two parallel implementations exist:
 
-- **Single-year** (`views.py`, `stats_bot.py`): Processes one year
-- **Multi-year** (`views_all_years.py`, `stats_bot_all_years.py`): Processes 2015-2025 simultaneously
+- **Single-year** (`one_year/views.py`, `one_year/stats.py`): Processes one year
+- **Multi-year** (`all_years/views.py`, `all_years/stats.py`): Processes 2015-2025 simultaneously
 
 Both share utilities in `src/app/views_utils/`.
 
@@ -52,7 +52,7 @@ Entry point scripts exist in both root and `src/` directories. Both work identic
 - `src/app/api_sql/wiki_sql.py`: SQL executor with wiki name mapping
 - `src/app/sql_utils.py`: SQL queries for medical article retrieval
 - `src/app/texts_utils.py`: MediaWiki table generation
-- `src/app/wiki/mdwiki_page_mwclient.py`: MDWiki upload via mwclient
+- `src/app/services/mdwiki_page_mwclient.py`: MDWiki upload via mwclient
 - `src/app/config.py`: Centralized config with env vars
 
 ## Command-Line Arguments

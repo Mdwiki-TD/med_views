@@ -150,8 +150,6 @@ class PageviewsClient(PageviewsClientHelper):
                 }
             }
             The view_count will be None where no data is available, to distinguish from 0
-
-        TODO: probably doesn't handle unicode perfectly, look into it
         """
         end_date = end or date.today()
         if not isinstance(end_date, date):
@@ -262,8 +260,6 @@ class PageviewsClient(PageviewsClientHelper):
 
         delta = time.time() - time_start
 
-        logger.debug(
-            f"<<green>> article_views, (articles:{len(articles):,}) new_data:{len(new_data):,} time: {delta:.2f} sec"
-        )
+        logger.debug(f"article_views, (articles:{len(articles):,}) new_data:{len(new_data):,} time: {delta:.2f} sec")
 
         return new_data
