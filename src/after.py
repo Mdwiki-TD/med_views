@@ -64,7 +64,7 @@ def dump_languages_counts(
         print(f"Dumped year data to {year_file}")
 
 
-@functools.lru_cache(maxsize=None)
+@functools.cache
 def create_year_folder(base_output_dir: Path, year: str) -> Path:
     """Create and cache a year directory under the given output path."""
     year_folder = base_output_dir / year
