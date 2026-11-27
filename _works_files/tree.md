@@ -35,7 +35,7 @@ src/
 │   │
 │   ├── views_utils/
 │   │   ├── __init__.py
-│   │   └── views_helps.py
+│   │   └── views_fetcher.py
 │   │
 │   ├── wikitext/
 │   │   ├── __init__.py
@@ -43,9 +43,9 @@ src/
 │   │
 │   ├── __init__.py
 │   ├── config.py
-│   ├── helps.py
 │   ├── report_generator.py
 │   ├── sql_loader.py
+│   ├── titles_loader.py
 │   └── titles_utils.py
 │
 ├── __init__.py

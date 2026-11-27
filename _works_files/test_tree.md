@@ -24,12 +24,11 @@ tests/
 │   │
 │   ├── views_utils/
 │   │   ├── __init__.py
-│   │   └── test_views_helps.py
+│   │   └── test_views_fetcher.py
 │   │
 │   ├── wikitext/
 │   │   └── test_texts_utils.py
 │   │
-│   ├── test_helps.py
 │   ├── test_sql_loader.py
 │   └── test_titles_utils.py
 │
