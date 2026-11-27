@@ -11,8 +11,8 @@ from __future__ import annotations
 import logging
 import sys
 
-from .helps import json_load
-from .views_utils.views_helps import (
+from ..helps import json_load
+from ..views_utils.views_helps import (
     article_views_all_years,
 )
 

@@ -6,7 +6,7 @@ from __future__ import annotations
 import json
 import logging
 
-from .config import json_titles_path, main_dump_path
+from .config import get_config
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +22,8 @@ def count_languages_in_json():
     """
     result = {}
 
-    for json_file in json_titles_path.glob("*.json"):
+    config = get_config()
+    for json_file in config.json_titles_path.glob("*.json"):
         lang = json_file.stem
 
         with open(json_file, encoding="utf-8") as f:
@@ -40,7 +41,8 @@ def load_lang_titles_from_dump(lang):
     Returns:
         list[str]: A list of title strings with underscores replaced by spaces; returns an empty list if the language file does not exist.
     """
-    json_file = json_titles_path / f"{lang}.json"
+    config = get_config()
+    json_file = config.json_titles_path / f"{lang}.json"
 
     if json_file.exists():
         with open(json_file, encoding="utf-8") as f:
@@ -52,7 +54,7 @@ def load_lang_titles_from_dump(lang):
     return []
 
 
-def replace_underscores(data):
+def replace_underscores(data: dict | list):
     if isinstance(data, dict):
         data = {x.replace("_", " "): v for x, v in data.items()}
 
@@ -85,16 +87,17 @@ def dump_languages_counts(data: dict[str, int]) -> None:
     Parameters:
         data (dict): Mapping of language identifiers to integer counts.
     """
-    file = main_dump_path / "languages_counts.json"
+    config = get_config()
+    file = config.main_dump_path / "languages_counts.json"
 
     # sort data
     data = dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
 
     if data and len(data) > 200:
-        data = replace_underscores(data)
+        fix_data = replace_underscores(data)
 
         with open(file, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=4)
+            json.dump(fix_data, f, ensure_ascii=False, indent=4)
 
 
 def load_languages_counts() -> dict:
@@ -105,7 +108,8 @@ def load_languages_counts() -> dict:
         dict: A mapping from language code (str) to count (int) loaded from "languages_counts.json",
         or an empty dict if the file does not exist.
     """
-    file = main_dump_path / "languages_counts.json"
+    config = get_config()
+    file = config.main_dump_path / "languages_counts.json"
 
     data = {}
 

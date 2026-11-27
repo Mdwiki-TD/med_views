@@ -5,12 +5,13 @@ from __future__ import annotations
 
 import logging
 
-from ..config import parallelism, views_by_year_path
+from ..config import get_config
 from ..services.mw_views import PageviewsClient
 
 logger = logging.getLogger(__name__)
 
-view_bot = PageviewsClient(parallelism=parallelism)
+config = get_config()
+view_bot = PageviewsClient(parallelism=config.parallelism)
 
 
 def article_views(site, articles, year: int = 2024):
@@ -69,7 +70,8 @@ def get_view_file(lang, year):
     Returns:
         pathlib.Path: Path to the "{lang}.json" file inside the year directory.
     """
-    dir_v = views_by_year_path / str(year)
+    config = get_config()
+    dir_v = config.views_by_year_path / str(year)
 
     if not dir_v.exists():
         dir_v.mkdir(parents=True)

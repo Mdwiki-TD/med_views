@@ -11,12 +11,12 @@ import json
 import logging
 import sys
 
-from app.config import main_dump_path
+from app.config import get_config
 from app.dump_utils import count_languages_in_json, load_languages_counts
 from app.sql_utils import get_language_article_counts_sql
-from app.stats_bot_all_years import dump_stats, dump_stats_all
+from src.app.all_years.stats_bot_all_years import dump_stats, dump_stats_all
 from app.titles_utils import load_lang_titles
-from app.views_all_years import get_one_lang_views
+from src.app.all_years.views_all_years import get_one_lang_views
 from app.views_utils.views_helps import (
     get_view_file,
 )
@@ -27,8 +27,8 @@ empty_data_all = {}
 
 
 def dump_empty_data_all() -> None:
-
-    file = main_dump_path / "empty_views_all_years.json"
+    config = get_config()
+    file = config.main_dump_path / "empty_views_all_years.json"
     logger.debug(f"dump_empty_data_all({file}), {len(empty_data_all)=}")
 
     # sort empty_data_all by len of values desc

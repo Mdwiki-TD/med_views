@@ -9,7 +9,7 @@ import json
 import logging
 import sys
 
-from app.config import json_titles_path, main_dump_path
+from app.config import get_config
 from app.dump_utils import (
     dump_languages_counts,
     dump_one,
@@ -22,8 +22,8 @@ logger = logging.getLogger(__name__)
 
 
 def start():
-
-    file = main_dump_path / "all_languages_titles.json"
+    config = get_config()
+    file = config.main_dump_path / "all_languages_titles.json"
 
     if "local" in sys.argv:
         logger.info("dump_data: loading from local files")
@@ -46,7 +46,7 @@ def start():
     for n, (lang, titles) in enumerate(all_links.items(), start=1):
         logger.debug(f"dump_data(): lang:{n}/{len(all_links)} \t {lang} {len(titles)}")
 
-        file = json_titles_path / f"{lang}.json"
+        file = config.json_titles_path / f"{lang}.json"
 
         dump_one(file, titles)
 

@@ -11,7 +11,7 @@ from __future__ import annotations
 import json
 import logging
 
-from .config import main_dump_path
+from ..config import get_config
 
 logger = logging.getLogger(__name__)
 
@@ -76,11 +76,12 @@ def dump_stats_all() -> None:
         "total_views": all_views,
     }
 
-    with open(main_dump_path / "all_years_summary.json", "w", encoding="utf-8") as f:
+    config = get_config()
+    with open(config.main_dump_path / "all_years_summary.json", "w", encoding="utf-8") as f:
         json.dump(summary, f, ensure_ascii=False, indent=4)
 
     # sort stats_all_data by "views" descending
     stats_all_data_sorted = dict(sorted(stats_all_data.items(), key=lambda item: item[1].get("views", 0), reverse=True))
 
-    with open(main_dump_path / "all_years_stats_all.json", "w", encoding="utf-8") as f:
+    with open(config.main_dump_path / "all_years_stats_all.json", "w", encoding="utf-8") as f:
         json.dump(stats_all_data_sorted, f, ensure_ascii=False, indent=4)

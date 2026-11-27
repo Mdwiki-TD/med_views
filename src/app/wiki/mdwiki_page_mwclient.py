@@ -7,16 +7,17 @@ import logging
 import mwclient
 import mwclient.errors
 
-from ..config import mdwiki_pass, my_username
+from ..config import get_config
 
 logger = logging.getLogger(__name__)
 
 
 class MwclientPage:
     def __init__(self, title: str) -> None:
+        config = get_config()
         self.site_mw = mwclient.Site("www.mdwiki.org")
-        self.username = my_username
-        self.password = mdwiki_pass
+        self.username = config.my_username
+        self.password = config.mdwiki_pass
 
         try:
             self.site_mw.login(self.username, self.password)
