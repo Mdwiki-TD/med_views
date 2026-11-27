@@ -2,19 +2,20 @@
 """
 python3 I:/mdwiki/med_views/start.py
 """
-import logging
+
 import json
+import logging
 import sys
 
-from src.dump_utils import count_languages_in_json, load_languages_counts
-from src.texts_utils import build_wiki_text
-from src.helps import json_load
-from src.wiki import page
-from src.config import main_dump_path
-
-from src.views_utils.views_helps import (
+from src.app.config import main_dump_path
+from src.app.dump_utils import count_languages_in_json, load_languages_counts
+from src.app.helps import json_load
+from src.app.texts_utils import build_wiki_text
+from src.app.views_utils.views_helps import (
     get_view_file,
 )
+from src.app.wiki import page
+
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
@@ -88,7 +89,7 @@ def make_page_text(year, limit):
     # ---
     if not languages or list(set(languages.values())) == [0]:
         logger.error("No languages found, run `python3 start_titles.py` first")
-        return
+        return None
     # ---
     # sort languages ASC
     languages = {k: v for k, v in sorted(languages.items(), key=lambda item: item[1], reverse=False)}
@@ -101,7 +102,7 @@ def make_page_text(year, limit):
     # ---
     if not views_not_0:
         logger.info("No views found, run `python3 start_views.py` first")
-        return
+        return None
     # ---
     # sort views by value DESC
     views = {k: v for k, v in sorted(views.items(), key=lambda item: item[1], reverse=True)}

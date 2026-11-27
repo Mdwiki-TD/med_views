@@ -1,7 +1,6 @@
 #!/usr/bin/python3
-"""
+""" """
 
-"""
 import logging
 import sys
 
@@ -59,14 +58,14 @@ def load_one_lang_views(langcode, titles, year) -> dict[str, int]:
     data = {}
     # ---
     if "zero" in sys.argv:
-        data = {x: 0 for x in titles}
+        data = dict.fromkeys(titles, 0)
     else:
         data = get_one_lang_views_by_titles(langcode, titles, year)
     # ---
     return data
 
 
-def get_one_lang_views(langcode, titles, year, json_file, maxv: int=0) -> dict:
+def get_one_lang_views(langcode, titles, year, json_file, maxv: int = 0) -> dict:
     # ---
     u_data = {}
     titles_not_in_file = titles
@@ -74,10 +73,13 @@ def get_one_lang_views(langcode, titles, year, json_file, maxv: int=0) -> dict:
     if json_file.exists():
         u_data = json_load(json_file)
         titles_not_in_file = [
-            x for x in titles if (
+            x
+            for x in titles
+            if (
                 x not in u_data
                 # or u_data[x] == 0
-            )]
+            )
+        ]
         logger.info(f"<<yellow>> {langcode}: {len(titles):,} titles, titles_not_in_file: {len(titles_not_in_file):,}")
     else:
         logger.info(f"<<yellow>> {json_file} not found.")

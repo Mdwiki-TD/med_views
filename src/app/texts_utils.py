@@ -1,7 +1,6 @@
 #!/usr/bin/python3
-"""
+""" """
 
-"""
 import logging
 
 logger = logging.getLogger(__name__)
@@ -40,14 +39,7 @@ def build_wiki_text(languages, views) -> str:
         # ---
         Average_views = lang_views // articles if articles and lang_views else 0
         # ---
-        text += (
-            f"\n|{n}"
-            f"\n|[//{lang}.wikipedia.org {lang}]"
-            f"\n|{articles:,}"
-            f"\n|{lang_views:,}"
-            f"\n|{Average_views:,}"
-            "\n|-"
-        )
+        text += f"\n|{n}\n|[//{lang}.wikipedia.org {lang}]\n|{articles:,}\n|{lang_views:,}\n|{Average_views:,}\n|-"
     # ---
     text += "\n|}"
     # ---

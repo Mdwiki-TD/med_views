@@ -1,10 +1,9 @@
 #!/usr/bin/python3
-"""
+""" """
 
-
-"""
 import json
 import logging
+
 logger = logging.getLogger(__name__)
 
 
@@ -40,7 +39,7 @@ def json_load(json_file) -> None | dict | list:
         None | dict | list: The normalized JSON structure, or `None` if loading/parsing failed.
     """
     try:
-        with open(json_file, "r", encoding="utf-8") as f:
+        with open(json_file, encoding="utf-8") as f:
             u_data = json.load(f)
     except (json.JSONDecodeError, FileNotFoundError) as e:
         logger.error(f"Failed to load JSON from {json_file}: {e}")

@@ -1,6 +1,4 @@
-import pytest
-
-from src.texts_utils import (
+from src.app.texts_utils import (
     build_wiki_text,
 )
 

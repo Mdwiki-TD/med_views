@@ -1,14 +1,14 @@
-"""
-"""
+""" """
+
 import pytest
 
-from src.services.mw_views import (
+from src.app.services.mw_views import (
     PageviewsClient,
 )
 
 
 @pytest.mark.network
-def test_pageviewsclient():
+def test_pageviews_client():
     view_bot = PageviewsClient()
     data = view_bot.article_views_new(
         "ar.wikipedia", ["الصفحة الرئيسة"], granularity="monthly", start="20150101", end="20191231"
@@ -31,7 +31,7 @@ def test_pageviewsclient():
 
 
 @pytest.mark.network
-def test_pageviewsclient_pam():
+def test_pageviews_client_pam():
     view_bot = PageviewsClient()
     data = view_bot.article_views_new(
         "pam.wikipedia", ["Anatomy"], granularity="monthly", start="20150101", end="2025123100"

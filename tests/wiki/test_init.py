@@ -1,6 +1,7 @@
 """
-Tests for src.wiki.__init__ (fallback logic)
+Tests for src.app.wiki.__init__ (fallback logic)
 """
+
 from src import wiki
 
 

@@ -1,17 +1,19 @@
 """
-Tests for src.api_sql.wiki_sql
+Tests for src.app.api_sql.wiki_sql
 """
+
 from unittest.mock import MagicMock
+
 from _pytest.monkeypatch import MonkeyPatch
 
-from src.api_sql.wiki_sql import (
+from src.app.api_sql.wiki_sql import (
     GET_SQL,
     make_labsdb_dbs_p,
     retrieve_sql_results,
 )
 
 
-def test_GET_SQL(monkeypatch: MonkeyPatch) -> None:
+def test_get_sql(monkeypatch: MonkeyPatch) -> None:
     # Clear cache before test
     GET_SQL.cache_clear()
 
@@ -45,10 +47,10 @@ def test_make_labsdb_dbs_p():
 
 def test_retrieve_sql_results(monkeypatch: MonkeyPatch) -> None:
     mock_get_sql = MagicMock(return_value=True)
-    monkeypatch.setattr("src.api_sql.wiki_sql.GET_SQL", mock_get_sql)
+    monkeypatch.setattr("src.app.api_sql.wiki_sql.GET_SQL", mock_get_sql)
 
     mock_make_sql = MagicMock(return_value=[{"col": "val"}])
-    monkeypatch.setattr("src.api_sql.wiki_sql.mysql_client.make_sql_connect", mock_make_sql)
+    monkeypatch.setattr("src.app.api_sql.wiki_sql.mysql_client.make_sql_connect", mock_make_sql)
 
     results = retrieve_sql_results("SELECT 1", wiki="enwiki")
 

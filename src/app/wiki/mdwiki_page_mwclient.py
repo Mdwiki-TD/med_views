@@ -1,17 +1,17 @@
-"""
+""" """
 
-"""
 # ---
 import logging
 
 import mwclient
+import mwclient.errors
 
 from ..config import mdwiki_pass, my_username
 
 logger = logging.getLogger(__name__)
 
 
-class page_mwclient:
+class MwclientPage:
     def __init__(self, title: str) -> None:
         self.site_mw = mwclient.Site("www.mdwiki.org")
         self.username = my_username

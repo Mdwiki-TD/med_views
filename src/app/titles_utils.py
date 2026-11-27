@@ -1,7 +1,6 @@
 #!/usr/bin/python3
-"""
+""" """
 
-"""
 import sys
 
 from .dump_utils import load_lang_titles_from_dump

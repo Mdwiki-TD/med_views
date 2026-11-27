@@ -7,15 +7,15 @@ python3 titles.py
 """
 
 import json
-import sys
 import logging
+import sys
 
-from src.config import json_titles_path, main_dump_path
-from src.dump_utils import (
+from src.app.config import json_titles_path, main_dump_path
+from src.app.dump_utils import (
     dump_languages_counts,
     dump_one,
 )
-from src.sql_utils import (
+from src.app.sql_utils import (
     retrieve_medicine_titles,
 )
 
@@ -30,7 +30,7 @@ def start():
     if "local" in sys.argv:
         logger.info("dump_data: loading from local files")
         all_links = {}
-        with open(file, "r", encoding="utf-8") as f:
+        with open(file, encoding="utf-8") as f:
             all_links = json.load(f)
     else:
         all_links = retrieve_medicine_titles()

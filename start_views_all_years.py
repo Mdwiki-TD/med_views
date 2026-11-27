@@ -3,19 +3,20 @@
 python3 start_views_all_years.py
 Collects and stores article views for all years (2015-2025)
 """
+
 import json
 import logging
 import sys
 
-from src.config import main_dump_path
-from src.views_all_years import get_one_lang_views
-from src.dump_utils import count_languages_in_json, load_languages_counts
-from src.sql_utils import get_language_article_counts_sql
-from src.titles_utils import load_lang_titles
-from src.views_utils.views_helps import (
+from src.app.config import main_dump_path
+from src.app.dump_utils import count_languages_in_json, load_languages_counts
+from src.app.sql_utils import get_language_article_counts_sql
+from src.app.stats_bot_all_years import dump_stats, dump_stats_all
+from src.app.titles_utils import load_lang_titles
+from src.app.views_all_years import get_one_lang_views
+from src.app.views_utils.views_helps import (
     get_view_file,
 )
-from src.stats_bot_all_years import dump_stats, dump_stats_all
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -29,9 +30,7 @@ def dump_empty_data_all() -> None:
     logger.debug(f"dump_empty_data_all({file}), {len(empty_data_all)=}")
     # ---
     # sort empty_data_all by len of values desc
-    empty_data_all_sorted = dict(
-        sorted(empty_data_all.items(), key=lambda item: len(item[1]), reverse=True)
-    )
+    empty_data_all_sorted = dict(sorted(empty_data_all.items(), key=lambda item: len(item[1]), reverse=True))
     # ---
     with open(file, "w", encoding="utf-8") as f:
         json.dump(empty_data_all_sorted, f, ensure_ascii=False, indent=4)
@@ -57,7 +56,7 @@ def dump_one_lang_files(titles, data, lang) -> None:
     # Separate data by year and save to corresponding year folders
     # First, organize data by year
     years_data = {}
-    
+
     for title, views in data.items():
         if isinstance(views, dict):
             # views is a dictionary of {year: count}
@@ -69,17 +68,17 @@ def dump_one_lang_files(titles, data, lang) -> None:
             # Single value, might be from "all" or a specific year
             # We'll skip this for now or handle as needed
             pass
-    
+
     # Save each year's data to its corresponding folder
     for year, year_data in years_data.items():
         file = get_view_file(lang, year)
         # Filter out zero values
         not_empty_data = {k: v for k, v in year_data.items() if v != 0}
-        
+
         if not_empty_data:
             with open(file, "w", encoding="utf-8") as f:
                 json.dump(not_empty_data, f, ensure_ascii=False)
-    
+
     # Track empty data across all years
     empty_data = []
     for k in titles:
@@ -90,7 +89,7 @@ def dump_one_lang_files(titles, data, lang) -> None:
             # Check if all year values are 0
             if all(v == 0 for v in val.values()):
                 empty_data.append(k)
-    
+
     if empty_data:
         empty_data_all[lang] = empty_data
 
@@ -140,6 +139,7 @@ def process_language_views(lang, maxv=0) -> dict[str, dict]:
     # For all years, we'll check an existing file from the current year to see what titles we already have
     # Use the current year or latest available year as reference
     import datetime
+
     current_year = datetime.datetime.now().year
     # Ensure we don't go beyond 2025
     reference_year = min(current_year, 2025)
@@ -157,7 +157,7 @@ def start(limit, maxv):
     """
     Orchestrates collection of per-language pageview totals for all years (2015-2025).
 
-    Retrieves stored language article counts, computes pageviews (respecting `limit` and `maxv`), 
+    Retrieves stored language article counts, computes pageviews (respecting `limit` and `maxv`),
     and saves the data for each year in separate folders within views_by_year_path.
 
     Parameters:

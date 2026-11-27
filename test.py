@@ -2,6 +2,7 @@
 """
 python3 I:/mdwiki/med_views/test.py
 """
+
 import sys
 
 from start_views import process_language_views  # (year, maxv, lang)

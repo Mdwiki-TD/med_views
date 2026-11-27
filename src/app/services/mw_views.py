@@ -1,6 +1,6 @@
 #!/usr/bin/python3
-"""
-"""
+""" """
+
 import logging
 import sys
 import time
@@ -82,7 +82,7 @@ class PageviewsClientHelper:
 
 
 class PageviewsClient(PageviewsClientHelper):
-    def __init__(self, user_agent: str="", parallelism: int=10) -> None:
+    def __init__(self, user_agent: str = "", parallelism: int = 10) -> None:
         """
         Create a PageviewsClient
 
@@ -103,9 +103,9 @@ class PageviewsClient(PageviewsClientHelper):
         self,
         project,
         articles,
-        access: str="all-access",
-        agent: str="all-agents",
-        granularity: str="daily",
+        access: str = "all-access",
+        agent: str = "all-agents",
+        granularity: str = "daily",
         start=None,
         end=None,
     ) -> defaultdict[datetime, dict]:
@@ -187,7 +187,7 @@ class PageviewsClient(PageviewsClientHelper):
         outputDays = timestamps_between(startDate, endDate, timedelta(days=1))
         if granularity == "monthly":
             outputDays = list(set([month_from_day(day) for day in outputDays]))
-        output = defaultdict(dict, {day: {a: None for a in articles} for day in outputDays})
+        output = defaultdict(dict, {day: dict.fromkeys(articles) for day in outputDays})
 
         # try:
         results = self.get_concurrent(urls)

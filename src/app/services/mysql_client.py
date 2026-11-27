@@ -1,7 +1,6 @@
 #!/usr/bin/python3
-"""
+""" """
 
-"""
 import functools
 import logging
 from pathlib import Path

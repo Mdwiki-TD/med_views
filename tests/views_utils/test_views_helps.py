@@ -1,10 +1,12 @@
 """
-Tests for src.views_utils.views_helps
+Tests for src.app.views_utils.views_helps
 """
+
 from unittest.mock import MagicMock
+
 from _pytest.monkeypatch import MonkeyPatch
 
-from src.views_utils.views_helps import (
+from src.app.views_utils.views_helps import (
     article_views,
     article_views_all_years,
     get_view_file,
@@ -13,7 +15,7 @@ from src.views_utils.views_helps import (
 
 def test_article_views(monkeypatch: MonkeyPatch) -> None:
     mock_bot = MagicMock()
-    monkeypatch.setattr("src.views_utils.views_helps.view_bot", mock_bot)
+    monkeypatch.setattr("src.app.views_utils.views_helps.view_bot", mock_bot)
 
     mock_bot.article_views_new.return_value = {
         "Title_1": {2024: 100},
@@ -34,7 +36,7 @@ def test_article_views(monkeypatch: MonkeyPatch) -> None:
 def test_article_views_all_years(monkeypatch: MonkeyPatch) -> None:
     """Test article_views_all_years returns multi-year data structure"""
     mock_bot = MagicMock()
-    monkeypatch.setattr("src.views_utils.views_helps.view_bot", mock_bot)
+    monkeypatch.setattr("src.app.views_utils.views_helps.view_bot", mock_bot)
 
     mock_bot.article_views_new.return_value = {
         "Title_1": {2020: 50, 2021: 100, 2022: 150},
@@ -69,7 +71,7 @@ def test_article_views_all_years(monkeypatch: MonkeyPatch) -> None:
 def test_article_views_all_years_be_x_old(monkeypatch: MonkeyPatch) -> None:
     """Test that be-x-old is correctly converted to be-tarask"""
     mock_bot = MagicMock()
-    monkeypatch.setattr("src.views_utils.views_helps.view_bot", mock_bot)
+    monkeypatch.setattr("src.app.views_utils.views_helps.view_bot", mock_bot)
 
     mock_bot.article_views_new.return_value = {"Title_1": {2020: 100}}
 
@@ -84,7 +86,7 @@ def test_article_views_all_years_be_x_old(monkeypatch: MonkeyPatch) -> None:
 
 def test_get_view_file(tmp_path, monkeypatch):
     # Mock views_by_year_path
-    monkeypatch.setattr("src.views_utils.views_helps.views_by_year_path", tmp_path)
+    monkeypatch.setattr("src.app.views_utils.views_helps.views_by_year_path", tmp_path)
 
     lang = "en"
     year = 2024

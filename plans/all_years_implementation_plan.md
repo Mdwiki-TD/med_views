@@ -33,11 +33,11 @@ This plan creates a parallel system to the existing one that collects and stores
 ### 3. start_views_all_years.py
 **نسخة من / Copy of:** `start_views.py`
 **التغييرات / Changes:**
-- استيراد من `src.views_all_years` بدلاً من `src.views`
+- استيراد من `src.app.views_all_years` بدلاً من `src.views`
 - تخزين البيانات في مجلد `views_by_year_path` لكل سنة على حدة
 - معالجة البيانات لكل سنة وحفظها في المجلد المناسب
 
-**Import from `src.views_all_years` instead of `src.views`**
+**Import from `src.app.views_all_years` instead of `src.views`**
 - Store data in `views_by_year_path` for each year separately
 - Process data for each year and save in appropriate folder
 
@@ -100,8 +100,8 @@ This plan creates a parallel system to the existing one that collects and stores
 
 ### الخطوة 4: إنشاء start_views_all_years.py
 - [ ] نسخ `start_views.py` إلى `start_views_all_years.py`
-- [ ] استبدال استيراد من `src.views` إلى `src.views_all_years`
-- [ ] استبدال استيراد من `src.stats_bot` إلى `src.stats_bot_all_years`
+- [ ] استبدال استيراد من `src.views` إلى `src.app.views_all_years`
+- [ ] استبدال استيراد من `src.stats_bot` إلى `src.app.stats_bot_all_years`
 - [ ] تعديل دالة `dump_one_lang_files` لمعالجة البيانات متعددة السنوات
 - [ ] تعديل دالة `dump_one_lang_files` لحفظ كل سنة في المجلد المناسب
 - [ ] تعديل دالة `process_language_views` لإزالة معامل `year` عند استدعاء الدوال الجديدة
@@ -110,8 +110,8 @@ This plan creates a parallel system to the existing one that collects and stores
 
 **Step 4: Create start_views_all_years.py**
 - [ ] Copy `start_views.py` to `start_views_all_years.py`
-- [ ] Replace import from `src.views` to `src.views_all_years`
-- [ ] Replace import from `src.stats_bot` to `src.stats_bot_all_years`
+- [ ] Replace import from `src.views` to `src.app.views_all_years`
+- [ ] Replace import from `src.stats_bot` to `src.app.stats_bot_all_years`
 - [ ] Modify `dump_one_lang_files` to process multi-year data
 - [ ] Modify `dump_one_lang_files` to save each year in appropriate folder
 - [ ] Modify `process_language_views` to remove `year` parameter

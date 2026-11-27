@@ -1,10 +1,8 @@
 #!/usr/bin/python3
-"""
+""" """
 
-
-"""
-import logging
 import json
+import logging
 
 from .config import main_dump_path
 

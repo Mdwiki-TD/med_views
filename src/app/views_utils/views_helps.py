@@ -1,7 +1,6 @@
 #!/usr/bin/python3
-"""
+""" """
 
-"""
 import logging
 
 from ..config import parallelism, views_by_year_path
@@ -12,7 +11,7 @@ logger = logging.getLogger(__name__)
 view_bot = PageviewsClient(parallelism=parallelism)
 
 
-def article_views(site, articles, year: int=2024):
+def article_views(site, articles, year: int = 2024):
     # ---
     site = "be-tarask" if site == "be-x-old" else site
     # ---

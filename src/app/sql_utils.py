@@ -1,7 +1,6 @@
 #!/usr/bin/python3
-"""
+""" """
 
-"""
 import logging
 
 from .api_sql.wiki_sql import retrieve_sql_results

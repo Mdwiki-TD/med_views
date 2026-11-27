@@ -5,8 +5,9 @@ Statistics calculation and dumping for multi-year view data.
 This module calculates and stores statistics for Wikipedia article views
 across multiple years (2015-2025), handling dictionary-based year data.
 """
-import logging
+
 import json
+import logging
 
 from .config import main_dump_path
 

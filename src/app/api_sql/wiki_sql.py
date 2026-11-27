@@ -1,7 +1,6 @@
 #!/usr/bin/python3
-"""
+""" """
 
-"""
 import functools
 import logging
 import os
@@ -38,8 +37,7 @@ def make_labsdb_dbs_p(wiki):
     Returns:
         tuple: A tuple containing the host string and the database name string.
     """
-    if wiki.endswith("wiki"):
-        wiki = wiki[:-4]
+    wiki = wiki.removesuffix("wiki")
     # ---
     wiki = wiki.replace("-", "_")
     # ---
@@ -50,7 +48,7 @@ def make_labsdb_dbs_p(wiki):
         "be-tarask": "be_x_old",
     }
     # ---
-    wiki = databases.get(wiki, wiki)
+    wiki = databases.get(wiki) or wiki
     # ---
     valid_ends = [
         "wiktionary",
@@ -68,7 +66,7 @@ def make_labsdb_dbs_p(wiki):
     return host, dbs_p
 
 
-def retrieve_sql_results(queries, wiki: str="", values=None):
+def retrieve_sql_results(queries, wiki: str = "", values=None):
     # ---
     """
     Retrieve SQL query results for a specified wiki's analytics database.

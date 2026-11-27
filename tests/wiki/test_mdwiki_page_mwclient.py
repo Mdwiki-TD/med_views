@@ -1,11 +1,13 @@
 """
-Tests for src.wiki.mdwiki_page_mwclient
+Tests for src.app.wiki.mdwiki_page_mwclient
 """
+
 from unittest.mock import MagicMock
+
 from _pytest.monkeypatch import MonkeyPatch
 
-from src.wiki.mdwiki_page_mwclient import (
-    page_mwclient,
+from src.app.wiki.mdwiki_page_mwclient import (
+    MwclientPage,
 )
 
 
@@ -17,7 +19,7 @@ def test_page_mwclient(monkeypatch: MonkeyPatch) -> None:
     mock_page = MagicMock()
     mock_site.pages.__getitem__.return_value = mock_page
 
-    p = page_mwclient("Test Title")
+    p = MwclientPage("Test Title")
 
     # Test get_text
     mock_page.text.return_value = "content"

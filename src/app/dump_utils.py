@@ -1,7 +1,6 @@
 #!/usr/bin/python3
-"""
+""" """
 
-"""
 import json
 import logging
 
@@ -24,7 +23,7 @@ def count_languages_in_json():
     for json_file in json_titles_path.glob("*.json"):
         lang = json_file.stem
         # ---
-        with open(json_file, "r", encoding="utf-8") as f:
+        with open(json_file, encoding="utf-8") as f:
             result[lang] = len(json.load(f))
     return result
 
@@ -44,7 +43,7 @@ def load_lang_titles_from_dump(lang):
     # ---
     if json_file.exists():
         # ---
-        with open(json_file, "r", encoding="utf-8") as f:
+        with open(json_file, encoding="utf-8") as f:
             data = json.load(f)
         # ---
         data = [x.replace("_", " ") for x in data]
@@ -113,7 +112,7 @@ def load_languages_counts() -> dict:
     # ---
     if file.exists():
         # ---
-        with open(file, "r", encoding="utf-8") as f:
+        with open(file, encoding="utf-8") as f:
             data = json.load(f)
     # ---
     logger.debug(f"load_languages_counts({file}), {len(data)=}")
