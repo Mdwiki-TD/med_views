@@ -1,5 +1,5 @@
 """
-Tests for src.views
+Tests for src.app.one_year.views
 """
 
 from unittest.mock import MagicMock
@@ -7,6 +7,7 @@ from unittest.mock import MagicMock
 from _pytest.monkeypatch import MonkeyPatch
 
 from src.app.one_year.views import (
+    SingleYearViewsService,
     calculate_total_views,
     get_one_lang_views_by_titles,
     update_data,
@@ -27,8 +28,13 @@ def test_update_data():
 
 
 def test_get_one_lang_views_by_titles(monkeypatch: MonkeyPatch) -> None:
-    mock_article_views = MagicMock(return_value={"Art1": 10})
-    monkeypatch.setattr("src.app.one_year.views.article_views", mock_article_views)
+    mock_service = MagicMock(spec=SingleYearViewsService)
+    mock_service.get_one_lang_views_by_titles.return_value = {"Art1": 10}
+
+    monkeypatch.setattr(
+        "src.app.one_year.views._get_default_service",
+        lambda: mock_service,
+    )
 
     result = get_one_lang_views_by_titles("en", ["Art1"], "2020")
     assert result == {"Art1": 10}

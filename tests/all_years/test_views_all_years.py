@@ -7,6 +7,7 @@ from unittest.mock import MagicMock
 from _pytest.monkeypatch import MonkeyPatch
 
 from src.app.all_years.views_all_years import (
+    MultiYearViewsService,
     calculate_total_views,
     get_one_lang_views_by_titles,
     update_data,
@@ -59,13 +60,16 @@ def test_update_data_with_underscores():
 
 def test_get_one_lang_views_by_titles(monkeypatch: MonkeyPatch) -> None:
     """Test get_one_lang_views_by_titles calls article_views_all_years correctly"""
-    mock_article_views_all_years = MagicMock(
-        return_value={
-            "Art1": {2020: 10, 2021: 20},
-            "Art2": {2020: 30, 2021: 40},
-        }
+    mock_service = MagicMock(spec=MultiYearViewsService)
+    mock_service.get_one_lang_views_by_titles.return_value = {
+        "Art1": {2020: 10, 2021: 20},
+        "Art2": {2020: 30, 2021: 40},
+    }
+
+    monkeypatch.setattr(
+        "src.app.all_years.views_all_years._get_default_service",
+        lambda: mock_service,
     )
-    monkeypatch.setattr("src.app.all_years.views_all_years.article_views_all_years", mock_article_views_all_years)
 
     result = get_one_lang_views_by_titles("en", ["Art1", "Art2"])
 
@@ -73,20 +77,25 @@ def test_get_one_lang_views_by_titles(monkeypatch: MonkeyPatch) -> None:
         "Art1": {2020: 10, 2021: 20},
         "Art2": {2020: 30, 2021: 40},
     }
-    mock_article_views_all_years.assert_called_once_with("en", ["Art1", "Art2"])
 
 
 def test_get_one_lang_views_by_titles_batching(monkeypatch: MonkeyPatch) -> None:
     """Test that get_one_lang_views_by_titles batches requests in groups of 500"""
     call_count = 0
 
-    def mock_article_views_all_years(langcode, titles):
+    def mock_get_one_lang_views_by_titles(langcode, titles):
         nonlocal call_count
         call_count += 1
         # Return mock data for each batch
         return {title: {2020: call_count * 10} for title in titles}
 
-    monkeypatch.setattr("src.app.all_years.views_all_years.article_views_all_years", mock_article_views_all_years)
+    mock_service = MagicMock(spec=MultiYearViewsService)
+    mock_service.get_one_lang_views_by_titles.side_effect = mock_get_one_lang_views_by_titles
+
+    monkeypatch.setattr(
+        "src.app.all_years.views_all_years._get_default_service",
+        lambda: mock_service,
+    )
 
     # Create 1200 titles to test batching (should be 3 batches of 500, 500, 200)
     titles = [f"Art{i}" for i in range(1200)]

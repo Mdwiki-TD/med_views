@@ -18,8 +18,8 @@ class TitlesLoader:
 
     def __init__(
         self,
-        dump_manager: DumpManager = None,
-        titles_repo: MedicalTitlesRepository = None,
+        dump_manager: DumpManager | None = None,
+        titles_repo: MedicalTitlesRepository | None = None,
     ) -> None:
         """Initialize the TitlesLoader.
 

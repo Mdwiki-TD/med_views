@@ -19,7 +19,7 @@ class MedicalTitlesRepository:
 
     def __init__(
         self,
-        sql_client: WikiSQLClient = None,
+        sql_client: WikiSQLClient | None = None,
     ) -> None:
         """Initialize the repository.
 

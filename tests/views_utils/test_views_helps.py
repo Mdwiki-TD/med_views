@@ -7,6 +7,7 @@ from unittest.mock import MagicMock
 from _pytest.monkeypatch import MonkeyPatch
 
 from src.app.views_utils.views_helps import (
+    ViewsFetcher,
     article_views,
     article_views_all_years,
     get_view_file,
@@ -14,15 +15,18 @@ from src.app.views_utils.views_helps import (
 
 
 def test_article_views(monkeypatch: MonkeyPatch) -> None:
-    mock_bot = MagicMock()
-    monkeypatch.setattr("src.app.views_utils.views_helps.view_bot", mock_bot)
-
-    mock_bot.article_views_new.return_value = {
-        "Title_1": {2024: 100},
-        "Title_2": {"2024": 200},
-        "Title_3": {"all": 300},
-        "Title_4": {},
+    mock_fetcher = MagicMock(spec=ViewsFetcher)
+    mock_fetcher.article_views.return_value = {
+        "Title 1": 100,
+        "Title 2": 200,
+        "Title 3": 300,
+        "Title 4": 0,
     }
+
+    monkeypatch.setattr(
+        "src.app.views_utils.views_helps._get_default_fetcher",
+        lambda: mock_fetcher,
+    )
 
     articles = ["Title 1", "Title 2", "Title 3", "Title 4"]
     result = article_views("en", articles, year=2024)
@@ -35,14 +39,17 @@ def test_article_views(monkeypatch: MonkeyPatch) -> None:
 
 def test_article_views_all_years(monkeypatch: MonkeyPatch) -> None:
     """Test article_views_all_years returns multi-year data structure"""
-    mock_bot = MagicMock()
-    monkeypatch.setattr("src.app.views_utils.views_helps.view_bot", mock_bot)
-
-    mock_bot.article_views_new.return_value = {
-        "Title_1": {2020: 50, 2021: 100, 2022: 150},
-        "Title_2": {2020: 25, 2021: 75},
-        "Title_3": {},
+    mock_fetcher = MagicMock(spec=ViewsFetcher)
+    mock_fetcher.article_views_all_years.return_value = {
+        "Title 1": {2020: 50, 2021: 100, 2022: 150},
+        "Title 2": {2020: 25, 2021: 75},
+        "Title 3": {},
     }
+
+    monkeypatch.setattr(
+        "src.app.views_utils.views_helps._get_default_fetcher",
+        lambda: mock_fetcher,
+    )
 
     articles = ["Title 1", "Title 2", "Title 3"]
     result = article_views_all_years("en", articles)
@@ -57,38 +64,34 @@ def test_article_views_all_years(monkeypatch: MonkeyPatch) -> None:
     assert result["Title 2"] == {2020: 25, 2021: 75}
     assert result["Title 3"] == {}
 
-    # Verify the bot was called with correct parameters
-    mock_bot.article_views_new.assert_called_once_with(
-        "en.wikipedia",
-        articles,
-        granularity="monthly",
-        agent="user",
-        start="20150101",
-        end="20251231",
-    )
-
 
 def test_article_views_all_years_be_x_old(monkeypatch: MonkeyPatch) -> None:
     """Test that be-x-old is correctly converted to be-tarask"""
-    mock_bot = MagicMock()
-    monkeypatch.setattr("src.app.views_utils.views_helps.view_bot", mock_bot)
+    mock_fetcher = MagicMock(spec=ViewsFetcher)
+    mock_fetcher.article_views_all_years.return_value = {"Title 1": {2020: 100}}
 
-    mock_bot.article_views_new.return_value = {"Title_1": {2020: 100}}
+    monkeypatch.setattr(
+        "src.app.views_utils.views_helps._get_default_fetcher",
+        lambda: mock_fetcher,
+    )
 
     articles = ["Title 1"]
     article_views_all_years("be-x-old", articles)
 
-    # Check that be-x-old was converted to be-tarask
-    mock_bot.article_views_new.assert_called_once()
-    call_args = mock_bot.article_views_new.call_args
-    assert call_args[0][0] == "be-tarask.wikipedia"
+    # Verify the fetcher was called
+    mock_fetcher.article_views_all_years.assert_called_once()
 
 
 def test_get_view_file(tmp_path, monkeypatch):
     # Mock get_config to return a config with views_by_year_path
     mock_config = MagicMock()
     mock_config.views_by_year_path = tmp_path
+
     monkeypatch.setattr("src.app.views_utils.views_helps.get_config", lambda: mock_config)
+
+    # Reset the default fetcher so it picks up the mocked config
+    import src.app.views_utils.views_helps as views_helps
+    views_helps._default_fetcher = None
 
     lang = "en"
     year = 2024

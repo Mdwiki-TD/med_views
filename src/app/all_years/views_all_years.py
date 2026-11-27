@@ -26,8 +26,8 @@ class MultiYearViewsService:
 
     def __init__(
         self,
-        views_fetcher: ViewsFetcher = None,
-        json_helper: type = None,
+        views_fetcher: ViewsFetcher | None = None,
+        json_helper: type | None = None,
     ) -> None:
         """Initialize the service.
 

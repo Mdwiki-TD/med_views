@@ -21,8 +21,8 @@ class ViewsFetcher:
 
     def __init__(
         self,
-        pageviews_client: PageviewsClient = None,
-        config: Config = None,
+        pageviews_client: PageviewsClient | None = None,
+        config: Config | None = None,
     ) -> None:
         """Initialize the ViewsFetcher.
 

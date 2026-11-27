@@ -19,7 +19,7 @@ class SingleYearStatsService:
 
     def __init__(
         self,
-        config: Config = None,
+        config: Config | None = None,
     ) -> None:
         """Initialize the service.
 
