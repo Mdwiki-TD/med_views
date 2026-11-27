@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 """ """
 
+from __future__ import annotations
+
 import functools
 import logging
 from pathlib import Path
@@ -14,7 +16,6 @@ logger = logging.getLogger(__name__)
 
 @functools.lru_cache(maxsize=1)
 def load_db_config(db: str, host: str) -> dict[str, Any]:
-    # --- check ~/replica.my.cnf ---
     """
     Constructs a PyMySQL connection configuration dictionary for the specified database and host, using ~/replica.my.cnf as the read-default file.
 

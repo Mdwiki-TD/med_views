@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 """ """
 
+from __future__ import annotations
+
 import logging
 
 from ..config import parallelism, views_by_year_path

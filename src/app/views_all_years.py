@@ -6,6 +6,8 @@ This module handles collecting and processing Wikipedia article views
 for all years from 2015 to 2025, as opposed to single-year collection.
 """
 
+from __future__ import annotations
+
 import logging
 import sys
 

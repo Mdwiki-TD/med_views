@@ -5,6 +5,8 @@ python src/start_views_all_years.py
 Collects and stores article views for all years (2015-2025)
 """
 
+from __future__ import annotations
+
 import json
 import logging
 import sys

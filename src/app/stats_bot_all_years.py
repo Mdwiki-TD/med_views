@@ -6,6 +6,8 @@ This module calculates and stores statistics for Wikipedia article views
 across multiple years (2015-2025), handling dictionary-based year data.
 """
 
+from __future__ import annotations
+
 import json
 import logging
 
