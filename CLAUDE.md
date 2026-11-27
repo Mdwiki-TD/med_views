@@ -30,8 +30,9 @@ python -m pytest tests/test_config.py
 ```bash
 black src/ tests/
 isort src/ tests/
+ruff check src/ tests/
 ```
-Configuration: 120 character line length, Python 3.11 target (see pyproject.toml).
+Configuration: 120 character line length, Python 3.13 target (see pyproject.toml).
 
 ### Workflow Execution
 ```bash
