@@ -1,21 +1,18 @@
 #!/usr/bin/python3
 """
-
-python3 titles.py
-
-
+python src/start_titles.py
 """
 
 import json
 import logging
 import sys
 
-from src.app.config import json_titles_path, main_dump_path
-from src.app.dump_utils import (
+from app.config import json_titles_path, main_dump_path
+from app.dump_utils import (
     dump_languages_counts,
     dump_one,
 )
-from src.app.sql_utils import (
+from app.sql_utils import (
     retrieve_medicine_titles,
 )
 

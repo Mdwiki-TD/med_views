@@ -1,19 +1,19 @@
 #!/usr/bin/python3
 """
-python3 I:/mdwiki/med_views/start_views2.py
+python src/start_views.py
 """
 
 import json
 import logging
 import sys
 
-from src.app.config import main_dump_path
-from src.app.dump_utils import count_languages_in_json, load_languages_counts
-from src.app.sql_utils import get_language_article_counts_sql
-from src.app.stats_bot import dump_stats, dump_stats_all
-from src.app.titles_utils import load_lang_titles
-from src.app.views import get_one_lang_views
-from src.app.views_utils.views_helps import (
+from app.config import main_dump_path
+from app.dump_utils import count_languages_in_json, load_languages_counts
+from app.sql_utils import get_language_article_counts_sql
+from app.stats_bot import dump_stats, dump_stats_all
+from app.titles_utils import load_lang_titles
+from app.views import get_one_lang_views
+from app.views_utils.views_helps import (
     get_view_file,
 )
 

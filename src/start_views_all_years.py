@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
-python3 start_views_all_years.py
+python src/start_views_all_years.py
+
 Collects and stores article views for all years (2015-2025)
 """
 
@@ -8,13 +9,13 @@ import json
 import logging
 import sys
 
-from src.app.config import main_dump_path
-from src.app.dump_utils import count_languages_in_json, load_languages_counts
-from src.app.sql_utils import get_language_article_counts_sql
-from src.app.stats_bot_all_years import dump_stats, dump_stats_all
-from src.app.titles_utils import load_lang_titles
-from src.app.views_all_years import get_one_lang_views
-from src.app.views_utils.views_helps import (
+from app.config import main_dump_path
+from app.dump_utils import count_languages_in_json, load_languages_counts
+from app.sql_utils import get_language_article_counts_sql
+from app.stats_bot_all_years import dump_stats, dump_stats_all
+from app.titles_utils import load_lang_titles
+from app.views_all_years import get_one_lang_views
+from app.views_utils.views_helps import (
     get_view_file,
 )
 

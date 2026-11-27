@@ -1,20 +1,20 @@
 #!/usr/bin/python3
 """
-python3 I:/mdwiki/med_views/start.py
+python src/start.py
 """
 
 import json
 import logging
 import sys
 
-from src.app.config import main_dump_path
-from src.app.dump_utils import count_languages_in_json, load_languages_counts
-from src.app.helps import json_load
-from src.app.texts_utils import build_wiki_text
-from src.app.views_utils.views_helps import (
+from app.config import main_dump_path
+from app.dump_utils import count_languages_in_json, load_languages_counts
+from app.helps import json_load
+from app.texts_utils import build_wiki_text
+from app.views_utils.views_helps import (
     get_view_file,
 )
-from src.app.wiki import MwclientPage
+from app.wiki import MwclientPage
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
