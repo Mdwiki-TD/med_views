@@ -85,8 +85,10 @@ def test_article_views_all_years_be_x_old(monkeypatch: MonkeyPatch) -> None:
 
 
 def test_get_view_file(tmp_path, monkeypatch):
-    # Mock views_by_year_path
-    monkeypatch.setattr("src.app.views_utils.views_helps.views_by_year_path", tmp_path)
+    # Mock get_config to return a config with views_by_year_path
+    mock_config = MagicMock()
+    mock_config.views_by_year_path = tmp_path
+    monkeypatch.setattr("src.app.views_utils.views_helps.get_config", lambda: mock_config)
 
     lang = "en"
     year = 2024

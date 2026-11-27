@@ -89,8 +89,10 @@ def test_dump_languages_counts(monkeypatch: MonkeyPatch) -> None:
 
 
 def test_load_languages_counts(monkeypatch: MonkeyPatch) -> None:
+    mock_config = MagicMock()
     mock_path = MagicMock()
-    monkeypatch.setattr("src.app.dump_utils.main_dump_path", mock_path)
+    mock_config.main_dump_path = mock_path
+    monkeypatch.setattr("src.app.dump_utils.get_config", lambda: mock_config)
 
     mock_file = MagicMock(spec=Path)
     mock_path.__truediv__.return_value = mock_file
