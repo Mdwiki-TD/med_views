@@ -7,7 +7,7 @@ from unittest.mock import MagicMock
 from _pytest.monkeypatch import MonkeyPatch
 
 from src.app.services.mysql_client import (
-    _sql_connect_pymysql,
+    MySQLClient,
     decode_bytes_in_list,
     decode_value,
     load_db_config,
@@ -42,7 +42,7 @@ def test__sql_connect_pymysql(monkeypatch: MonkeyPatch) -> None:
     expected_results = [{"col": "val"}]
     mock_cursor.fetchall.return_value = expected_results
 
-    results = _sql_connect_pymysql("SELECT 1", db="test_db", host="test_host")
+    results = MySQLClient()._sql_connect_pymysql("SELECT 1", db="test_db", host="test_host")
 
     assert results == expected_results
     mock_connect.assert_called_once()
@@ -64,7 +64,7 @@ def test_decode_bytes_in_list():
 
 def test_make_sql_connect(monkeypatch: MonkeyPatch) -> None:
     mock_sql = MagicMock(return_value=[{"col": b"val"}])
-    monkeypatch.setattr("src.app.services.mysql_client._sql_connect_pymysql", mock_sql)
+    monkeypatch.setattr("src.app.services.mysql_client.MySQLClient._sql_connect_pymysql", mock_sql)
 
     results = make_sql_connect("SELECT 1")
     # make_sql_connect calls decode_bytes_in_list on the results
