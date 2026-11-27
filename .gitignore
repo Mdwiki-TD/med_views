@@ -2,7 +2,3 @@
 .env
 views_all_run_it.py
 *.zip
-dumps_all_agents/titles
-dumps_all_agents/all_languages_titles.json
-/dumps_all_agents/stats
-/dumps_all_agents/views_by_year/2025

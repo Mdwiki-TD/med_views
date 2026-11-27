@@ -42,7 +42,7 @@ MAIN_PATH=/path/to/output/directory
 
 - `MDWIKI_USERNAME`: Username for MDWiki uploads
 - `MDWIKI_HIMO_PASSWORD`: Password for MDWiki uploads
-- `MAIN_PATH`: Output directory for JSON dumps (defaults to `dumps_all_agents/`)
+- `MAIN_PATH`: Output directory for JSON dumps (defaults to `~/data/views_dumps/`)
 
 ## Workflow and Execution
 
@@ -59,7 +59,7 @@ python3 start_titles.py
 **What it does:**
 
 - Retrieves medicine-related titles using SQL queries
-- Saves per-language JSON files to `dumps_all_agents/titles/`
+- Saves per-language JSON files to `~/data/views_dumps/titles/`
 - Creates `all_languages_titles.json` summary
 
 **Options:**
@@ -86,7 +86,7 @@ python3 start_views_all_years.py
 
 - Iterates through collected titles
 - Uses Wikimedia Pageviews API to fetch view counts
-- Stores yearly JSON data in `dumps_all_agents/views_by_year/YYYY/`
+- Stores yearly JSON data in `~/data/views_dumps/views_by_year/YYYY/`
 
 **Parameters:**
 
@@ -195,7 +195,7 @@ med_views/
 The system generates JSON files in the following structure:
 
 ```
-dumps_all_agents/
+~/data/views_dumps/
 ├── titles/
 │   ├── en.json                 # English medical article titles
 │   ├── ar.json                 # Arabic medical article titles
