@@ -7,7 +7,7 @@ from unittest.mock import MagicMock
 from _pytest.monkeypatch import MonkeyPatch
 
 from src.app.api_sql.wiki_sql import (
-    GET_SQL,
+    get_sql,
     make_labsdb_dbs_p,
     retrieve_sql_results,
 )
@@ -15,19 +15,19 @@ from src.app.api_sql.wiki_sql import (
 
 def test_get_sql(monkeypatch: MonkeyPatch) -> None:
     # Clear cache before test
-    GET_SQL.cache_clear()
+    get_sql.cache_clear()
 
     mock_isdir = MagicMock()
     monkeypatch.setattr("os.path.isdir", mock_isdir)
 
     # Case 1: On labs
     mock_isdir.side_effect = lambda path: path == "/data/project/"
-    assert GET_SQL() is True
+    assert get_sql() is True
 
     # Case 2: Not on labs
-    GET_SQL.cache_clear()
+    get_sql.cache_clear()
     mock_isdir.side_effect = lambda path: False
-    assert GET_SQL() is False
+    assert get_sql() is False
 
 
 def test_make_labsdb_dbs_p():
@@ -47,7 +47,7 @@ def test_make_labsdb_dbs_p():
 
 def test_retrieve_sql_results(monkeypatch: MonkeyPatch) -> None:
     mock_get_sql = MagicMock(return_value=True)
-    monkeypatch.setattr("src.app.api_sql.wiki_sql.GET_SQL", mock_get_sql)
+    monkeypatch.setattr("src.app.api_sql.wiki_sql.get_sql", mock_get_sql)
 
     mock_make_sql = MagicMock(return_value=[{"col": "val"}])
     monkeypatch.setattr("src.app.api_sql.wiki_sql.mysql_client.make_sql_connect", mock_make_sql)
@@ -57,6 +57,6 @@ def test_retrieve_sql_results(monkeypatch: MonkeyPatch) -> None:
     assert results == [{"col": "val"}]
     mock_make_sql.assert_called_once()
 
-    # Case when GET_SQL is False
+    # Case when get_sql is False
     mock_get_sql.return_value = False
     assert retrieve_sql_results("SELECT 1") == []

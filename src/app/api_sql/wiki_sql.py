@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 @functools.lru_cache(maxsize=1)
-def GET_SQL() -> bool:
+def get_sql() -> bool:
     dir1 = "/mnt/nfs/labstore-secondary-tools-project/"
     dir2 = "/data/project/"
 
@@ -38,40 +38,39 @@ def make_labsdb_dbs_p(wiki):
         tuple: A tuple containing the host string and the database name string.
     """
     wiki = wiki.removesuffix("wiki")
-    # ---
+
     wiki = wiki.replace("-", "_")
-    # ---
+
     databases = {
         "wikidata": "wikidatawiki",
         "be-x-old": "be_x_old",
         "be_tarask": "be_x_old",
         "be-tarask": "be_x_old",
     }
-    # ---
+
     wiki = databases.get(wiki) or wiki
-    # ---
+
     valid_ends = [
         "wiktionary",
     ]
-    # ---
+
     if not (any((wiki.endswith(x)) for x in valid_ends)) and wiki.find("wiki") == -1:
         wiki = f"{wiki}wiki"
-    # ---
+
     dbs = wiki
-    # ---
+
     host = f"{wiki}.analytics.db.svc.wikimedia.cloud"
-    # ---
+
     dbs_p = f"{dbs}_p"
-    # ---
+
     return host, dbs_p
 
 
 def retrieve_sql_results(queries, wiki: str = "", values=None):
-    # ---
     """
     Retrieve SQL query results for a specified wiki's analytics database.
 
-    Calls make_labsdb_dbs_p to determine host and database, attempts the SQL call via mysql_client, and returns the rows. If GET_SQL() indicates SQL should not be performed, returns an empty list immediately. Execution time is measured and logged.
+    Calls make_labsdb_dbs_p to determine host and database, attempts the SQL call via mysql_client, and returns the rows. If get_sql() indicates SQL should not be performed, returns an empty list immediately. Execution time is measured and logged.
 
     Parameters:
         queries (str | list): SQL query string or list of query strings to execute.
@@ -82,21 +81,21 @@ def retrieve_sql_results(queries, wiki: str = "", values=None):
         list: Rows returned by the database client (structure as provided by mysql_client), or an empty list if SQL execution is skipped.
     """
     logger.debug(f"wiki_sql.py retrieve_sql_results wiki '{wiki}'")
-    # ---
+
     host, dbs_p = make_labsdb_dbs_p(wiki)
-    # ---
+
     logger.debug(queries)
-    # ---
-    if not GET_SQL():
-        logger.info("no GET_SQL()")
+
+    if not get_sql():
+        logger.info("no get_sql()")
         return []
-    # ---
+
     start = time.perf_counter()
-    # ---
+
     rows = mysql_client.make_sql_connect(queries, db=dbs_p, host=host, values=values)
-    # ---
+
     delta = time.perf_counter() - start
-    # ---
+
     logger.debug(f'wiki_sql.py retrieve_sql_results len(encats) = "{len(rows)}", in {delta:.2f} seconds')
-    # ---
+
     return rows

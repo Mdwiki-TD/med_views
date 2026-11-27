@@ -13,7 +13,7 @@ def test_pageviews_client():
     data = view_bot.article_views_new(
         "ar.wikipedia", ["الصفحة الرئيسة"], granularity="monthly", start="20150101", end="20191231"
     )
-    # ---
+
     expected_data = {
         "الصفحة الرئيسة": {
             "2015": 482,
@@ -24,7 +24,7 @@ def test_pageviews_client():
             "all": 2026,
         }
     }
-    # ---
+
     assert isinstance(data, dict)
     assert len(data) > 0
     assert data == expected_data
@@ -36,7 +36,7 @@ def test_pageviews_client_pam():
     data = view_bot.article_views_new(
         "pam.wikipedia", ["Anatomy"], granularity="monthly", start="20150101", end="2025123100"
     )
-    # ---
+
     expected_data = {
         "Anatomy": {
             "2015": 678,
@@ -53,7 +53,7 @@ def test_pageviews_client_pam():
             "all": 18378,
         }
     }
-    # ---
+
     assert isinstance(data, dict)
     assert len(data) > 0
     assert data == expected_data, data

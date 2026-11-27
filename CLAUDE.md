@@ -84,7 +84,7 @@ Required (see `example.env`):
 - **Parallel processing**: Configurable thread count for API calls
 - **Batch processing**: 500 articles per API call
 - **Incremental updates**: Check existing files before re-fetching
-- **Graceful SQL degradation**: System works without DB when `GET_SQL()` returns false
+- **Graceful SQL degradation**: System works without DB when `get_sql()` returns false
 
 ## Data Output Structure
 

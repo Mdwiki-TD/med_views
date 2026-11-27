@@ -1,8 +1,8 @@
 """ """
 
-from .wiki_sql import GET_SQL, retrieve_sql_results
+from .wiki_sql import get_sql, retrieve_sql_results
 
 __all__ = [
-    "GET_SQL",
+    "get_sql",
     "retrieve_sql_results",
 ]

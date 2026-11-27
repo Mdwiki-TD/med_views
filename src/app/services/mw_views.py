@@ -7,9 +7,9 @@ import time
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
+from urllib.parse import quote
 
 import requests
-from requests.utils import quote
 from tqdm import tqdm
 
 logger = logging.getLogger(__name__)
@@ -21,8 +21,8 @@ endpoints = {
 }
 
 
-def parse_date(stringDate: str):
-    return datetime.strptime(stringDate.ljust(10, "0"), "%Y%m%d%H")
+def parse_date(string_date: str):
+    return datetime.strptime(string_date.ljust(10, "0"), "%Y%m%d%H")
 
 
 def format_date(d):
@@ -49,19 +49,19 @@ class PageviewsClientHelper:
 
     def filter_data(self, data):
         # remove any key < 2015 and not = "all"
-        # ---
+
         new_data = {}
-        # ---
+
         for title, views in data.items():
             new_data[title] = {
                 k: v for k, v in views.items() if (k.isnumeric() and int(k) >= 2015) or k == "all" or v > 0
             }
-        # ---
+
         return new_data
 
     def summarize_monthly_views(self, article_monthly_data):
         new_data = {}
-        # ---
+
         for month, y in article_monthly_data.items():
             # month = datetime.datetime(2024, 5, 1, 0, 0)
             year_n = month.strftime("%Y")
@@ -69,14 +69,14 @@ class PageviewsClientHelper:
                 article = article.replace("_", " ")
                 # ensure nested dict & the specific year key both exist
                 article_dict = new_data.setdefault(article, {"all": 0, year_n: 0})
-                # ---
+
                 if count is not None:
                     article_dict[year_n] = article_dict.get(year_n, 0) + count
                     article_dict["all"] = article_dict.get("all", 0) + count
-                # ---
+
                 # sort article_dict keys
                 article_dict = dict(sorted(article_dict.items(), key=lambda item: item[0]))
-                # ---
+
                 new_data[article] = article_dict
         return new_data
 
@@ -151,20 +151,20 @@ class PageviewsClient(PageviewsClientHelper):
 
         TODO: probably doesn't handle unicode perfectly, look into it
         """
-        endDate = end or date.today()
-        if not isinstance(endDate, date):
-            endDate = parse_date(end)
+        end_date = end or date.today()
+        if not isinstance(end_date, date):
+            end_date = parse_date(end_date)
 
-        startDate = start or endDate - timedelta(30)
-        if not isinstance(startDate, date):
-            startDate = parse_date(start)
+        start_date = start or end_date - timedelta(30)
+        if not isinstance(start_date, date):
+            start_date = parse_date(start_date)
 
         # If the user passes in a string as "articles", convert to a list
         if isinstance(articles, str):
             articles = [articles]
 
         articles = [self.format_article_title(a) for a in articles]
-        articlesSafe = [quote(a, safe="") for a in articles]
+        articles_safe = [quote(a, safe="") for a in articles]
 
         project = "be-tarask.wikipedia" if project == "be-x-old.wikipedia" else project
 
@@ -177,17 +177,17 @@ class PageviewsClient(PageviewsClientHelper):
                     agent,
                     a,
                     granularity,
-                    format_date(startDate),
-                    format_date(endDate),
+                    format_date(start_date),
+                    format_date(end_date),
                 ]
             )
-            for a in articlesSafe
+            for a in articles_safe
         ]
 
-        outputDays = timestamps_between(startDate, endDate, timedelta(days=1))
+        output_days = timestamps_between(start_date, end_date, timedelta(days=1))
         if granularity == "monthly":
-            outputDays = list({month_from_day(day) for day in outputDays})
-        output = defaultdict(dict, {day: dict.fromkeys(articles) for day in outputDays})
+            output_days = list({month_from_day(day) for day in output_days})
+        output = defaultdict(dict, {day: dict.fromkeys(articles) for day in output_days})
 
         # try:
         results = self.get_concurrent(urls)
@@ -204,7 +204,7 @@ class PageviewsClient(PageviewsClientHelper):
                     details[detail] += 1
 
                 if "printresult" in sys.argv:
-                    logger.debug("result:", result)
+                    logger.debug("result: %s", result)
                 continue
 
             for item in result["items"]:
@@ -243,7 +243,6 @@ class PageviewsClient(PageviewsClientHelper):
             return list(results)
 
     def article_views_new(self, project, articles, **kwargs) -> dict:
-        # ---
         """
         Aggregate pageview counts per article into yearly totals and an overall total.
 
@@ -253,16 +252,16 @@ class PageviewsClient(PageviewsClientHelper):
             dict: Mapping from article title (str) to a dictionary whose keys are year strings (e.g., "2024") and "all", with integer cumulative view counts for each key.
         """
         time_start = time.time()
-        # ---
+
         article_monthly_data = self.article_views(project, articles, **kwargs)
-        # ---
+
         new_data = self.summarize_monthly_views(article_monthly_data)
         new_data = self.filter_data(new_data)
-        # ---
+
         delta = time.time() - time_start
-        # ---
+
         logger.debug(
             f"<<green>> article_views, (articles:{len(articles):,}) new_data:{len(new_data):,} time: {delta:.2f} sec"
         )
-        # ---
+
         return new_data

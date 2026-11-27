@@ -8,21 +8,21 @@ logger = logging.getLogger(__name__)
 
 
 def is_empty_data(data) -> bool:
-    # ---
+
     # logger.debug(data)
-    # ---
+
     if not data:
         return True
-    # ---
+
     if data.get("all", 0) == 0:
         return True
-    # ---
+
     if len(data) == 1:
         return True
-    # ---
+
     # if any of values is 0
     # if any([x == 0 for x in data.values()]): return True
-    # ---
+
     return False
 
 

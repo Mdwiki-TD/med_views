@@ -8,7 +8,6 @@ from .sql_utils import one_lang_titles
 
 
 def load_lang_titles(lang):
-    # ---
     """
     Retrieve page titles for the given language, preferring a dump-derived source and falling back to a SQL source.
 
@@ -21,15 +20,15 @@ def load_lang_titles(lang):
         list[str]: A list of page title strings for the language.
     """
     data = load_lang_titles_from_dump(lang)
-    # ---
+
     if data:
         return data
-    # ---
+
     if "local" in sys.argv:
         return []
-    # ---
+
     data = one_lang_titles(lang)
-    # ---
+
     data = [x.replace("_", " ") for x in data]
-    # ---
+
     return data

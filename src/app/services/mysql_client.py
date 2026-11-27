@@ -45,26 +45,25 @@ def load_db_config(db: str, host: str) -> dict[str, Any]:
 
 
 def _sql_connect_pymysql(query: str, db: str = "", host: str = "", values: tuple = None) -> list:
-    # ---
+
     logger.debug("start _sql_connect_pymysql:")
-    # ---
+
     params = None
-    # ---
+
     if values:
         params = values
-    # ---
+
     # connect to the database server without error
-    # ---
-    DB_CONFIG = load_db_config(db, host)
-    # ---
+
+    db_config = load_db_config(db, host)
+
     try:
-        connection = pymysql.connect(**DB_CONFIG)
+        connection = pymysql.connect(**db_config)
     except pymysql.Error as e:
         logger.exception(e)
         return []
-    # ---
+
     with connection as conn, conn.cursor() as cursor:
-        # ---
         # skip sql errors
         try:
             cursor.execute(query, params)
@@ -72,21 +71,21 @@ def _sql_connect_pymysql(query: str, db: str = "", host: str = "", values: tuple
         except Exception as e:
             logger.exception(e)
             return []
-        # ---
+
         results = []
-        # ---
+
         try:
             results = cursor.fetchall()
 
         except Exception as e:
             logger.exception(e)
             return []
-        # ---
+
         # yield from cursor
         return results
 
 
-def decode_value(value: bytes) -> str:
+def decode_value(value: bytes | Any) -> str:
     try:
         value = value.decode("utf-8")  # Assuming UTF-8 encoding
     except Exception:
@@ -99,7 +98,7 @@ def decode_value(value: bytes) -> str:
 
 def decode_bytes_in_list(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     decoded_rows = []
-    # ---
+
     for row in rows:
         decoded_row = {}
         for key, value in row.items():
@@ -107,22 +106,22 @@ def decode_bytes_in_list(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 value = decode_value(value)
             decoded_row[key] = value
         decoded_rows.append(decoded_row)
-    # ---
+
     return decoded_rows
 
 
 def make_sql_connect(query: str, db: str = "", host: str = "", values=None):
-    # ---
+
     if not query:
         logger.debug("query == ''")
         return []
-    # ---
+
     logger.debug("<<lightyellow>> newsql::")
-    # ---
+
     rows = _sql_connect_pymysql(query, db=db, host=host, values=values)
-    # ---
+
     rows = decode_bytes_in_list(rows)
-    # ---
+
     return rows
 
 

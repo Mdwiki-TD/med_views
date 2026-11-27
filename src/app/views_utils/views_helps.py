@@ -12,9 +12,9 @@ view_bot = PageviewsClient(parallelism=parallelism)
 
 
 def article_views(site, articles, year: int = 2024):
-    # ---
+
     site = "be-tarask" if site == "be-x-old" else site
-    # ---
+
     data = view_bot.article_views_new(
         f"{site}.wikipedia",
         articles,
@@ -22,22 +22,21 @@ def article_views(site, articles, year: int = 2024):
         start=f"{year}0101",
         end=f"{year}1231",
     )
-    # ---
+
     new_data = {}
-    # ---
+
     for title, views in data.items():
-        # ---
         title = title.replace("_", " ")
-        # ---
+
         new_data[title] = views.get(year) or views.get(str(year)) or views.get("all", 0)
-    # ---
+
     return new_data
 
 
 def article_views_all_years(site, articles):
-    # ---
+
     site = "be-tarask" if site == "be-x-old" else site
-    # ---
+
     data = view_bot.article_views_new(
         f"{site}.wikipedia",
         articles,
@@ -46,20 +45,18 @@ def article_views_all_years(site, articles):
         start="20150101",
         end="20251231",
     )
-    # ---
+
     new_data = {}
-    # ---
+
     for title, views in data.items():
-        # ---
         title = title.replace("_", " ")
-        # ---
+
         new_data[title] = views
-    # ---
+
     return new_data
 
 
 def get_view_file(lang, year):
-    # ---
     """
     Compute the filesystem path for the language's views JSON file for a given year, creating the year directory if it does not exist.
 
@@ -71,12 +68,12 @@ def get_view_file(lang, year):
         pathlib.Path: Path to the "{lang}.json" file inside the year directory.
     """
     dir_v = views_by_year_path / str(year)
-    # ---
+
     if not dir_v.exists():
         dir_v.mkdir(parents=True)
-    # ---
+
     file = dir_v / f"{lang}.json"
-    # ---
+
     return file
 
 

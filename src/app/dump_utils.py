@@ -19,17 +19,16 @@ def count_languages_in_json():
         dict: Mapping from language code (file stem) to the count of top-level JSON items.
     """
     result = {}
-    # ---
+
     for json_file in json_titles_path.glob("*.json"):
         lang = json_file.stem
-        # ---
+
         with open(json_file, encoding="utf-8") as f:
             result[lang] = len(json.load(f))
     return result
 
 
 def load_lang_titles_from_dump(lang):
-    # ---
     """
     Load title strings for the given language from the JSON dump, replacing underscores with spaces.
 
@@ -40,15 +39,14 @@ def load_lang_titles_from_dump(lang):
         list[str]: A list of title strings with underscores replaced by spaces; returns an empty list if the language file does not exist.
     """
     json_file = json_titles_path / f"{lang}.json"
-    # ---
+
     if json_file.exists():
-        # ---
         with open(json_file, encoding="utf-8") as f:
             data = json.load(f)
-        # ---
+
         data = [x.replace("_", " ") for x in data]
         return data
-    # ---
+
     return []
 
 
@@ -62,14 +60,14 @@ def replace_underscores(data):
 
 
 def dump_one(file, data) -> None:
-    # ---
+
     if not data:
         return
-    # ---
+
     logger.debug(f"dump_one({file}), {len(data)=}")
-    # ---
+
     data = replace_underscores(data)
-    # ---
+
     with open(file, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False)
 
@@ -86,14 +84,13 @@ def dump_languages_counts(data: dict[str, int]) -> None:
         data (dict): Mapping of language identifiers to integer counts.
     """
     file = main_dump_path / "languages_counts.json"
-    # ---
+
     # sort data
     data = dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
-    # ---
+
     if data and len(data) > 200:
-        # ---
         data = replace_underscores(data)
-        # ---
+
         with open(file, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
 
@@ -107,14 +104,13 @@ def load_languages_counts() -> dict:
         or an empty dict if the file does not exist.
     """
     file = main_dump_path / "languages_counts.json"
-    # ---
+
     data = {}
-    # ---
+
     if file.exists():
-        # ---
         with open(file, encoding="utf-8") as f:
             data = json.load(f)
-    # ---
+
     logger.debug(f"load_languages_counts({file}), {len(data)=}")
-    # ---
+
     return data

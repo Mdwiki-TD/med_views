@@ -1,3 +1,5 @@
-from .mdwiki_page_mwclient import MwclientPage as page
+from .mdwiki_page_mwclient import MwclientPage
 
-__all__ = ["page"]
+__all__ = [
+    "MwclientPage",
+]
