@@ -262,8 +262,6 @@ class PageviewsClient(PageviewsClientHelper):
 
         delta = time.time() - time_start
 
-        logger.debug(
-            f"<<green>> article_views, (articles:{len(articles):,}) new_data:{len(new_data):,} time: {delta:.2f} sec"
-        )
+        logger.debug(f"article_views, (articles:{len(articles):,}) new_data:{len(new_data):,} time: {delta:.2f} sec")
 
         return new_data

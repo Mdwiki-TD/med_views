@@ -7,8 +7,8 @@ import tempfile
 from pathlib import Path
 from unittest.mock import MagicMock
 
-from src.app.config import Config
 from src.app.all_years.stats_bot_all_years import MultiYearStatsService
+from src.app.config import Config
 
 
 class TestMultiYearStatsService:

@@ -8,10 +8,7 @@ from _pytest.monkeypatch import MonkeyPatch
 
 from src.app.services.mysql_client import (
     MySQLClient,
-    decode_bytes_in_list,
-    decode_value,
     load_db_config,
-    make_sql_connect,
 )
 
 
@@ -50,23 +47,24 @@ def test__sql_connect_pymysql(monkeypatch: MonkeyPatch) -> None:
 
 
 def test_decode_value():
-    assert decode_value(b"hello") == "hello"
-    assert decode_value("already_str") == "already_str"
+    assert MySQLClient.decode_value(b"hello") == "hello"
+    assert MySQLClient.decode_value("already_str") == "already_str"
     # str(b"\xff") in Python 3 is "b'\xff'"
-    assert decode_value(b"\xff") == "b'\\xff'"
+    assert MySQLClient.decode_value(b"\xff") == "b'\\xff'"
 
 
 def test_decode_bytes_in_list():
     rows = [{"a": b"val1", "b": 2}, {"a": "val2", "b": b"val3"}]
     expected = [{"a": "val1", "b": 2}, {"a": "val2", "b": "val3"}]
-    assert decode_bytes_in_list(rows) == expected
+    assert MySQLClient.decode_bytes_in_list(rows) == expected
 
 
-def test_make_sql_connect(monkeypatch: MonkeyPatch) -> None:
+def test_execute(monkeypatch: MonkeyPatch) -> None:
     mock_sql = MagicMock(return_value=[{"col": b"val"}])
     monkeypatch.setattr("src.app.services.mysql_client.MySQLClient._sql_connect_pymysql", mock_sql)
 
-    results = make_sql_connect("SELECT 1")
-    # make_sql_connect calls decode_bytes_in_list on the results
+    client = MySQLClient()
+    results = client.execute("SELECT 1")
+    # execute calls decode_bytes_in_list on the results
     assert results == [{"col": "val"}]
     mock_sql.assert_called_once()

@@ -32,6 +32,7 @@ class TestTitlesLoader:
         loader = TitlesLoader(dump_manager=mock_dump_manager, titles_repo=mock_titles_repo)
 
         import sys
+
         original_argv = sys.argv
         try:
             sys.argv = ["script.py"]
@@ -50,6 +51,7 @@ class TestTitlesLoader:
         loader = TitlesLoader(dump_manager=mock_dump_manager)
 
         import sys
+
         original_argv = sys.argv
         try:
             sys.argv = ["script.py", "local"]

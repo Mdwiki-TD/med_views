@@ -53,7 +53,7 @@ class SingleYearViewsService:
             total += views
 
         if total == 0:
-            logger.info(f"<<yellow>> No views for {langcode}")
+            logger.info(f"No views for {langcode}")
         return total
 
     @staticmethod
@@ -134,27 +134,17 @@ class SingleYearViewsService:
 
         if json_file.exists():
             u_data: dict = self._json_helper.json_load(json_file)  # pyright: ignore[reportAssignmentType]
-            titles_not_in_file = [
-                x
-                for x in titles
-                if (
-                    x
-                    not in u_data
-                    # or u_data[x] == 0
-                )
-            ]
-            logger.info(
-                f"<<yellow>> {langcode}: {len(titles):,} titles, titles_not_in_file: {len(titles_not_in_file):,}"
-            )
+            titles_not_in_file = [x for x in titles if (x not in u_data)]
+            logger.info(f"{langcode}: {len(titles):,} titles, titles_not_in_file: {len(titles_not_in_file):,}")
         else:
-            logger.info(f"<<yellow>> {json_file} not found.")
+            logger.info(f"{json_file} not found.")
 
         titles_not_in_file.sort()
 
         if maxv > 0 and len(titles_not_in_file) > maxv:
-            logger.info(f"<<yellow>> {langcode}: {len(titles):,} titles > max {maxv}, skipping")
+            logger.info(f"{langcode}: {len(titles):,} titles > max {maxv}, skipping")
         elif "local" in sys.argv:
-            logger.info(f"<<green>> load_one_lang_views(lang:{langcode}) \t titles: {len(titles):,}")
+            logger.info(f"load_one_lang_views(lang:{langcode}) \t titles: {len(titles):,}")
         else:
             views_t = self.load_one_lang_views(langcode, titles_not_in_file, year)
             u_data = self.update_data(u_data, views_t)

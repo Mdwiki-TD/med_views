@@ -172,7 +172,7 @@ class MySQLClient:
             logger.debug("query == ''")
             return []
 
-        logger.debug("<<lightyellow>> newsql::")
+        logger.debug("newsql::")
 
         rows = self._sql_connect_pymysql(query, db=db, host=host, values=values)
         rows = self.decode_bytes_in_list(rows)

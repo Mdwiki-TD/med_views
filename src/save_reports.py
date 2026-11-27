@@ -45,7 +45,7 @@ def calculate_total_views(langcode, u_data):
         total += views
 
     if total == 0:
-        logger.info(f"<<yellow>> No views for {langcode}")
+        logger.info(f"No views for {langcode}")
     return total
 
 
@@ -97,7 +97,7 @@ def make_page_text(year, limit):
 
     views_not_0 = len([x for x in views.values() if x > 0])
 
-    logger.info(f"<<yellow>> Total views not 0: {views_not_0:,}")
+    logger.info(f"Total views not 0: {views_not_0:,}")
 
     if not views_not_0:
         logger.info("No views found, run `python3 start_views.py` first")
