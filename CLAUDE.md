@@ -87,6 +87,7 @@ VIEWS_DUMP_PATH=/path/to/output    # Output directory (default: ~data/views_dump
 
 ## Key Patterns
 
+- **Config dataclass**: `src/app/config.py` uses a `@dataclass` with singleton access via `get_config()`. The dataclass handles env var loading and path computation in `__post_init__`. Use `config = get_config()` to get the singleton instance.
 - **Batch processing**: 500 articles per API call
 - **Incremental updates**: Checks existing files before re-fetching
 - **Title normalization**: Automatic underscore↔space conversion for wiki compatibility

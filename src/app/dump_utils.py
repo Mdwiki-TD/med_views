@@ -4,7 +4,7 @@
 import json
 import logging
 
-from .config import json_titles_path, main_dump_path
+from .config import Config
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +20,7 @@ def count_languages_in_json():
     """
     result = {}
 
-    for json_file in json_titles_path.glob("*.json"):
+    for json_file in Config().json_titles_path.glob("*.json"):
         lang = json_file.stem
 
         with open(json_file, encoding="utf-8") as f:
@@ -38,7 +38,7 @@ def load_lang_titles_from_dump(lang):
     Returns:
         list[str]: A list of title strings with underscores replaced by spaces; returns an empty list if the language file does not exist.
     """
-    json_file = json_titles_path / f"{lang}.json"
+    json_file = Config().json_titles_path / f"{lang}.json"
 
     if json_file.exists():
         with open(json_file, encoding="utf-8") as f:
@@ -83,7 +83,7 @@ def dump_languages_counts(data: dict[str, int]) -> None:
     Parameters:
         data (dict): Mapping of language identifiers to integer counts.
     """
-    file = main_dump_path / "languages_counts.json"
+    file = Config().main_dump_path / "languages_counts.json"
 
     # sort data
     data = dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
@@ -103,7 +103,7 @@ def load_languages_counts() -> dict:
         dict: A mapping from language code (str) to count (int) loaded from "languages_counts.json",
         or an empty dict if the file does not exist.
     """
-    file = main_dump_path / "languages_counts.json"
+    file = Config().main_dump_path / "languages_counts.json"
 
     data = {}
 

@@ -7,7 +7,7 @@ import json
 import logging
 import sys
 
-from app.config import main_dump_path
+from app.config import Config
 from app.dump_utils import count_languages_in_json, load_languages_counts
 from app.helps import json_load
 from app.texts_utils import build_wiki_text
@@ -105,12 +105,12 @@ def make_page_text(year, limit):
     views = dict(sorted(views.items(), key=lambda item: item[1], reverse=True))
 
     # dump views
-    with open(main_dump_path / f"{year}_views_by_lang.json", "w", encoding="utf-8") as f:
+    with open(Config().main_dump_path / f"{year}_views_by_lang.json", "w", encoding="utf-8") as f:
         json.dump(views, f, ensure_ascii=False, indent=4)
 
     newtext = build_wiki_text(languages, views)
 
-    with open(main_dump_path / f"{year}_text.txt", "w", encoding="utf-8") as f:
+    with open(Config().main_dump_path / f"{year}_text.txt", "w", encoding="utf-8") as f:
         f.write(newtext)
 
     return newtext

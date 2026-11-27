@@ -1,27 +1,62 @@
+
 import os
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from dotenv import load_dotenv
 
-home = Path.home()
-
-# load environment variables from a .env file if it exists
+# Load environment variables
 load_dotenv(Path(__file__).parents[3] / ".env")
 
-my_username = os.getenv("MDWIKI_USERNAME", "Mr. Ibrahem")
-mdwiki_pass = os.getenv("MDWIKI_HIMO_PASSWORD", "")
-VIEWS_DUMP_PATH = os.getenv("VIEWS_DUMP_PATH", "")
 
-if not mdwiki_pass:
-    raise ValueError("Please set MDWIKI_HIMO_PASSWORD environment variable")
+@dataclass
+class Config:
+    """Configuration manager for the medical pageviews analysis system."""
 
-main_dump_path = Path(VIEWS_DUMP_PATH) if VIEWS_DUMP_PATH else home / "data/views_dumps"
+    # Core settings
+    my_username: str = field(default_factory=lambda: os.getenv("MDWIKI_USERNAME", "Mr. Ibrahem"))
+    mdwiki_pass: str = field(default_factory=lambda: os.getenv("MDWIKI_HIMO_PASSWORD", ""))
 
-json_titles_path = main_dump_path / "titles"
-views_by_year_path = main_dump_path / "views_by_year"
+    # Processing settings
+    parallelism: int = 10
 
-main_dump_path.mkdir(exist_ok=True)
-json_titles_path.mkdir(exist_ok=True)
-views_by_year_path.mkdir(exist_ok=True)
+    # Paths (computed in __post_init__)
+    main_dump_path: Path = field(init=False)
+    json_titles_path: Path = field(init=False)
+    views_by_year_path: Path = field(init=False)
 
-parallelism = 10
+    def __post_init__(self):
+        """Initialize paths and create directories after dataclass init."""
+        # Compute paths
+        views_dump_path = os.getenv("VIEWS_DUMP_PATH", "")
+        self.main_dump_path = Path(views_dump_path) if views_dump_path else Path.home() / "data/views_dumps"
+        self.json_titles_path = self.main_dump_path / "titles"
+        self.views_by_year_path = self.main_dump_path / "views_by_year"
+
+        # Create directories
+        self.main_dump_path.mkdir(exist_ok=True)
+        self.json_titles_path.mkdir(exist_ok=True)
+        self.views_by_year_path.mkdir(exist_ok=True)
+
+
+# Singleton instance
+_config_instance: Config | None = None
+
+
+def get_config() -> Config:
+    """
+    Get the singleton Config instance.
+
+    Returns:
+        Config: The singleton configuration instance
+    """
+    global _config_instance
+    if _config_instance is None:
+        _config_instance = Config()
+    return _config_instance
+
+
+__all__ = [
+    "Config",
+    "get_config",
+]
