@@ -1,6 +1,5 @@
 #!/usr/bin/python3
-"""
-"""
+""" """
 
 from __future__ import annotations
 
@@ -8,11 +7,11 @@ import json
 import logging
 
 from app.config import get_config
-from app.dump_utils import DumpManager
 from app.helps import JsonHelper
-from app.texts_utils import WikiTextBuilder
 from app.views_utils.views_helps import ViewsFetcher
-from app.wiki import MwclientPage
+from app.wikitext import MwclientPage
+from src.app.io.dump_utils import DumpManager
+from src.app.wikitext.texts_utils import WikiTextBuilder
 
 logger = logging.getLogger(__name__)
 
@@ -54,7 +53,7 @@ class ReportGenerator:
 
     def fetch_language_statistics(self, year, langcode) -> int:
         json_file = self.views_fetcher.get_view_file(langcode, year)
-        year_data = self.json_helper.json_load(json_file)
+        year_data = self.dump_manager.json_load(json_file)
 
         return self.calculate_total_views(langcode, year_data)
 

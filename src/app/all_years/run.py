@@ -9,9 +9,9 @@ import datetime
 import json
 import logging
 
+from ..api_sql.sql_utils import MedicalTitlesRepository
 from ..config import get_config
-from ..dump_utils import DumpManager
-from ..sql_utils import MedicalTitlesRepository
+from ..io.dump_utils import DumpManager
 from ..titles_utils import TitlesLoader
 from ..views_utils.views_helps import ViewsFetcher
 from .stats_bot_all_years import MultiYearStatsService
@@ -43,7 +43,12 @@ class MultiYearViewsPipeline:
         with open(file, "w", encoding="utf-8") as f:
             json.dump(empty_data_all_sorted, f, ensure_ascii=False, indent=4)
 
-    def dump_one_lang_files(self, titles, data, lang) -> None:
+    def dump_one_lang_files(
+        self,
+        titles: list[str],
+        data: dict,
+        lang: str,
+    ) -> None:
         if not data:
             return
 
@@ -51,11 +56,7 @@ class MultiYearViewsPipeline:
 
         logger.debug(f"dump_one_lang_files for {lang}, {len(data)=}")
 
-        if isinstance(data, dict):
-            data = {x.replace("_", " "): v for x, v in data.items()}
-
-        if isinstance(data, list):
-            data = [x.replace("_", " ") if isinstance(x, str) else x for x in data]
+        data = {x.replace("_", " "): v for x, v in data.items()}
 
         self.stats_service.dump_stats(titles, data, lang)
 

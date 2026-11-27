@@ -5,8 +5,10 @@ from __future__ import annotations
 
 import json
 import logging
+from pathlib import Path
+from typing import Any
 
-from .config import Config, get_config
+from ..config import Config, get_config
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +31,7 @@ class DumpManager:
         """
         self._config = config or get_config()
 
-    def count_languages_in_json(self) -> dict:
+    def count_languages_in_json(self) -> dict[str, list[str]]:
         """Count items in each language JSON file in json_titles_path.
 
         Scans json_titles_path for files with a .json extension, uses each
@@ -44,12 +46,12 @@ class DumpManager:
 
         for json_file in self._config.json_titles_path.glob("*.json"):
             lang = json_file.stem
-
             with open(json_file, encoding="utf-8") as f:
                 result[lang] = len(json.load(f))
+
         return result
 
-    def load_lang_titles_from_dump(self, lang: str) -> list:
+    def load_lang_titles_from_dump(self, lang: str) -> list[str]:
         """Load title strings for the given language from the JSON dump.
 
         Parameters:
@@ -71,7 +73,7 @@ class DumpManager:
         return []
 
     @staticmethod
-    def replace_underscores(data: dict | list):
+    def replace_underscores(data: dict | list | Any):
         """Replace underscores with spaces in data.
 
         Parameters:
@@ -81,11 +83,12 @@ class DumpManager:
             Processed data with underscores replaced by spaces.
         """
         if isinstance(data, dict):
-            data = {x.replace("_", " "): v for x, v in data.items()}
+            return {x.replace("_", " "): v for x, v in data.items()}
 
         if isinstance(data, list):
-            data = [x.replace("_", " ") if isinstance(x, str) else x for x in data]
-        return data
+            return [x.replace("_", " ") if isinstance(x, str) else x for x in data]
+
+        raise TypeError(f"Unsupported type: {type(data)}")
 
     def dump_one(self, file, data) -> None:
         """Write data to a JSON file.
@@ -97,7 +100,24 @@ class DumpManager:
         if not data:
             return
 
-        logger.debug(f"dump_one({file}), {len(data)=}")
+        logger.debug(f"{file=}, {len(data)=}")
+
+        data = self.replace_underscores(data)
+
+        with open(file, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False)
+
+    def dump_list(self, file: str | Path, data: list[Any]) -> None:
+        """Write data to a JSON file.
+
+        Parameters:
+            file: Path to the output file.
+            data: Data to write (dict or list).
+        """
+        if not data:
+            return
+
+        logger.debug(f"{file=}, {len(data)=}")
 
         data = self.replace_underscores(data)
 
@@ -144,6 +164,32 @@ class DumpManager:
         logger.debug(f"load_languages_counts({file}), {len(data)=}")
 
         return data
+
+    @classmethod
+    def json_load(cls, json_file: str | Path) -> None | dict | list:
+        """Load JSON from a file and normalize underscore-separated names.
+
+        Loads and parses the JSON at json_file. If the top-level value is a
+        dict, returns a new dict with all keys having underscores replaced by
+        spaces. If the top-level value is a list, returns a new list where
+        string elements have underscores replaced by spaces. Returns the parsed
+        value unchanged for other JSON types. If the file is missing or contains
+        invalid JSON, returns None.
+
+        Parameters:
+            json_file: Path to the JSON file to load.
+
+        Returns:
+            The normalized JSON structure, or None if loading/parsing failed.
+        """
+        try:
+            with open(json_file, encoding="utf-8") as f:
+                u_data = json.load(f)
+        except (json.JSONDecodeError, FileNotFoundError) as e:
+            logger.error(f"Failed to load JSON from {json_file}: {e}")
+            return None
+
+        return cls.replace_underscores(u_data)
 
 
 __all__ = [

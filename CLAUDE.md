@@ -52,7 +52,7 @@ Entry point scripts exist in both root and `src/` directories. Both work identic
 - `src/app/api_sql/wiki_sql.py`: SQL executor with wiki name mapping
 - `src/app/sql_utils.py`: SQL queries for medical article retrieval
 - `src/app/texts_utils.py`: MediaWiki table generation
-- `src/app/wiki/mdwiki_page_mwclient.py`: MDWiki upload via mwclient
+- `src/app/services/mdwiki_page_mwclient.py`: MDWiki upload via mwclient
 - `src/app/config.py`: Centralized config with env vars
 
 ## Command-Line Arguments

@@ -8,9 +8,9 @@ from __future__ import annotations
 import json
 import logging
 
+from ..api_sql.sql_utils import MedicalTitlesRepository
 from ..config import get_config
-from ..dump_utils import DumpManager
-from ..sql_utils import MedicalTitlesRepository
+from ..io.dump_utils import DumpManager
 from ..titles_utils import TitlesLoader
 from ..views_utils.views_helps import ViewsFetcher
 from .stats_bot import SingleYearStatsService
@@ -32,7 +32,7 @@ class SingleYearViewsPipeline:
         self.empty_data_all: dict = {}
         self.local = local
 
-    def dump_empty_data_all(self, year) -> None:
+    def dump_empty_data_all(self, year: int) -> None:
         file = self.config.main_dump_path / f"empty_views_{year}.json"
         logger.debug(f"dump_empty_data_all({file}), {len(self.empty_data_all)=}")
 
@@ -42,7 +42,13 @@ class SingleYearViewsPipeline:
         with open(file, "w", encoding="utf-8") as f:
             json.dump(empty_data_all_sorted, f, ensure_ascii=False, indent=4)
 
-    def dump_one_lang_files(self, titles, data, lang, year) -> None:
+    def dump_one_lang_files(
+        self,
+        titles: list[str],
+        data: dict,
+        lang: str,
+        year: int,
+    ) -> None:
         file = self.views_fetcher.get_view_file(lang, year)
 
         if not data:
@@ -50,19 +56,16 @@ class SingleYearViewsPipeline:
 
         titles = [x.replace("_", " ") for x in titles]
 
-        logger.debug(f"dump_one({file}), {len(data)=}")
+        logger.debug(f"{file=}, {len(data)=}")
 
         empty_data = []
         not_empty_data = {}
 
-        if isinstance(data, dict):
-            data = {x.replace("_", " "): v for x, v in data.items()}
-            empty_data = [k for k in titles if data.get(k, 0) == 0]
-            not_empty_data = {k: v for k, v in data.items() if v != 0}
-            self.stats_service.dump_stats(titles, data, lang)
+        data = {x.replace("_", " "): v for x, v in data.items()}
+        empty_data = [k for k in titles if data.get(k, 0) == 0]
+        not_empty_data = {k: v for k, v in data.items() if v != 0}
 
-        if isinstance(data, list):
-            data = [x.replace("_", " ") if isinstance(x, str) else x for x in data]
+        self.stats_service.dump_stats(titles, data, lang)
 
         if empty_data:
             self.empty_data_all[lang] = empty_data
@@ -104,7 +107,7 @@ class SingleYearViewsPipeline:
 
         return views
 
-    def process_language_views(self, year, lang, maxv=0) -> dict[str, int]:
+    def process_language_views(self, year: int, lang: str, maxv: int = 0) -> dict[str, int]:
         titles = self.titles_loader.load_lang_titles(lang)
 
         json_file = self.views_fetcher.get_view_file(lang, year)

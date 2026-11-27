@@ -10,8 +10,8 @@ import logging
 import sys
 
 from app.config import get_config
-from app.dump_utils import DumpManager
-from app.sql_utils import MedicalTitlesRepository
+from src.app.api_sql.sql_utils import MedicalTitlesRepository
+from src.app.io.dump_utils import DumpManager
 
 logger = logging.getLogger(__name__)
 
@@ -46,7 +46,7 @@ def start():
 
         file = config.json_titles_path / f"{lang}.json"
 
-        dump_manager.dump_one(file, titles)
+        dump_manager.dump_list(file, titles)
 
     logger.debug(f"dump_data: all langs: {len(all_links)}")
 

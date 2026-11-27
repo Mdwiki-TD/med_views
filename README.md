@@ -169,10 +169,11 @@ med_views/
 │       ├── services/
 │       │   ├── mw_views.py     # Pageviews API client
 │       │   └── mysql_client.py # Database client
+│       │   └── mdwiki_page_mwclient.py  # MDWiki operations
 │       ├── api_sql/
 │       │   └── wiki_sql.py     # SQL query executor
-│       ├── wiki/
-│       │   └── mdwiki_page_mwclient.py  # MDWiki operations
+│       ├── wikitext/
+│       │   └── texts_utils.py  # MediaWiki table generation
 │       ├── views_utils/
 │       │   └── views_helps.py  # View processing utilities
 │       ├── views.py            # Single-year processing
@@ -180,7 +181,6 @@ med_views/
 │       ├── stats_bot.py        # Single-year statistics
 │       ├── stats_bot_all_years.py  # Multi-year statistics
 │       ├── sql_utils.py        # SQL query definitions
-│       ├── texts_utils.py      # MediaWiki table generation
 │       ├── titles_utils.py     # Title processing
 │       ├── dump_utils.py       # File I/O utilities
 │       └── helps.py            # General utilities

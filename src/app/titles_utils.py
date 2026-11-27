@@ -5,8 +5,8 @@ from __future__ import annotations
 
 import sys
 
-from .dump_utils import DumpManager
-from .sql_utils import MedicalTitlesRepository
+from .api_sql.sql_utils import MedicalTitlesRepository
+from .io.dump_utils import DumpManager
 
 
 class TitlesLoader:

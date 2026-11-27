@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-import json
 import logging
 
 logger = logging.getLogger(__name__)
@@ -37,38 +36,6 @@ class JsonHelper:
             return True
 
         return False
-
-    @staticmethod
-    def json_load(json_file) -> None | dict | list:
-        """Load JSON from a file and normalize underscore-separated names.
-
-        Loads and parses the JSON at json_file. If the top-level value is a
-        dict, returns a new dict with all keys having underscores replaced by
-        spaces. If the top-level value is a list, returns a new list where
-        string elements have underscores replaced by spaces. Returns the parsed
-        value unchanged for other JSON types. If the file is missing or contains
-        invalid JSON, returns None.
-
-        Parameters:
-            json_file: Path to the JSON file to load.
-
-        Returns:
-            The normalized JSON structure, or None if loading/parsing failed.
-        """
-        try:
-            with open(json_file, encoding="utf-8") as f:
-                u_data = json.load(f)
-        except (json.JSONDecodeError, FileNotFoundError) as e:
-            logger.error(f"Failed to load JSON from {json_file}: {e}")
-            return None
-
-        if isinstance(u_data, dict):
-            return {x.replace("_", " "): v for x, v in u_data.items()}
-
-        if isinstance(u_data, list):
-            return [x.replace("_", " ") if isinstance(x, str) else x for x in u_data]
-
-        return u_data
 
 
 __all__ = [

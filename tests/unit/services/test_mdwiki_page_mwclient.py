@@ -1,12 +1,12 @@
 """
-Tests for src.app.wiki.mdwiki_page_mwclient
+Tests for src.app.services.mdwiki_page_mwclient
 """
 
 from unittest.mock import MagicMock
 
 from _pytest.monkeypatch import MonkeyPatch
 
-from src.app.wiki.mdwiki_page_mwclient import (
+from src.app.services.mdwiki_page_mwclient import (
     MwclientPage,
 )
 

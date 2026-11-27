@@ -12,7 +12,7 @@ import logging
 import sys
 from typing import Any
 
-from ..helps import JsonHelper
+from ..io.dump_utils import DumpManager
 from ..views_utils.views_helps import ViewsFetcher
 
 logger = logging.getLogger(__name__)
@@ -28,18 +28,11 @@ class MultiYearViewsService:
     def __init__(
         self,
         views_fetcher: ViewsFetcher | None = None,
-        json_helper: type | None = None,
+        dump_manager: DumpManager | None = None,
     ) -> None:
-        """Initialize the service.
-
-        Parameters:
-            views_fetcher: Optional ViewsFetcher for API calls.
-                Defaults to ViewsFetcher.
-            json_helper: Optional JsonHelper class for JSON operations.
-                Defaults to JsonHelper.
-        """
+        """Initialize the service."""
         self._fetcher = views_fetcher or ViewsFetcher()
-        self._json_helper = json_helper or JsonHelper
+        self.dump_manager = dump_manager or DumpManager()
 
     @staticmethod
     def calculate_total_views(langcode: str, u_data: dict) -> int:
@@ -137,7 +130,7 @@ class MultiYearViewsService:
         titles_not_in_file = titles
 
         if json_file.exists():
-            u_data: dict = self._json_helper.json_load(json_file)  # pyright: ignore[reportAssignmentType]
+            u_data: dict = self.dump_manager.json_load(json_file)  # pyright: ignore[reportAssignmentType]
             titles_not_in_file = [x for x in titles if (x not in u_data)]
             logger.info(f"{langcode}: {len(titles):,} titles, titles_not_in_file: {len(titles_not_in_file):,}")
         else:

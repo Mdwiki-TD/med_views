@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import logging
 
-from .api_sql.wiki_sql import WikiSQLClient
+from .wiki_sql import WikiSQLClient
 
 logger = logging.getLogger(__name__)
 

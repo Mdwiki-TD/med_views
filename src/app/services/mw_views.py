@@ -150,8 +150,6 @@ class PageviewsClient(PageviewsClientHelper):
                 }
             }
             The view_count will be None where no data is available, to distinguish from 0
-
-        TODO: probably doesn't handle unicode perfectly, look into it
         """
         end_date = end or date.today()
         if not isinstance(end_date, date):

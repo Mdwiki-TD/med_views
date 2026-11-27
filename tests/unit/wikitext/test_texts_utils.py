@@ -2,7 +2,7 @@
 Tests for src.app.texts_utils
 """
 
-from src.app.texts_utils import WikiTextBuilder
+from src.app.wikitext.texts_utils import WikiTextBuilder
 
 
 class TestWikiTextBuilder:

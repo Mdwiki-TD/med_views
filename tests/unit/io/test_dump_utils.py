@@ -2,11 +2,45 @@
 Tests for src.app.dump_utils
 """
 
+import tempfile
+from pathlib import Path
+
 import json
 from unittest.mock import MagicMock
 
 from src.app.config import Config
-from src.app.dump_utils import DumpManager
+from src.app.io.dump_utils import DumpManager
+
+
+class TestDumpManagerJSONLoad:
+    """Tests for the DumpManager.json_load ."""
+
+    def test_json_load_with_underscores(self):
+        """Test loading JSON normalizes underscores."""
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
+            json.dump({"hello_world": 1, "test_case": 2}, f)
+            temp_path = f.name
+
+        result = DumpManager.json_load(temp_path)
+        assert result == {"hello world": 1, "test case": 2}
+
+        Path(temp_path).unlink()
+
+    def test_json_load_list(self):
+        """Test loading JSON list normalizes underscores."""
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
+            json.dump(["hello_world", "test_case"], f)
+            temp_path = f.name
+
+        result = DumpManager.json_load(temp_path)
+        assert result == ["hello world", "test case"]
+
+        Path(temp_path).unlink()
+
+    def test_json_load_missing_file(self):
+        """Test loading missing file returns None."""
+        result = DumpManager.json_load("/nonexistent/file.json")
+        assert result is None
 
 
 class TestDumpManager:
