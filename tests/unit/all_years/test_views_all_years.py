@@ -1,10 +1,10 @@
 """
-Tests for src.app.all_years.views_all_years
+Tests for src.app.all_years.views
 """
 
 from unittest.mock import MagicMock
 
-from src.app.all_years.views_all_years import MultiYearViewsService
+from src.app.all_years.views import MultiYearViewsService
 
 
 class TestMultiYearViewsService:

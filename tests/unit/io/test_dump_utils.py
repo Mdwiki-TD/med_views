@@ -2,10 +2,9 @@
 Tests for src.app.dump_utils
 """
 
+import json
 import tempfile
 from pathlib import Path
-
-import json
 from unittest.mock import MagicMock
 
 from src.app.config import Config

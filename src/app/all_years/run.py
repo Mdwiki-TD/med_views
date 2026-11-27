@@ -14,8 +14,8 @@ from ..config import get_config
 from ..io.dump_utils import DumpManager
 from ..titles_utils import TitlesLoader
 from ..views_utils.views_helps import ViewsFetcher
-from .stats_bot_all_years import MultiYearStatsService
-from .views_all_years import MultiYearViewsService
+from .stats import MultiYearStatsService
+from .views import MultiYearViewsService
 
 logger = logging.getLogger(__name__)
 

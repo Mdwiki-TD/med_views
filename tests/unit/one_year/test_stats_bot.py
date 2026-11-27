@@ -1,5 +1,5 @@
 """
-Tests for src.app.one_year.stats_bot
+Tests for src.app.one_year.stats
 """
 
 import json
@@ -8,7 +8,7 @@ from pathlib import Path
 from unittest.mock import MagicMock
 
 from src.app.config import Config
-from src.app.one_year.stats_bot import SingleYearStatsService
+from src.app.one_year.stats import SingleYearStatsService
 
 
 class TestSingleYearStatsService:

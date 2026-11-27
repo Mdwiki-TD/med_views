@@ -13,7 +13,7 @@ from ..config import get_config
 from ..io.dump_utils import DumpManager
 from ..titles_utils import TitlesLoader
 from ..views_utils.views_helps import ViewsFetcher
-from .stats_bot import SingleYearStatsService
+from .stats import SingleYearStatsService
 from .views import SingleYearViewsService
 
 logger = logging.getLogger(__name__)

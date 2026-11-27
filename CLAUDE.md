@@ -37,8 +37,8 @@ DB Query → Titles JSON → API Fetch → Views JSON → Aggregation → Wiki R
 
 Two parallel implementations exist:
 
-- **Single-year** (`views.py`, `stats_bot.py`): Processes one year
-- **Multi-year** (`views_all_years.py`, `stats_bot_all_years.py`): Processes 2015-2025 simultaneously
+- **Single-year** (`one_year/views.py`, `one_year/stats.py`): Processes one year
+- **Multi-year** (`all_years/views.py`, `all_years/stats.py`): Processes 2015-2025 simultaneously
 
 Both share utilities in `src/app/views_utils/`.
 

@@ -6,21 +6,26 @@ src/
 │   ├── all_years/
 │   │   ├── __init__.py
 │   │   ├── run.py
-│   │   ├── stats_bot_all_years.py
-│   │   └── views_all_years.py
+│   │   ├── stats.py
+│   │   └── views.py
 │   │
 │   ├── api_sql/
 │   │   ├── __init__.py
+│   │   ├── sql_utils.py
 │   │   └── wiki_sql.py
+│   │
+│   ├── io/
+│   │   └── dump_utils.py
 │   │
 │   ├── one_year/
 │   │   ├── __init__.py
 │   │   ├── run.py
-│   │   ├── stats_bot.py
+│   │   ├── stats.py
 │   │   └── views.py
 │   │
 │   ├── services/
 │   │   ├── __init__.py
+│   │   ├── mdwiki_page_mwclient.py
 │   │   ├── mw_views.py
 │   │   └── mysql_client.py
 │   │
@@ -28,17 +33,14 @@ src/
 │   │   ├── __init__.py
 │   │   └── views_helps.py
 │   │
-│   ├── wiki/
+│   ├── wikitext/
 │   │   ├── __init__.py
-│   │   └── mdwiki_page_mwclient.py
+│   │   └── texts_utils.py
 │   │
 │   ├── __init__.py
 │   ├── config.py
-│   ├── dump_utils.py
 │   ├── helps.py
 │   ├── report_generator.py
-│   ├── sql_utils.py
-│   ├── texts_utils.py
 │   └── titles_utils.py
 │
 ├── __init__.py
