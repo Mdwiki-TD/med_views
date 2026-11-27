@@ -3,11 +3,11 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 import functools
 import logging
 import os
 import time
+from collections.abc import Callable
 
 from ..services.mysql_client import MySQLClient
 

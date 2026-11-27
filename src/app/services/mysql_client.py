@@ -3,9 +3,9 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 import functools
 import logging
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
