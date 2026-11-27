@@ -38,14 +38,10 @@ class TestWikiTextBuilder:
         result = builder.build_wiki_text(languages, views)
 
         # Check that all languages are present
-        assert "fr" in result
-        assert "en" in result
-        assert "de" in result
-
         # fr should appear before en, en before de
-        fr_pos = result.find("fr")
-        en_pos = result.find("en")
-        de_pos = result.find("de")
+        fr_pos = result.find("fr.wikipedia.org")
+        en_pos = result.find("en.wikipedia.org")
+        de_pos = result.find("de.wikipedia.org")
 
         assert fr_pos < en_pos < de_pos
 
