@@ -8,7 +8,7 @@ import logging
 from pathlib import Path
 from typing import Any
 
-from ..config import Config, get_config
+from ..config import Config
 
 logger = logging.getLogger(__name__)
 
@@ -27,9 +27,9 @@ class DumpManager:
         """Initialize the DumpManager.
 
         Parameters:
-            config: Optional configuration object. Defaults to get_config().
+            config: Optional configuration object. Defaults to Config.get_instance().
         """
-        self._config = config or get_config()
+        self._config = config or Config.get_instance()
 
     def count_languages_in_json(self) -> dict[str, list[str]]:
         """Count items in each language JSON file in json_titles_path.
@@ -119,10 +119,10 @@ class DumpManager:
 
         logger.debug(f"{file=}, {len(data)=}")
 
-        data = self.replace_underscores(data)
+        normlized_data = self.replace_underscores(data)
 
         with open(file, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False)
+            json.dump(normlized_data, f, ensure_ascii=False)
 
     def dump_languages_counts(self, data: dict[str, int]) -> None:
         """Write language count data to the main dump file.

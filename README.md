@@ -168,7 +168,6 @@ med_views/
 │       ├── config.py           # Centralized configuration
 │       ├── services/
 │       │   ├── mw_views.py     # Pageviews API client
-│       │   └── mysql_client.py # Database client
 │       │   └── mdwiki_page_mwclient.py  # MDWiki operations
 |       |
 │       ├── api_sql/

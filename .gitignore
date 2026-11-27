@@ -5,3 +5,5 @@ views_all_run_it.py
 _works_files/**
 !_works_files/test_tree.md
 !_works_files/tree.md
+/src/database/tools
+/src/app/database

@@ -9,7 +9,7 @@ import json
 import logging
 import sys
 
-from app.config import get_config
+from app.config import Config
 from src.app.api_sql.sql_utils import MedicalTitlesRepository
 from src.app.io.dump_utils import DumpManager
 
@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 def start():
-    config = get_config()
+    config = Config.get_instance()
     dump_manager = DumpManager(config=config)
     titles_repo = MedicalTitlesRepository()
 

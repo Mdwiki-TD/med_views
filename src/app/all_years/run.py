@@ -10,7 +10,7 @@ import json
 import logging
 
 from ..api_sql.sql_utils import MedicalTitlesRepository
-from ..config import get_config
+from ..config import Config
 from ..io.dump_utils import DumpManager
 from ..titles_utils import TitlesLoader
 from ..views_utils.views_helps import ViewsFetcher
@@ -24,7 +24,7 @@ class MultiYearViewsPipeline:
     """Orchestrates multi-year view collection pipeline."""
 
     def __init__(self, local: bool = False) -> None:
-        self.config = get_config()
+        self.config = Config.get_instance()
         self.dump_manager = DumpManager(config=self.config)
         self.titles_loader = TitlesLoader()
         self.views_service = MultiYearViewsService()

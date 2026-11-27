@@ -27,7 +27,6 @@ src/
 │   │   ├── __init__.py
 │   │   ├── mdwiki_page_mwclient.py
 │   │   ├── mw_views.py
-│   │   └── mysql_client.py
 │   │
 │   ├── views_utils/
 │   │   ├── __init__.py

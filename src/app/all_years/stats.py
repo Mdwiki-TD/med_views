@@ -13,7 +13,7 @@ import logging
 from pathlib import Path
 from typing import Any
 
-from ..config import Config, get_config
+from ..config import Config
 
 logger = logging.getLogger(__name__)
 
@@ -31,9 +31,9 @@ class MultiYearStatsService:
         """Initialize the service.
 
         Parameters:
-            config: Optional configuration object. Defaults to get_config().
+            config: Optional configuration object. Defaults to Config.get_instance().
         """
-        _config = config or get_config()
+        _config = config or Config.get_instance()
         self.stats_all_data: dict = {}
         self.main_dump_path = _config.main_dump_path
 

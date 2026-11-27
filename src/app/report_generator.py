@@ -6,10 +6,10 @@ from __future__ import annotations
 import json
 import logging
 
-from app.config import get_config
+from app.config import Config
 from app.helps import JsonHelper
+from app.services import MwclientPage
 from app.views_utils.views_helps import ViewsFetcher
-from app.wikitext import MwclientPage
 from src.app.io.dump_utils import DumpManager
 from src.app.wikitext.texts_utils import WikiTextBuilder
 
@@ -20,7 +20,7 @@ class ReportGenerator:
     """Generates and uploads wiki reports for medical pageview statistics."""
 
     def __init__(self, save: bool = True) -> None:
-        self.config = get_config()
+        self.config = Config.get_instance()
         self.dump_manager = DumpManager(config=self.config)
         self.json_helper = JsonHelper()
         self.wiki_builder = WikiTextBuilder()

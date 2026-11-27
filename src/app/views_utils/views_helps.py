@@ -6,7 +6,7 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-from ..config import Config, get_config
+from ..config import Config
 from ..services.mw_views import PageviewsClient
 
 logger = logging.getLogger(__name__)
@@ -29,9 +29,9 @@ class ViewsFetcher:
         Parameters:
             pageviews_client: Optional PageviewsClient for API calls.
                 Defaults to a new client with config parallelism.
-            config: Optional configuration object. Defaults to get_config().
+            config: Optional configuration object. Defaults to Config.get_instance().
         """
-        self._config = config or get_config()
+        self._config = config or Config.get_instance()
         self._client = pageviews_client or PageviewsClient(parallelism=self._config.parallelism)
 
     def article_views(self, site: str, articles: list, year: int = 2024) -> dict:
