@@ -14,7 +14,3 @@ def test_parallelism_default(monkeypatch: MonkeyPatch) -> None:
     monkeypatch.setattr(sys, "argv", ["script.py"])
     importlib.reload(src.app.config)
     assert src.app.config.parallelism == 10
-
-    monkeypatch.setattr(sys, "argv", ["script.py", "-para:20"])
-    importlib.reload(src.app.config)
-    assert src.app.config.parallelism == 20

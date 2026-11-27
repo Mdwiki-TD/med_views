@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-python src/start.py
+python src/save_reports.py
 """
 
 import json
@@ -17,7 +17,6 @@ from app.views_utils.views_helps import (
 from app.wiki import MwclientPage
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
 
 
 def get_languages_articles_counts() -> dict:
@@ -131,12 +130,16 @@ def start(year, limit):
 
     text = target_page.get_text()
 
+    if not newtext:
+        logger.info("no text")
+        return
+
     if text == newtext:
-        logger.info("No change")
+        logger.info("no change")
         return
 
     if target_page.exists():
-        target_page.save(newtext=newtext, summary="update", nocreate=0, minor="")
+        target_page.save(newtext=newtext, summary="update")
     else:
         target_page.create(newtext, summary="update")
 
@@ -150,6 +153,7 @@ def parse_args():
             limit = int(val)
         elif key in ["year", "-year"] and val.isdigit():
             year = int(val)
+
     return year, limit
 
 

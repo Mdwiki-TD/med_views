@@ -1,5 +1,4 @@
 import os
-import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -14,7 +13,7 @@ mdwiki_pass = os.getenv("MDWIKI_HIMO_PASSWORD", "")
 VIEWS_DUMP_PATH = os.getenv("VIEWS_DUMP_PATH", "")
 
 if not mdwiki_pass:
-    raise ValueError("Please set MDWIKI_USERNAME environment variable")
+    raise ValueError("Please set MDWIKI_HIMO_PASSWORD environment variable")
 
 main_dump_path = Path(VIEWS_DUMP_PATH) if VIEWS_DUMP_PATH else home / "data/views_dumps"
 
@@ -26,8 +25,3 @@ json_titles_path.mkdir(exist_ok=True)
 views_by_year_path.mkdir(exist_ok=True)
 
 parallelism = 10
-
-for arg in sys.argv:
-    key, _, val = arg.partition(":")
-    if key == "-para":
-        parallelism = int(val) or parallelism

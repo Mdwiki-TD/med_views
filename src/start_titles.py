@@ -17,7 +17,6 @@ from app.sql_utils import (
 )
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
 
 
 def start():

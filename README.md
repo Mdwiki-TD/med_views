@@ -99,7 +99,7 @@ python3 start_views_all_years.py
 Aggregate the data and generate a summary report for MDWiki.
 
 ```bash
-python3 start.py
+python3 save_reports.py
 ```
 
 **What it does:**
@@ -158,15 +158,12 @@ Configuration is in `pyproject.toml`:
 
 ```
 med_views/
-├── start.py                    # Entry point: report generation
-├── start_titles.py             # Entry point: title collection
-├── start_views.py              # Entry point: single-year view collection
-├── start_views_all_years.py    # Entry point: multi-year view collection
 ├── src/
-│   ├── start.py                # Duplicate entry points (for src layout)
-│   ├── start_titles.py
-│   ├── start_views.py
-│   ├── start_views_all_years.py
+│   ├── start_titles.py             # Entry point: title collection
+│   ├── start_views.py              # Entry point: single-year view collection
+│   ├── start_views_all_years.py    # Entry point: multi-year view collection
+│   ├── save_reports.py             # Entry point: report generation
+
 │   └── app/
 │       ├── config.py           # Centralized configuration
 │       ├── services/

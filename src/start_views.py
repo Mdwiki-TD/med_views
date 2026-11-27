@@ -18,7 +18,6 @@ from app.views_utils.views_helps import (
 )
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
 
 empty_data_all = {}
 
