@@ -35,9 +35,9 @@ class Config:
         self.views_by_year_path = self.main_dump_path / "views_by_year"
 
         # Create directories
-        self.main_dump_path.mkdir(exist_ok=True, parents=True)
-        self.json_titles_path.mkdir(exist_ok=True, parents=True)
-        self.views_by_year_path.mkdir(exist_ok=True, parents=True)
+        self.main_dump_path.mkdir(parents=True, exist_ok=True)
+        self.json_titles_path.mkdir(parents=True, exist_ok=True)
+        self.views_by_year_path.mkdir(parents=True, exist_ok=True)
 
 
 # Singleton instance
