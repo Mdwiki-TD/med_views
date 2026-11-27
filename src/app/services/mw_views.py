@@ -75,7 +75,7 @@ class PageviewsClientHelper:
                     article_dict["all"] = article_dict.get("all", 0) + count
                 # ---
                 # sort article_dict keys
-                article_dict = {k: v for k, v in sorted(article_dict.items(), key=lambda item: item[0])}
+                article_dict = dict(sorted(article_dict.items(), key=lambda item: item[0]))
                 # ---
                 new_data[article] = article_dict
         return new_data
@@ -186,7 +186,7 @@ class PageviewsClient(PageviewsClientHelper):
 
         outputDays = timestamps_between(startDate, endDate, timedelta(days=1))
         if granularity == "monthly":
-            outputDays = list(set([month_from_day(day) for day in outputDays]))
+            outputDays = list({month_from_day(day) for day in outputDays})
         output = defaultdict(dict, {day: dict.fromkeys(articles) for day in outputDays})
 
         # try:

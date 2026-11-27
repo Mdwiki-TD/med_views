@@ -88,7 +88,7 @@ def dump_languages_counts(data: dict[str, int]) -> None:
     file = main_dump_path / "languages_counts.json"
     # ---
     # sort data
-    data = {k: v for k, v in sorted(data.items(), key=lambda item: item[1], reverse=True)}
+    data = dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
     # ---
     if data and len(data) > 200:
         # ---

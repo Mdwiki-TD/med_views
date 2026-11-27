@@ -31,7 +31,7 @@ def build_wiki_text(languages, views) -> str:
     text += """{| class="wikitable sortable"\n!Rank\n!Lang\n!# of articles\n!Total views\n!Ave. views\n|----"""
     # ---
     # sort languages by count
-    languages = {k: v for k, v in sorted(languages.items(), key=lambda item: item[1], reverse=True)}
+    languages = dict(sorted(languages.items(), key=lambda item: item[1], reverse=True))
     # ---
     for n, (lang, articles) in enumerate(languages.items(), start=1):
         # ---

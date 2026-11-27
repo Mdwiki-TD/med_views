@@ -92,7 +92,7 @@ def make_page_text(year, limit):
         return None
     # ---
     # sort languages ASC
-    languages = {k: v for k, v in sorted(languages.items(), key=lambda item: item[1], reverse=False)}
+    languages = dict(sorted(languages.items(), key=lambda item: item[1], reverse=False))
     # ---
     views = make_views_local(languages, year, limit)
     # ---
@@ -105,7 +105,7 @@ def make_page_text(year, limit):
         return None
     # ---
     # sort views by value DESC
-    views = {k: v for k, v in sorted(views.items(), key=lambda item: item[1], reverse=True)}
+    views = dict(sorted(views.items(), key=lambda item: item[1], reverse=True))
     # ---
     # dump views
     with open(main_dump_path / f"{year}_views_by_lang.json", "w", encoding="utf-8") as f:

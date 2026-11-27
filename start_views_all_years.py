@@ -174,7 +174,7 @@ def start(limit, maxv):
         return
     # ---
     # sort languages ASC
-    languages = {k: v for k, v in sorted(languages.items(), key=lambda item: item[1], reverse=False)}
+    languages = dict(sorted(languages.items(), key=lambda item: item[1], reverse=False))
     # ---
     make_views(languages, limit, maxv)
 
