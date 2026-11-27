@@ -54,7 +54,7 @@ skip = [
     ".git",
 ]
 [tool.mutmut]
-source_paths = ["www/python/src/"]
+source_paths = ["src/"]
 pytest_add_cli_args_test_selection = ["tests/"]
 
 # ============================================
@@ -206,7 +206,7 @@ reportIncompatibleMethodOverride = "none"
 pythonVersion = "3.13"
 stubPath = "typings"
 # Paths to include and exclude from checking
-include = ["www/python", "www/python/src"]
+include = ["src"]
 exclude = [
     # System & Version Control
     "**/$RECYCLE.BIN/**",
