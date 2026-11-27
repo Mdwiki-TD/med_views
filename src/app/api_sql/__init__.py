@@ -2,10 +2,8 @@
 
 from __future__ import annotations
 
-from .wiki_sql import WikiDatabaseMapper, WikiSQLClient, get_sql
+from .sql_utils import MedicalTitlesRepository
 
 __all__ = [
-    "WikiDatabaseMapper",
-    "WikiSQLClient",
-    "get_sql",
+    "MedicalTitlesRepository",
 ]
