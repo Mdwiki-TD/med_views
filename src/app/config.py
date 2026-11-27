@@ -9,11 +9,11 @@ new_var = Path(__file__).parents[3]
 # load environment variables from a .env file if it exists
 load_dotenv(new_var / ".env")
 
-my_username = os.getenv("MDWIKI_USERNAME", "")
-mdwiki_pass = os.getenv("MDWIKI_PASSWORD", "")
+my_username = os.getenv("MDWIKI_USERNAME", "Mr. Ibrahem")
+mdwiki_pass = os.getenv("MDWIKI_HIMO_PASSWORD", "")
 MAIN_PATH = os.getenv("MAIN_PATH", "")
 
-if not my_username:
+if not mdwiki_pass:
     raise ValueError("Please set MDWIKI_USERNAME environment variable")
 
 main_dump_path = Path(MAIN_PATH) if MAIN_PATH else new_var / "dumps_all_agents"

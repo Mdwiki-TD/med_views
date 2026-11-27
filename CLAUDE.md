@@ -75,7 +75,7 @@ Wikimedia Labs DB → Titles (JSON) → Pageviews API → Views (JSON) → Stati
 
 Required (see `example.env`):
 - `MDWIKI_USERNAME`: MDWiki login for report uploads
-- `MDWIKI_PASSWORD`: MDWiki password
+- `MDWIKI_HIMO_PASSWORD`: MDWiki password
 - `MAIN_PATH`: Output directory for JSON dumps
 
 ## Key Patterns
