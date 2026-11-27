@@ -12,12 +12,12 @@ import sys
 from app.config import get_config
 from app.dump_utils import count_languages_in_json, load_languages_counts
 from app.sql_utils import get_language_article_counts_sql
-from src.app.one_year.stats_bot import dump_stats, dump_stats_all
 from app.titles_utils import load_lang_titles
-from src.app.one_year.views import get_one_lang_views
 from app.views_utils.views_helps import (
     get_view_file,
 )
+from src.app.one_year.stats_bot import dump_stats, dump_stats_all
+from src.app.one_year.views import get_one_lang_views
 
 logger = logging.getLogger(__name__)
 
