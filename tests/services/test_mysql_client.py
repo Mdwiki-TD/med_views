@@ -1,10 +1,12 @@
 """
-Tests for src.services.mysql_client
+Tests for src.app.services.mysql_client
 """
+
 from unittest.mock import MagicMock
+
 from _pytest.monkeypatch import MonkeyPatch
 
-from src.services.mysql_client import (
+from src.app.services.mysql_client import (
     _sql_connect_pymysql,
     decode_bytes_in_list,
     decode_value,
@@ -22,7 +24,7 @@ def test_load_db_config():
 
 def test__sql_connect_pymysql(monkeypatch: MonkeyPatch) -> None:
     mock_connect = MagicMock()
-    monkeypatch.setattr("src.services.mysql_client.pymysql.connect", mock_connect)
+    monkeypatch.setattr("src.app.services.mysql_client.pymysql.connect", mock_connect)
 
     # Setup mock connection and cursor
     mock_conn = MagicMock()
@@ -62,7 +64,7 @@ def test_decode_bytes_in_list():
 
 def test_make_sql_connect(monkeypatch: MonkeyPatch) -> None:
     mock_sql = MagicMock(return_value=[{"col": b"val"}])
-    monkeypatch.setattr("src.services.mysql_client._sql_connect_pymysql", mock_sql)
+    monkeypatch.setattr("src.app.services.mysql_client._sql_connect_pymysql", mock_sql)
 
     results = make_sql_connect("SELECT 1")
     # make_sql_connect calls decode_bytes_in_list on the results

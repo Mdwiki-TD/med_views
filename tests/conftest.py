@@ -1,7 +1,9 @@
 """Test configuration for the test-suite."""
 
+import os
 import sys
 from pathlib import Path
 
 # Add the main directory to the python path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+os.environ["MDWIKI_USERNAME"] = "test"

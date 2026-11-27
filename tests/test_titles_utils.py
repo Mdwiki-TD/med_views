@@ -1,10 +1,12 @@
 """
-Tests for src.titles_utils
+Tests for src.app.titles_utils
 """
+
 from unittest.mock import MagicMock
+
 from _pytest.monkeypatch import MonkeyPatch
 
-from src.titles_utils import (
+from src.app.titles_utils import (
     load_lang_titles,
 )
 
@@ -12,7 +14,7 @@ from src.titles_utils import (
 def test_load_lang_titles(monkeypatch: MonkeyPatch) -> None:
     # Scenario 1: load_lang_titles_from_dump returns data
     mock_dump = MagicMock(return_value=["Title 1", "Title 2"])
-    monkeypatch.setattr("src.titles_utils.load_lang_titles_from_dump", mock_dump)
+    monkeypatch.setattr("src.app.titles_utils.load_lang_titles_from_dump", mock_dump)
 
     result = load_lang_titles("en")
     assert result == ["Title 1", "Title 2"]
@@ -29,7 +31,7 @@ def test_load_lang_titles(monkeypatch: MonkeyPatch) -> None:
     # Scenario 3: load_lang_titles_from_dump returns empty, 'local' NOT in sys.argv
     mock_dump.return_value = []
     mock_sql = MagicMock(return_value=["Title_1", "Title_2"])
-    monkeypatch.setattr("src.titles_utils.one_lang_titles", mock_sql)
+    monkeypatch.setattr("src.app.titles_utils.one_lang_titles", mock_sql)
     monkeypatch.setattr("sys.argv", ["script.py"])
 
     result = load_lang_titles("en")

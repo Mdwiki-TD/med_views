@@ -1,12 +1,14 @@
 """
-Tests for src.dump_utils
+Tests for src.app.dump_utils
 """
+
 import json
 from pathlib import Path
-from unittest.mock import mock_open, MagicMock
+from unittest.mock import MagicMock, mock_open
+
 from _pytest.monkeypatch import MonkeyPatch
 
-from src.dump_utils import (
+from src.app.dump_utils import (
     count_languages_in_json,
     dump_languages_counts,
     dump_one,
@@ -16,8 +18,10 @@ from src.dump_utils import (
 
 
 def test_count_languages_in_json(monkeypatch: MonkeyPatch) -> None:
+    mock_config = MagicMock()
     mock_path = MagicMock()
-    monkeypatch.setattr("src.dump_utils.json_titles_path", mock_path)
+    mock_config.json_titles_path = mock_path
+    monkeypatch.setattr("src.app.dump_utils.get_config", lambda: mock_config)
 
     file1 = MagicMock(spec=Path)
     file1.stem = "en"
@@ -32,8 +36,10 @@ def test_count_languages_in_json(monkeypatch: MonkeyPatch) -> None:
 
 
 def test_load_lang_titles_from_dump(monkeypatch: MonkeyPatch) -> None:
+    mock_config = MagicMock()
     mock_path = MagicMock()
-    monkeypatch.setattr("src.dump_utils.json_titles_path", mock_path)
+    mock_config.json_titles_path = mock_path
+    monkeypatch.setattr("src.app.dump_utils.get_config", lambda: mock_config)
 
     mock_file = MagicMock(spec=Path)
     mock_path.__truediv__.return_value = mock_file
@@ -60,8 +66,10 @@ def test_dump_one(monkeypatch: MonkeyPatch) -> None:
 
 
 def test_dump_languages_counts(monkeypatch: MonkeyPatch) -> None:
+    mock_config = MagicMock()
     mock_path = MagicMock()
-    monkeypatch.setattr("src.dump_utils.main_dump_path", mock_path)
+    mock_config.main_dump_path = mock_path
+    monkeypatch.setattr("src.app.dump_utils.get_config", lambda: mock_config)
 
     # Mock open to prevent actual file writes
     m = mock_open()
@@ -81,8 +89,10 @@ def test_dump_languages_counts(monkeypatch: MonkeyPatch) -> None:
 
 
 def test_load_languages_counts(monkeypatch: MonkeyPatch) -> None:
+    mock_config = MagicMock()
     mock_path = MagicMock()
-    monkeypatch.setattr("src.dump_utils.main_dump_path", mock_path)
+    mock_config.main_dump_path = mock_path
+    monkeypatch.setattr("src.app.dump_utils.get_config", lambda: mock_config)
 
     mock_file = MagicMock(spec=Path)
     mock_path.__truediv__.return_value = mock_file
