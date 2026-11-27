@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 import functools
 import logging
 from pathlib import Path
@@ -54,7 +55,7 @@ class MySQLClient:
 
     def __init__(
         self,
-        db_config_loader: callable = None,
+        db_config_loader: Callable | None = None,
     ) -> None:
         """Initialize the MySQL client.
 

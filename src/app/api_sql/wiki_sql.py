@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 import functools
 import logging
 import os
@@ -82,9 +83,9 @@ class WikiSQLClient:
 
     def __init__(
         self,
-        database_mapper: WikiDatabaseMapper = None,
-        sql_client: MySQLClient = None,
-        sql_checker: callable = None,
+        database_mapper: WikiDatabaseMapper | None = None,
+        sql_client: MySQLClient | None = None,
+        sql_checker: Callable | None = None,
     ) -> None:
         """Initialize the WikiSQL client.
 

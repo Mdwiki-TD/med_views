@@ -40,9 +40,7 @@ class MultiYearStatsService:
         """Get the accumulated statistics data."""
         return self._stats_all_data
 
-    def dump_stats(
-        self, articles: list, new_data: dict[str, dict | int], lang: str
-    ) -> dict[str, int | dict[str, int]]:
+    def dump_stats(self, articles: list, new_data: dict[str, dict | int], lang: str) -> dict[str, int | dict[str, int]]:
         """Calculate and store statistics for one language across all years.
 
         Parameters:

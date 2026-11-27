@@ -11,8 +11,8 @@ from __future__ import annotations
 import logging
 import sys
 
-from ..helps import JsonHelper, json_load
-from ..views_utils.views_helps import ViewsFetcher, article_views_all_years
+from ..helps import JsonHelper
+from ..views_utils.views_helps import ViewsFetcher
 
 logger = logging.getLogger(__name__)
 
@@ -120,9 +120,7 @@ class MultiYearViewsService:
 
         return data
 
-    def get_one_lang_views(
-        self, langcode: str, titles: list, json_file, maxv: int = 0
-    ) -> dict:
+    def get_one_lang_views(self, langcode: str, titles: list, json_file, maxv: int = 0) -> dict:
         """Get views for one language with file caching across all years.
 
         Parameters:
@@ -147,7 +145,9 @@ class MultiYearViewsService:
                     # or u_data[x] == 0
                 )
             ]
-            logger.info(f"<<yellow>> {langcode}: {len(titles):,} titles, titles_not_in_file: {len(titles_not_in_file):,}")
+            logger.info(
+                f"<<yellow>> {langcode}: {len(titles):,} titles, titles_not_in_file: {len(titles_not_in_file):,}"
+            )
         else:
             logger.info(f"<<yellow>> {json_file} not found.")
 
