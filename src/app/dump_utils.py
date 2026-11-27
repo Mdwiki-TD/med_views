@@ -146,54 +146,6 @@ class DumpManager:
         return data
 
 
-# Legacy compatibility layer
-_default_manager: DumpManager | None = None
-
-
-def _get_default_manager() -> DumpManager:
-    """Get or create the default DumpManager instance."""
-    global _default_manager
-    if _default_manager is None:
-        _default_manager = DumpManager()
-    return _default_manager
-
-
-def count_languages_in_json():
-    """Legacy entry point. Use DumpManager.count_languages_in_json instead."""
-    return _get_default_manager().count_languages_in_json()
-
-
-def load_lang_titles_from_dump(lang):
-    """Legacy entry point. Use DumpManager.load_lang_titles_from_dump instead."""
-    return _get_default_manager().load_lang_titles_from_dump(lang)
-
-
-def replace_underscores(data: dict | list):
-    """Legacy entry point. Use DumpManager.replace_underscores instead."""
-    return DumpManager.replace_underscores(data)
-
-
-def dump_one(file, data) -> None:
-    """Legacy entry point. Use DumpManager.dump_one instead."""
-    _get_default_manager().dump_one(file, data)
-
-
-def dump_languages_counts(data: dict[str, int]) -> None:
-    """Legacy entry point. Use DumpManager.dump_languages_counts instead."""
-    _get_default_manager().dump_languages_counts(data)
-
-
-def load_languages_counts() -> dict:
-    """Legacy entry point. Use DumpManager.load_languages_counts instead."""
-    return _get_default_manager().load_languages_counts()
-
-
 __all__ = [
     "DumpManager",
-    "count_languages_in_json",
-    "load_lang_titles_from_dump",
-    "replace_underscores",
-    "dump_one",
-    "dump_languages_counts",
-    "load_languages_counts",
 ]

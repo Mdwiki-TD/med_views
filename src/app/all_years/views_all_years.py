@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import logging
 import sys
+from typing import Any
 
 from ..helps import JsonHelper
 from ..views_utils.views_helps import ViewsFetcher
@@ -101,7 +102,7 @@ class MultiYearViewsService:
 
         return all_data
 
-    def load_one_lang_views(self, langcode: str, titles: list) -> dict[str, dict]:
+    def load_one_lang_views(self, langcode: str, titles: list) -> dict[str, Any]:
         """Load view statistics for one language across all years.
 
         Parameters:
@@ -141,7 +142,8 @@ class MultiYearViewsService:
                 x
                 for x in titles
                 if (
-                    x not in u_data
+                    x
+                    not in u_data
                     # or u_data[x] == 0
                 )
             ]

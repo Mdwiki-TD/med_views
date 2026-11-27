@@ -4,61 +4,62 @@ Tests for src.app.sql_utils
 
 from unittest.mock import MagicMock
 
-from _pytest.monkeypatch import MonkeyPatch
-
-from src.app.sql_utils import (
-    MedicalTitlesRepository,
-    get_en_articles,
-    one_lang_titles,
-    retrieve_medicine_titles,
-)
+from src.app.sql_utils import MedicalTitlesRepository
 
 
-def test_get_en_articles(monkeypatch: MonkeyPatch) -> None:
-    mock_repo = MagicMock(spec=MedicalTitlesRepository)
-    mock_repo.get_en_articles.return_value = ["Title1", "Title2"]
+class TestMedicalTitlesRepository:
+    """Tests for the MedicalTitlesRepository class."""
 
-    monkeypatch.setattr(
-        "src.app.sql_utils._get_default_repo",
-        lambda: mock_repo,
-    )
+    def test_get_en_articles(self):
+        mock_sql_client = MagicMock()
+        mock_sql_client.retrieve_sql_results.return_value = [
+            {"page_title": "Title1"},
+            {"page_title": "Title2"},
+        ]
 
-    result = get_en_articles()
-    assert result == ["Title1", "Title2"]
+        repo = MedicalTitlesRepository(sql_client=mock_sql_client)
+        result = repo.get_en_articles()
 
+        assert result == ["Title1", "Title2"]
+        mock_sql_client.retrieve_sql_results.assert_called_once()
 
-def test_retrieve_medicine_titles(monkeypatch: MonkeyPatch) -> None:
-    mock_repo = MagicMock(spec=MedicalTitlesRepository)
-    mock_repo.retrieve_medicine_titles.return_value = {
-        "en": ["EnTitle1", "EnTitle2"],
-        "fr": ["FrTitle1", "FrTitle2"],
-        "de": ["DeTitle1"],
-    }
+    def test_retrieve_medicine_titles(self):
+        mock_sql_client = MagicMock()
+        mock_sql_client.retrieve_sql_results.side_effect = [
+            # First call: retrieve_medicine_titles query
+            [
+                {"page_title": "EnTitle1", "ll_lang": "fr", "ll_title": "FrTitle1"},
+                {"page_title": "EnTitle1", "ll_lang": "de", "ll_title": "DeTitle1"},
+                {"page_title": "EnTitle2", "ll_lang": "fr", "ll_title": "FrTitle2"},
+            ],
+            # Second call: get_en_articles query
+            [{"page_title": "EnTitle1"}, {"page_title": "EnTitle2"}],
+        ]
 
-    monkeypatch.setattr(
-        "src.app.sql_utils._get_default_repo",
-        lambda: mock_repo,
-    )
+        repo = MedicalTitlesRepository(sql_client=mock_sql_client)
+        result = repo.retrieve_medicine_titles()
 
-    result = retrieve_medicine_titles()
+        assert set(result["en"]) == {"EnTitle1", "EnTitle2"}
+        assert result["fr"] == ["FrTitle1", "FrTitle2"]
+        assert result["de"] == ["DeTitle1"]
 
-    assert set(result["en"]) == {"EnTitle1", "EnTitle2"}
-    assert result["fr"] == ["FrTitle1", "FrTitle2"]
-    assert result["de"] == ["DeTitle1"]
+    def test_one_lang_titles_english(self):
+        mock_sql_client = MagicMock()
+        mock_sql_client.retrieve_sql_results.return_value = [{"page_title": "EnT"}]
 
+        repo = MedicalTitlesRepository(sql_client=mock_sql_client)
+        result = repo.one_lang_titles("en")
 
-def test_one_lang_titles(monkeypatch: MonkeyPatch) -> None:
-    mock_repo = MagicMock(spec=MedicalTitlesRepository)
-    mock_repo.one_lang_titles.side_effect = lambda lang: ["EnT"] if lang == "en" else ["T1", "T2"]
+        assert result == ["EnT"]
 
-    monkeypatch.setattr(
-        "src.app.sql_utils._get_default_repo",
-        lambda: mock_repo,
-    )
+    def test_one_lang_titles_other_language(self):
+        mock_sql_client = MagicMock()
+        mock_sql_client.retrieve_sql_results.return_value = [
+            {"ll_title": "T1"},
+            {"ll_title": "T2"},
+        ]
 
-    # Test for en (delegates to get_en_articles)
-    assert one_lang_titles("en") == ["EnT"]
+        repo = MedicalTitlesRepository(sql_client=mock_sql_client)
+        result = repo.one_lang_titles("fr")
 
-    # Test for other lang
-    result = one_lang_titles("fr")
-    assert result == ["T1", "T2"]
+        assert result == ["T1", "T2"]

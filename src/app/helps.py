@@ -71,19 +71,6 @@ class JsonHelper:
         return u_data
 
 
-# Legacy compatibility layer
-def is_empty_data(data) -> bool:
-    """Legacy entry point. Use JsonHelper.is_empty_data instead."""
-    return JsonHelper.is_empty_data(data)
-
-
-def json_load(json_file) -> None | dict | list:
-    """Legacy entry point. Use JsonHelper.json_load instead."""
-    return JsonHelper.json_load(json_file)
-
-
 __all__ = [
     "JsonHelper",
-    "is_empty_data",
-    "json_load",
 ]

@@ -7,10 +7,9 @@ from unittest.mock import MagicMock
 from _pytest.monkeypatch import MonkeyPatch
 
 from src.app.api_sql.wiki_sql import (
+    WikiDatabaseMapper,
     WikiSQLClient,
     get_sql,
-    make_labsdb_dbs_p,
-    retrieve_sql_results,
 )
 
 
@@ -31,30 +30,47 @@ def test_get_sql(monkeypatch: MonkeyPatch) -> None:
     assert get_sql() is False
 
 
-def test_make_labsdb_dbs_p():
-    host, db = make_labsdb_dbs_p("enwiki")
-    assert host == "enwiki.analytics.db.svc.wikimedia.cloud"
-    assert db == "enwiki_p"
+class TestWikiDatabaseMapper:
+    """Tests for the WikiDatabaseMapper class."""
 
-    host, db = make_labsdb_dbs_p("wikidata")
-    assert host == "wikidatawiki.analytics.db.svc.wikimedia.cloud"
-    assert db == "wikidatawiki_p"
+    def test_map_wiki_to_database_enwiki(self):
+        mapper = WikiDatabaseMapper()
+        host, db = mapper.map_wiki_to_database("enwiki")
+        assert host == "enwiki.analytics.db.svc.wikimedia.cloud"
+        assert db == "enwiki_p"
 
-    # be-tarask maps to be_x_old, which doesn't have "wiki", so "wiki" is appended
-    host, db = make_labsdb_dbs_p("be-tarask")
-    assert host == "be_x_oldwiki.analytics.db.svc.wikimedia.cloud"
-    assert db == "be_x_oldwiki_p"
+    def test_map_wiki_to_database_wikidata(self):
+        mapper = WikiDatabaseMapper()
+        host, db = mapper.map_wiki_to_database("wikidata")
+        assert host == "wikidatawiki.analytics.db.svc.wikimedia.cloud"
+        assert db == "wikidatawiki_p"
+
+    def test_map_wiki_to_database_be_tarask(self):
+        # be-tarask maps to be_x_old, which doesn't have "wiki", so "wiki" is appended
+        mapper = WikiDatabaseMapper()
+        host, db = mapper.map_wiki_to_database("be-tarask")
+        assert host == "be_x_oldwiki.analytics.db.svc.wikimedia.cloud"
+        assert db == "be_x_oldwiki_p"
 
 
-def test_retrieve_sql_results(monkeypatch: MonkeyPatch) -> None:
-    mock_client = MagicMock(spec=WikiSQLClient)
-    mock_client.retrieve_sql_results.return_value = [{"col": "val"}]
+class TestWikiSQLClient:
+    """Tests for the WikiSQLClient class."""
 
-    monkeypatch.setattr(
-        "src.app.api_sql.wiki_sql._get_default_client",
-        lambda: mock_client,
-    )
+    def test_retrieve_sql_results_when_sql_disabled(self):
+        """Test that empty list is returned when SQL is disabled."""
+        mock_sql_checker = MagicMock(return_value=False)
+        client = WikiSQLClient(sql_checker=mock_sql_checker)
+        result = client.retrieve_sql_results("SELECT 1", "enwiki")
+        assert result == []
 
-    results = retrieve_sql_results("SELECT 1", wiki="enwiki")
+    def test_retrieve_sql_results_when_sql_enabled(self):
+        """Test that SQL is executed when enabled."""
+        mock_sql_client = MagicMock()
+        mock_sql_client.execute.return_value = [{"page_title": "Test"}]
+        mock_sql_checker = MagicMock(return_value=True)
 
-    assert results == [{"col": "val"}]
+        client = WikiSQLClient(sql_client=mock_sql_client, sql_checker=mock_sql_checker)
+        result = client.retrieve_sql_results("SELECT page_title FROM page", "enwiki")
+
+        assert result == [{"page_title": "Test"}]
+        mock_sql_client.execute.assert_called_once()
