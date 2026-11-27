@@ -9,11 +9,11 @@ import datetime
 import json
 import logging
 
-from ..api_sql.sql_utils import MedicalTitlesRepository
 from ..config import Config
 from ..io.dump_utils import DumpManager
+from ..sql_loader import MedicalTitlesRepository
 from ..titles_utils import TitlesLoader
-from ..views_utils.views_helps import ViewsFetcher
+from ..views_utils.views_fetcher import ViewsFetcher
 from .stats import MultiYearStatsService
 from .views import MultiYearViewsService
 

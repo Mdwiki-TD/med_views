@@ -13,7 +13,7 @@ import sys
 from typing import Any
 
 from ..io.dump_utils import DumpManager
-from ..views_utils.views_helps import ViewsFetcher
+from ..views_utils.views_fetcher import ViewsFetcher
 
 logger = logging.getLogger(__name__)
 

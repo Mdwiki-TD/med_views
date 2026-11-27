@@ -10,8 +10,8 @@ import logging
 import sys
 
 from app.config import Config
-from src.app.api_sql.sql_utils import MedicalTitlesRepository
 from src.app.io.dump_utils import DumpManager
+from src.app.sql_loader import MedicalTitlesRepository
 
 logger = logging.getLogger(__name__)
 

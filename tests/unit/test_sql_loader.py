@@ -1,10 +1,10 @@
 """
-Tests for src.api_sql.sql_utils
+Tests for src.sql_loader
 """
 
 from unittest.mock import MagicMock
 
-from src.app.api_sql.sql_utils import MedicalTitlesRepository
+from src.app.sql_loader import MedicalTitlesRepository
 
 
 class TestMedicalTitlesRepository:

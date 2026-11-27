@@ -1,5 +1,5 @@
 """
-Tests for src.app.views_utils.views_helps
+Tests for src.app.views_utils.views_fetcher
 """
 
 import tempfile
@@ -7,7 +7,7 @@ from pathlib import Path
 from unittest.mock import MagicMock
 
 from src.app.config import Config
-from src.app.views_utils.views_helps import ViewsFetcher
+from src.app.views_utils.views_fetcher import ViewsFetcher
 
 
 class TestViewsFetcher:

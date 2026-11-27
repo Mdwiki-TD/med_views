@@ -7,7 +7,7 @@ import logging
 import sys
 
 from ..io.dump_utils import DumpManager
-from ..views_utils.views_helps import ViewsFetcher
+from ..views_utils.views_fetcher import ViewsFetcher
 
 logger = logging.getLogger(__name__)
 
@@ -23,14 +23,7 @@ class SingleYearViewsService:
         views_fetcher: ViewsFetcher | None = None,
         dump_manager: DumpManager | None = None,
     ) -> None:
-        """Initialize the service.
-
-        Parameters:
-            views_fetcher: Optional ViewsFetcher for API calls.
-                Defaults to ViewsFetcher.
-            json_helper: Optional JsonHelper class for JSON operations.
-                Defaults to JsonHelper.
-        """
+        """Initialize the service."""
         self._fetcher = views_fetcher or ViewsFetcher()
         self.dump_manager = dump_manager or DumpManager()
 

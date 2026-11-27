@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import logging
 
-from ..database import WikiReplicaDB
+from .database import WikiReplicaDB
 
 logger = logging.getLogger(__name__)
 

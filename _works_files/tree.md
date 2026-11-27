@@ -9,10 +9,15 @@ src/
 │   │   ├── stats.py
 │   │   └── views.py
 │   │
-│   ├── api_sql/
-│   │   ├── __init__.py
-│   │   ├── sql_utils.py
-│   │   └── wiki_sql.py
+│   ├── database/
+│   │   │
+│   │   ├── analytics/
+│   │   │   ├── __init__.py
+│   │   │   ├── client.py
+│   │   │   ├── maps.py
+│   │   │   └── replica_db.py
+│   │   │
+│   │   └── __init__.py
 │   │
 │   ├── io/
 │   │   └── dump_utils.py
@@ -26,7 +31,7 @@ src/
 │   ├── services/
 │   │   ├── __init__.py
 │   │   ├── mdwiki_page_mwclient.py
-│   │   ├── mw_views.py
+│   │   └── mw_views.py
 │   │
 │   ├── views_utils/
 │   │   ├── __init__.py
@@ -40,6 +45,7 @@ src/
 │   ├── config.py
 │   ├── helps.py
 │   ├── report_generator.py
+│   ├── sql_loader.py
 │   └── titles_utils.py
 │
 ├── __init__.py

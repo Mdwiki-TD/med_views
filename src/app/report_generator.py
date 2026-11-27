@@ -7,10 +7,9 @@ import json
 import logging
 
 from app.config import Config
-from app.helps import JsonHelper
 from app.services import MwclientPage
-from app.views_utils.views_helps import ViewsFetcher
 from src.app.io.dump_utils import DumpManager
+from src.app.views_utils.views_fetcher import ViewsFetcher
 from src.app.wikitext.texts_utils import WikiTextBuilder
 
 logger = logging.getLogger(__name__)
@@ -22,7 +21,6 @@ class ReportGenerator:
     def __init__(self, save: bool = True) -> None:
         self.config = Config.get_instance()
         self.dump_manager = DumpManager(config=self.config)
-        self.json_helper = JsonHelper()
         self.wiki_builder = WikiTextBuilder()
         self.views_fetcher = ViewsFetcher()
         self.save = save
