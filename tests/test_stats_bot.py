@@ -1,4 +1,4 @@
-from src.stats_bot import (
+from src.app.stats_bot import (
     dump_stats,
 )
 
