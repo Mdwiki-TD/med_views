@@ -29,16 +29,19 @@ from __future__ import annotations
 import functools
 import json
 import logging
-import os
 from collections import defaultdict
 from pathlib import Path
 
 from tqdm import tqdm
 
+from app.config import Config
+
 logger = logging.getLogger(__name__)
 
-# Base directory for views data
-BASE_PATH = Path(__file__).parent / "update_med_views"
+config = Config.get_instance()
+
+# Base directory for views data  (default: ~data/views/update_med_views/)
+BASE_PATH = config.paths.update_med_views
 
 # Source and output paths for raw views (all agents)
 RAW_SOURCE_PATH = BASE_PATH / "views_new" / "all"
@@ -162,7 +165,9 @@ def start() -> None:
         output_dir=ALL_AGENTS_OUTPUT_PATH,
         excluded_years={"2025"},
     )
-    process_pre_split_years(years_root_dir=USERS_AGENTS_YEAR_PATH)
+    process_pre_split_years(
+        years_root_dir=USERS_AGENTS_YEAR_PATH,
+    )
 
 
 if __name__ == "__main__":
