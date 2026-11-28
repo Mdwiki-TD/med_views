@@ -1,58 +1,73 @@
-# Full Data Storage Design: SQLite Migration
+# Full Data Storage Design: SQLite Migration (Revised)
 
 ## Executive Summary
 
 This document designs the migration of all file-based data storage under `$MED_VIEWS_PATH` (default `~/data/views/`) to SQLite via SQLAlchemy 2.0. The goal is to replace JSON file I/O with a relational database while preserving all existing behavior and enabling future read-side optimizations.
 
+**Key Corrections Applied**:
+- Single `views` table with `agent_type` column (not two separate tables)
+- No `INSERT OR REPLACE` on FK-referenced rows; use SQLite-specific upsert
+- Composite primary keys, denormalized `lang` in views
+- Removed `pipeline_metadata`, timestamps, and `title_count` (not produced by current collectors)
+- `ReportGenerator` is read-only and out of scope for conversion
+- Clear title normalization rule: always replace underscores with spaces
+
 ---
 
-## Phase A: Research and Design
+## Phase A: Research and Design (Corrected)
 
-### A1. Inventory
+### A1. Inventory (Verified in Code)
+
+#### Code Verification Results
+
+**Agent Type Data Sources**:
+- `after1.py`: Reads `dumps/views_by_year/<year>/<lang>.json`, writes to `update_med_views/views_by_year_all_agents/<year>/<lang>.json` (filters views > 0)
+- `after2.py`: Reads from **both** `views_by_year_all_agents/` and `views_by_year_users_agents/`, writes `<year>_languages_counts.json`
+- **Finding**: No code writes to `views_by_year_users_agents/`. This directory is created by config but populated externally (manual import or separate process).
+
+**Title Normalization**:
+- `titles_loader.py`: Calls `replace_underscores()` on load from dump
+- `dump_utils.py`: `replace_underscores()` replaces `_` with ` ` in keys and list items
+- `views_fetcher.py`: `title.replace("_", " ")` after API fetch
+- **Rule**: All titles stored with spaces, never underscores. Normalization happens at load/write time.
+
+**"All" Total Rule**:
+- `views_fetcher.py:62,90`: API returns `{"2020": 100, "2021": 200, ..., "all": 300}`
+- The `"all"` value is the sum across all years **including 2015**
+- `after1.py` excludes 2015 from filtering
+- **Rule**: Stored `SUM(views)` excludes 2015; the `"all"` value from API includes 2015. They may differ.
 
 #### Modules and Their Data Access Patterns
 
-| Module | Purpose | Input Files | Output Files | Data Shape | Notes |
-|--------|---------|-------------|--------------|------------|-------|
-| `src/app/titles_loader.py` | Load/save article titles | SQL DB or `all_languages_titles.json` | `dumps/titles/<lang>.json`, `dumps/all_languages_titles.json`, `dumps/languages_titles_counts.json` | `{lang: [titles]}`, `{lang: count}` | Phase 1 entry point |
-| `src/app/all_years/run.py` | Orchestrate view collection | Titles from `TitlesLoader`, existing view files | `dumps/views_by_year/<year>/<lang>.json`, `dumps/empty_views_*.json` | `{title: views}`, `{lang: [titles]}` | Phase 2 entry point |
-| `src/app/all_years/views.py` | Fetch and cache views | Wikimedia API, cached files | Updates cache files | `{title: {year: views}}` | Handles incremental updates |
-| `src/app/all_years/stats.py` | Compute statistics | View data from `views.py` | `dumps/<year>_summary.json`, `dumps/<year>_stats_all.json` | Aggregate stats per lang/year | Computes totals, counts |
-| `src/after1.py` | Filter views > 0 | `dumps/views_by_year/<year>/<lang>.json` | `update_med_views/views_by_year_all_agents/<year>/<lang>.json` | `{title: views}` (filtered) | Skips excluded years (2015) |
-| `src/after2.py` | Aggregate language counts | `update_med_views/views_by_year_*/<year>/<lang>.json` | `update_med_views/views_by_year_*/<year>_languages_counts.json` | `{lang: total_views}` per year | Sums views per lang/year |
-| `src/app/report_generator.py` | Generate wiki reports | `dumps/views_by_year/<year>/<lang>.json` | `dumps/<year>_views_by_lang.json`, `dumps/<year>_text.txt` | Aggregated views, wiki text | Read-side + upload |
-| `src/app/io/dump_utils.py` | JSON I/O utilities | Various JSON files | Various JSON files | Generic JSON read/write | Used by all modules |
-| `src/app/views_utils/views_fetcher.py` | Compute view file paths | N/A | N/A (path computation) | Returns Path objects | Used by run.py |
+| Module | Purpose | Input | Output | Data Shape | Collector? |
+|--------|---------|-------|--------|------------|------------|
+| `titles_loader.py` | Load/save article titles | SQL DB | `dumps/titles/<lang>.json`, `dumps/all_languages_titles.json`, `dumps/languages_titles_counts.json` | `{lang: [titles]}`, `{lang: count}` | Yes |
+| `all_years/run.py` | Orchestrate view collection | Titles, existing views | `dumps/views_by_year/<year>/<lang>.json`, `dumps/empty_views_*.json` | `{title: views}` | Yes |
+| `all_years/views.py` | Fetch and cache views | API, cached files | Updates cache | `{title: {year: views}}` | Yes |
+| `all_years/stats.py` | Compute statistics | View data | `dumps/<year>_summary.json`, `dumps/<year>_stats_all.json` | Aggregate stats | Yes |
+| `after1.py` | Filter views > 0 | `dumps/views_by_year/...` | `update_med_views/views_by_year_all_agents/...` | `{title: views}` (filtered) | Yes |
+| `after2.py` | Aggregate language counts | `update_med_views/views_by_year_*/...` | `update_med_views/views_by_year_*/<year>_languages_counts.json` | `{lang: total_views}` | Yes |
+| `report_generator.py` | Generate wiki reports | `dumps/views_by_year/...` | `dumps/<year>_views_by_lang.json`, `dumps/<year>_text.txt` | Aggregated views | **No (read-only)** |
+| `io/dump_utils.py` | JSON I/O utilities | Various | Various | Generic | Utility |
 
-#### Data Flow Diagram
+#### Data Flow Diagram (Corrected)
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                              DATA PIPELINE                                   │
-└─────────────────────────────────────────────────────────────────────────────┘
-
 Phase 1: Title Collection
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│ SQL Database (Wikimedia Labs)                                                │
-│   ↓                                                                          │
-│ TitlesLoader.start()                                                         │
-│   ↓                                                                          │
-│ dumps/titles/<lang>.json                                                    │
-│ dumps/all_languages_titles.json                                             │
-│ dumps/languages_titles_counts.json                                          │
+│ SQL Database → TitlesLoader.start()                                         │
+│   → dumps/titles/<lang>.json (underscores → spaces)                         │
+│   → dumps/all_languages_titles.json                                         │
+│   → dumps/languages_titles_counts.json                                      │
 └─────────────────────────────────────────────────────────────────────────────┘
                                     ↓
 Phase 2: View Collection
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │ MultiYearViewsPipeline.start()                                              │
-│   ↓                                                                          │
-│ dumps/views_by_year/<year>/<lang>.json                                      │
-│   - Shape: {title: views} OR {title: {year: views}}                         │
-│   - Incremental: checks existing files before fetching                      │
-│   ↓                                                                          │
-│ dumps/<year>_summary.json                                                   │
-│ dumps/<year>_stats_all.json                                                 │
-│ dumps/empty_views_*.json                                                    │
+│   → dumps/views_by_year/<year>/<lang>.json (spaces, not underscores)        │
+│   → dumps/<year>_summary.json (stats per lang)                              │
+│   → dumps/<year>_stats_all.json (all langs stats)                           │
+│   → dumps/empty_views_*.json (titles with 0 views)                          │
 └─────────────────────────────────────────────────────────────────────────────┘
                                     ↓
 Phase 3: View Filtering (after1.py)
@@ -60,128 +75,95 @@ Phase 3: View Filtering (after1.py)
 │ process_raw_views()                                                         │
 │   - Input: dumps/views_by_year/<year>/<lang>.json                           │
 │   - Filter: views > 0 only                                                  │
-│   - Skip: excluded years (2015), non-numeric folders, invalid JSON          │
-│   ↓                                                                          │
-│ update_med_views/views_by_year_all_agents/<year>/<lang>.json                │
+│   - Skip: 2015, non-numeric folders, invalid JSON                           │
+│   → update_med_views/views_by_year_all_agents/<year>/<lang>.json            │
 └─────────────────────────────────────────────────────────────────────────────┘
                                     ↓
 Phase 4: Aggregation (after2.py)
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │ process_pre_split_years()                                                   │
-│   - Input: update_med_views/views_by_year_*/<year>/<lang>.json              │
-│   - Aggregate: sum(views) per lang per year                                 │
-│   ↓                                                                          │
-│ update_med_views/views_by_year_all_agents/<year>_languages_counts.json      │
-│ update_med_views/views_by_year_users_agents/<year>_languages_counts.json    │
+│   - Input: views_by_year_all_agents/<year>/<lang>.json                      │
+│   - Input: views_by_year_users_agents/<year>/<lang>.json (external source)  │
+│   → views_by_year_all_agents/<year>_languages_counts.json                   │
+│   → views_by_year_users_agents/<year>_languages_counts.json                 │
 └─────────────────────────────────────────────────────────────────────────────┘
-                                    ↓
-Phase 5: Report Generation (save_reports.py)
+
+Read-Only (Out of Scope):
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │ ReportGenerator.start()                                                     │
-│   - Input: dumps/views_by_year/<year>/<lang>.json                           │
-│   - Aggregate: total views per lang                                         │
-│   ↓                                                                          │
-│ dumps/<year>_views_by_lang.json                                             │
-│ dumps/<year>_text.txt                                                       │
-│   ↓                                                                          │
-│ Upload to MDWiki (if save=True)                                             │
+│   - Reads: dumps/views_by_year/<year>/<lang>.json                           │
+│   - Writes: dumps/<year>_views_by_lang.json, dumps/<year>_text.txt          │
+│   - Uploads to MDWiki                                                       │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-#### Data Measurements (Estimated)
+#### Data Measurements (Verified by Owner)
 
-Based on code analysis and typical Wikipedia scale:
+- **Total titles**: 385,436
+- **Languages**: 337
+- **Years**: 10 (year range: 2016-2026; 2015 excluded, maximum 10 years)
+- **Maximum view rows**: ~3,850,000 (385,436 titles × 10 years; fewer after dropping zero-view rows)
+- **File count**: ~3,370 files (337 languages × 10 years)
+- **Data size**: ~500 MB uncompressed (estimated from row count)
 
-- **Languages**: ~300 Wikipedia language editions
-- **Years**: 10 (2016-2025, with 2015 excluded)
-- **Titles per language**: 100 - 10,000 (varies by language size)
-- **Total title records**: ~300 × 5,000 × 10 = 15,000,000 view records
-- **File count**: ~300 languages × 10 years × 2 (raw + filtered) = 6,000 files
-- **Estimated data size**: 2-5 GB uncompressed JSON
-- **Largest files**: ~10-50 MB per language/year (English, German, French)
+**Note**: Actual data is much smaller than initial estimates. This simplifies implementation.
 
-### A2. Design Questions and Answers
+### A2. Design Decisions (Corrected)
 
 #### 1. What Gets Stored
 
-**Decision**: Store all raw data; compute derived data on demand.
-
 **Tables**:
-- `titles`: All article titles (normalized, one row per title per language)
-- `views_all_agents`: Raw view counts from API (year × lang × title)
-- `views_users_agents`: Filtered view counts (views > 0, year × lang × title)
-- `language_counts`: Aggregated counts per language per year (derived, but cached)
-- `statistics`: Summary statistics per language per year (derived, but cached)
+- `titles`: All article titles (normalized to spaces)
+- `views`: View counts with `agent_type` column (not two separate tables)
+- `language_counts`: Aggregated counts per language/year/agent_type (what `after2.py` writes)
+- `statistics`: Summary statistics per language/year (what `stats.py` writes)
+
+**Removed**:
+- `pipeline_metadata`: Resumability via idempotent per-language/year transactions
+- `created_at`/`updated_at`: Not produced by current collectors
+- `title_count` in `language_counts`: Not produced by `after2.py`
 
 **Rationale**:
-- Titles are queried repeatedly; normalizing them saves space and enables indexing
-- View data is the core dataset; storing both agent types separately is clearer than an `agent_type` column
-- Language counts and statistics are expensive to recompute (sum millions of rows); caching them is justified
-- The "all" total for multi-year views can be computed as `SUM(views) WHERE year BETWEEN 2015 AND 2025`
+- Single `views` table with `agent_type` is simpler and matches the actual data flow
+- `after1.py` filters views > 0; this is a query-time filter, not a separate storage
+- `language_counts` stores only what `after2.py` writes: `{lang: total_views}` per year/agent_type
+- `statistics` stores what `stats.py` writes: articles, empty_views, not_empty_views, hash, total_views
 
-#### 2. Schema
-
-**Tables**:
+#### 2. Schema (Corrected)
 
 ```sql
--- Article titles (normalized)
+-- Article titles (normalized to spaces)
 CREATE TABLE titles (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
     lang TEXT NOT NULL,
     title TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE(lang, title)
-);
+    PRIMARY KEY (lang, title)
+) WITHOUT ROWID;
 
-CREATE INDEX idx_titles_lang ON titles(lang);
-CREATE INDEX idx_titles_title ON titles(title);
-
--- View counts (all agents, raw from API)
-CREATE TABLE views_all_agents (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+-- View counts (single table with agent_type)
+CREATE TABLE views (
     title_id INTEGER NOT NULL,
-    year INTEGER NOT NULL,
-    views INTEGER NOT NULL,
-    FOREIGN KEY (title_id) REFERENCES titles(id) ON DELETE CASCADE,
-    UNIQUE(title_id, year)
-);
-
-CREATE INDEX idx_views_all_agents_year ON views_all_agents(year);
-CREATE INDEX idx_views_all_agents_title_year ON views_all_agents(title_id, year);
-CREATE INDEX idx_views_all_agents_views ON views_all_agents(views);
-
--- View counts (users agents only, filtered views > 0)
-CREATE TABLE views_users_agents (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title_id INTEGER NOT NULL,
-    year INTEGER NOT NULL,
-    views INTEGER NOT NULL,
-    FOREIGN KEY (title_id) REFERENCES titles(id) ON DELETE CASCADE,
-    UNIQUE(title_id, year)
-);
-
-CREATE INDEX idx_views_users_agents_year ON views_users_agents(year);
-CREATE INDEX idx_views_users_agents_title_year ON views_users_agents(title_id, year);
-CREATE INDEX idx_views_users_agents_views ON views_users_agents(views);
-
--- Aggregated language counts per year (cached)
-CREATE TABLE language_counts (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    lang TEXT NOT NULL,
+    lang TEXT NOT NULL,  -- Denormalized for query performance
     year INTEGER NOT NULL,
     agent_type TEXT NOT NULL,  -- 'all_agents' or 'users_agents'
+    views INTEGER NOT NULL,
+    PRIMARY KEY (title_id, year, agent_type),
+    FOREIGN KEY (title_id) REFERENCES titles(rowid) ON DELETE CASCADE
+) WITHOUT ROWID;
+
+-- Index for paginated queries: WHERE lang=? AND year=? AND agent_type=? ORDER BY views DESC
+CREATE INDEX idx_views_lang_year_agent_views ON views(lang, year, agent_type, views DESC);
+
+-- Aggregated language counts (what after2.py writes)
+CREATE TABLE language_counts (
+    lang TEXT NOT NULL,
+    year INTEGER NOT NULL,
+    agent_type TEXT NOT NULL,
     total_views INTEGER NOT NULL,
-    title_count INTEGER NOT NULL,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE(lang, year, agent_type)
-);
+    PRIMARY KEY (lang, year, agent_type)
+) WITHOUT ROWID;
 
-CREATE INDEX idx_language_counts_lang_year ON language_counts(lang, year);
-CREATE INDEX idx_language_counts_agent_type ON language_counts(agent_type);
-
--- Summary statistics per language per year (cached)
+-- Summary statistics (what stats.py writes)
 CREATE TABLE statistics (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
     lang TEXT NOT NULL,
     year INTEGER,  -- NULL for all-years summary
     articles INTEGER NOT NULL,
@@ -189,97 +171,86 @@ CREATE TABLE statistics (
     not_empty_views INTEGER NOT NULL,
     hash_count INTEGER NOT NULL,
     total_views INTEGER NOT NULL,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE(lang, year)
-);
-
-CREATE INDEX idx_statistics_lang ON statistics(lang);
-CREATE INDEX idx_statistics_year ON statistics(year);
-
--- Metadata for tracking pipeline state
-CREATE TABLE pipeline_metadata (
-    key TEXT PRIMARY KEY,
-    value TEXT NOT NULL,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    PRIMARY KEY (lang, year)
+) WITHOUT ROWID;
 ```
 
 **Design Rationale**:
-- Titles normalized into separate table: saves space (no duplication), enables efficient title lookups
-- Separate tables for `all_agents` vs `users_agents`: clearer semantics, simpler queries, avoids agent_type filtering on every query
-- Foreign key from views to titles: enables cascading deletes, maintains referential integrity
-- Composite unique constraints: prevent duplicates, enable idempotent upserts
-- Indexes on frequently queried columns: lang, year, views (for sorting), title_id (for joins)
-- `language_counts` and `statistics` are cached derived data: expensive to recompute, so we store them
-- `pipeline_metadata`: tracks last run times, versions, enabling incremental updates
+- **Composite primary keys**: No surrogate IDs; natural keys are sufficient
+- **WITHOUT ROWID**: Saves space for tables with composite PKs
+- **Denormalized `lang` in `views`**: Enables index-based queries without joins
+- **Removed redundant indexes**: `UNIQUE(lang, title)` covers lang lookups; no standalone `views(views)` index
+- **Index on `(lang, year, agent_type, views DESC)`**: Supports paginated read-side queries
 
 **Future Read-Side Support**:
-- The schema supports paginated queries: `WHERE lang = ? AND year = ? ORDER BY views DESC LIMIT 50 OFFSET ?`
-- Indexes on (lang, year, views) enable efficient filtering and sorting
-- Normalized titles enable efficient title-based searches
+- Paginated query: `WHERE lang=? AND year=? AND agent_type=? ORDER BY views DESC LIMIT 50 OFFSET ?`
+- Index `idx_views_lang_year_agent_views` supports this directly (no join needed)
+- Total views: `SELECT SUM(views) FROM views WHERE lang=? AND year=? AND agent_type=?`
+
+**"All" Total Rule**:
+- The `"all"` value from the API includes 2015
+- Stored `SUM(views)` excludes 2015 (per `after1.py` filtering)
+- These may differ; the database stores the filtered sum, not the API's `"all"` value
 
 #### 3. Database Layout
 
-**Decision**: Single SQLite database file at `$MED_VIEWS_PATH/med_views.db`.
+**Decision**: Single SQLite database at `$MED_VIEWS_PATH/med_views.db`.
 
-**Rationale**:
-- **Simplicity**: one file to manage, backup, and migrate
-- **Write contention**: SQLite allows only one writer at a time, but our pipeline is sequential (phases run one after another), so contention is not an issue
-- **File size**: SQLite handles multi-GB databases efficiently; 2-5 GB is well within limits
-- **Backup**: single file is easier to snapshot and restore
-- **Rebuild cost**: if corrupted, can be rebuilt from JSON backups or re-run pipeline
+**Rationale**: Same as before (simplicity, size, backup).
 
 **Concurrency**:
-- The pipeline is designed to run phases sequentially, not in parallel
-- SQLite WAL mode enables concurrent reads during writes
-- `PRAGMA journal_mode=WAL` and `PRAGMA synchronous=NORMAL` optimize for write-heavy workloads
+- SQLite WAL mode for concurrent reads during writes
+- Pragmas set via `connect` event (not one-time):
 
-#### 4. Write Strategy
+```python
+from sqlalchemy import event
 
-**Bulk Inserts**:
-- Use SQLAlchemy Core `insert()` with chunked lists (1000 rows per chunk)
-- Transaction per language/year: commit after each language/year is fully processed
-- Idempotency: use `INSERT OR REPLACE` (SQLite) or check existence before insert
+@event.listens_for(engine, "connect")
+def set_sqlite_pragmas(dbapi_connection, connection_record):
+    cursor = dbapi_connection.cursor()
+    cursor.execute("PRAGMA journal_mode=WAL")
+    cursor.execute("PRAGMA synchronous=NORMAL")
+    cursor.execute("PRAGMA foreign_keys=ON")
+    cursor.close()
+```
 
-**Stale Data Handling**:
-- On re-run, delete existing rows for the language/year before inserting new data
-- This ensures stale data is removed when a re-run changes data
-- For `language_counts` and `statistics`, use `INSERT OR REPLACE` keyed on (lang, year, agent_type)
+#### 4. Write Strategy (Simplified for ~3.85M rows)
+
+**Upsert Strategy**:
+- **Do not use `INSERT OR REPLACE`** on rows with FK references (cascades deletes)
+- Use SQLAlchemy SQLite-specific upsert:
+
+```python
+from sqlalchemy.dialects.sqlite import insert
+
+stmt = insert(View).values([...])
+stmt = stmt.on_conflict_do_update(
+    index_elements=['title_id', 'year', 'agent_type'],
+    set_={'views': stmt.excluded.views}
+)
+session.execute(stmt)
+```
+
+**Re-run Handling**:
+- For a language/year re-run: delete existing rows, then bulk insert, in **one transaction**
+- Commit once per language/year (337 × 10 = 3,370 transactions max, all fast)
+
+**Bulk Insert**:
+- Use executemany form: `conn.execute(insert(Model), list_of_dicts)`
+- Chunk size: 1,000 rows per `executemany` call (simple, sufficient for this size)
 
 **Empty Language/Year**:
-- Keep the current rule: if a language/year has no positive titles, write nothing
-- In database terms: no rows inserted for that language/year
+- Keep current rule: if no positive titles, write nothing (no rows inserted)
 
-**Transaction Boundaries**:
-- Phase 1 (titles): one transaction per language
-- Phase 2 (views): one transaction per language/year
-- Phase 3 (filtering): one transaction per language/year
-- Phase 4 (aggregation): one transaction per language/year
-- This enables resumption if a phase fails partway through
+**Performance**:
+- ~3.85M rows is small; no special optimization needed
+- Simple per-language/year transactions are fast and easy to reason about
 
 #### 5. Configuration
 
-**Decision**: Extend existing `Config` dataclass with database path.
+**Decision**: Add `database_path` to `ViewsDataPaths` (already done in code).
 
-```python
-@dataclass
-class ViewsDataPaths:
-    # ... existing fields ...
-    database_path: Path  # $MED_VIEWS_PATH/med_views.db
-    
-    @classmethod
-    def load(cls) -> ViewsDataPaths:
-        # ... existing code ...
-        database_path = views_data_path / "med_views.db"
-        return cls(
-            # ... existing fields ...
-            database_path=database_path,
-        )
-```
-
-**Database URL**:
-- `sqlite:///{database_path}` for SQLAlchemy
-- Pass through `Config.get_instance().paths.database_path`
+**Database URL**: `sqlite:///{database_path}`
 
 #### 6. Architecture
 
@@ -287,362 +258,223 @@ class ViewsDataPaths:
 ```
 src/app/database/views_db/
 ├── models/
-│   ├── __init__.py
-│   ├── title.py              # Title model
-│   ├── view.py               # ViewAllAgents, ViewUsersAgents models
-│   ├── language_count.py     # LanguageCount model
-│   ├── statistic.py          # Statistics model
-│   └── metadata.py           # PipelineMetadata model
+│   ├── title.py           # Title model (composite PK)
+│   ├── view.py            # View model (single table, agent_type column)
+│   ├── language_count.py  # LanguageCount model
+│   └── statistic.py       # Statistic model
 ├── services/
-│   ├── __init__.py
-│   ├── database_service.py   # Database initialization, session management
-│   ├── title_service.py      # Title CRUD operations
-│   ├── view_service.py       # View CRUD operations
-│   ├── aggregation_service.py # Compute and cache language_counts, statistics
-│   └── import_service.py     # Import JSON files into database
-└── db.py                     # Existing infrastructure (keep as-is)
+│   ├── database_service.py   # Init, pragmas, session
+│   ├── title_service.py      # Title CRUD
+│   ├── view_service.py       # View CRUD (both agent types)
+│   └── aggregation_service.py # Compute/cache derived data
+└── db.py                  # Existing infrastructure
 ```
 
-**Service Classes**:
-- `DatabaseService`: Initialize engine, create tables, provide session context manager
-- `TitleService`: CRUD operations for titles (extends existing `CRUDService`)
-- `ViewService`: CRUD operations for views (extends existing `CRUDService`)
-- `AggregationService`: Compute and cache derived data (language_counts, statistics)
-- `ImportService`: Import existing JSON files into database (idempotent, resumable)
-
 **Legacy Layer**:
-- Keep existing public functions (`process_raw_views`, `start()`) working
-- Thin wrapper that calls new services
-- Enables gradual migration without breaking existing code
+- Keep existing public functions working
+- Thin wrapper calling new services
+- Dual-write mode (JSON + database) allowed for parity comparison, controlled by config flag
+- **No fallback to JSON on database failure**; failures are raised
 
 #### 7. Migration of Existing Data
 
-**Import Tool**:
-- New script: `src/import_json_to_db.py`
-- Idempotent: can be run multiple times without creating duplicates
-- Resumable: tracks progress in `pipeline_metadata`, can resume after failure
-- Per-language/year: imports one language/year at a time, commits after each
+**Import Tool**: `src/import_json_to_db.py`
 
-**Import Order**:
+**Import Order** (Corrected):
 1. Import titles from `dumps/titles/<lang>.json`
-2. Import views from `dumps/views_by_year/<year>/<lang>.json`
-3. Import filtered views from `update_med_views/views_by_year_all_agents/<year>/<lang>.json`
-4. Compute and cache `language_counts` and `statistics`
+2. Import views from `dumps/views_by_year/<year>/<lang>.json` as `agent_type='all_agents'`
+3. Compute and cache `language_counts` and `statistics`
+4. **Note**: `views_by_year_users_agents/` data comes from external source; not imported automatically
+
+**Idempotency**:
+- Per-language/year transactions
+- Upsert on conflict
+- Re-running is safe
 
 **Verification**:
-- After import, compare counts and sums between database and JSON files
-- Per-language and per-year: `COUNT(*)` and `SUM(views)` must match
-- Random sample: pick 10 random (lang, year, title) tuples, verify views match
-
-**Retiring Old Files**:
-- Do not delete JSON files automatically
-- Archive to `$MED_VIEWS_PATH/archive/` after successful import
-- Keep archive for at least one full pipeline cycle before deletion
+- After import, compare counts and sums
+- Per-language/year: `COUNT(*)` and `SUM(views)` must match
 
 #### 8. Rollout and Rollback
 
-**Rollout Order** (follow data flow):
-1. Create database schema and `DatabaseService`
-2. Convert `TitlesLoader` (Phase 1)
-3. Convert `MultiYearViewsPipeline` (Phase 2)
-4. Convert `after1.py` (Phase 3)
-5. Convert `after2.py` (Phase 4)
-6. Convert `ReportGenerator` (Phase 5)
-7. Write import tool and import existing data
-8. Update tests and documentation
+**Rollout Order**:
+1. Database infrastructure (models, services)
+2. `TitlesLoader` (Phase 1)
+3. `MultiYearViewsPipeline` (Phase 2)
+4. `after1.py` (Phase 3)
+5. `after2.py` (Phase 4)
+6. Import tool
+7. Tests
 
-**Parallel Operation During Transition**:
-- Each module can run in "dual-write" mode: write to both JSON and database
+**Dual-Write Mode**:
+- Temporary mode for parity comparison
+- Controlled by config flag (e.g., `DUAL_WRITE=true`)
+- Writes to both JSON and database
 - Compare outputs to verify correctness
-- After verification, switch to database-only mode
 
 **Rollback**:
 - Each module can be rolled back independently
-- Keep JSON file writing as fallback during transition
-- If database write fails, fall back to JSON
-- After full migration, JSON writing can be disabled via config flag
+- Keep JSON writing during transition
+- After verification, disable JSON writing
 
 #### 9. Risks and Open Questions
 
 **Risks**:
-- **Collation and sorting**: SQLite default collation may not sort non-Latin text correctly. Mitigation: use `COLLATE NOCASE` or custom collation if needed
-- **Database growth**: SQLite databases can grow large. Mitigation: periodic `VACUUM` to reclaim space
-- **Backup**: single database file is a single point of failure. Mitigation: regular backups, keep JSON archives
-- **Long transactions**: importing millions of rows can take time. Mitigation: commit per language/year, enable resumption
-- **Concurrent access**: SQLite allows only one writer. Mitigation: pipeline is sequential, use WAL mode for concurrent reads
+- **Collation**: SQLite default collation may not sort non-Latin text correctly (minor)
+- **Backup**: Single file is single point of failure; keep JSON archives during transition
+
+**Notes**:
+- Database size (~3.85M rows, ~500 MB) is small; no `VACUUM` or performance concerns
+- Chunk size: 1,000 rows per `executemany` call is sufficient
+- Transaction strategy: One transaction per language/year (337 × 10 = 3,370 transactions max)
 
 **Open Questions**:
-- Should we partition views by year (separate table per year)? **Decision**: No, single table with year column is simpler and enables cross-year queries
-- Should we store the "all" total explicitly or compute it? **Decision**: Compute on demand with `SUM(views)`; index on (title_id, year) makes it fast
-- Should we use SQLAlchemy ORM or Core? **Decision**: ORM for models (type safety, relationships), Core for bulk operations (performance)
+- Should we partition by year? **Decision**: No, single table is simpler
+- Store `"all"` total explicitly? **Decision**: No, compute on demand; note it excludes 2015
 
-### A3. Final Schema Summary
+### A3. Title Normalization Rule
 
-```sql
--- Core data tables
-titles (id, lang, title, created_at)
-views_all_agents (id, title_id, year, views)
-views_users_agents (id, title_id, year, views)
+**Rule**: Always replace underscores with spaces when storing or loading titles.
 
--- Cached derived data
-language_counts (id, lang, year, agent_type, total_views, title_count, updated_at)
-statistics (id, lang, year, articles, empty_views, not_empty_views, hash_count, total_views, updated_at)
+**Implementation**:
+- `titles_loader.py`: Calls `replace_underscores()` on load
+- `views_fetcher.py`: `title.replace("_", " ")` after API fetch
+- `dump_utils.py`: `replace_underscores()` utility
 
--- Pipeline state
-pipeline_metadata (key, value, updated_at)
-```
+**Database**: All titles stored with spaces, never underscores.
 
-**Indexes**:
-- `titles(lang)`, `titles(title)`, `titles(lang, title)` unique
-- `views_all_agents(title_id, year)` unique, `views_all_agents(year)`, `views_all_agents(views)`
-- `views_users_agents(title_id, year)` unique, `views_users_agents(year)`, `views_users_agents(views)`
-- `language_counts(lang, year, agent_type)` unique, `language_counts(agent_type)`
-- `statistics(lang, year)` unique, `statistics(lang)`, `statistics(year)`
+### A4. Uncovered Outputs
 
-**Files to Create**:
-- `src/app/database/views_db/models/title.py`
-- `src/app/database/views_db/models/view.py`
-- `src/app/database/views_db/models/language_count.py`
-- `src/app/database/views_db/models/statistic.py`
-- `src/app/database/views_db/models/metadata.py`
-- `src/app/database/views_db/services/database_service.py`
-- `src/app/database/views_db/services/title_service.py`
-- `src/app/database/views_db/services/view_service.py`
-- `src/app/database/views_db/services/aggregation_service.py`
-- `src/app/database/views_db/services/import_service.py`
-- `src/import_json_to_db.py`
+| Output | Module | Decision |
+|--------|--------|----------|
+| `empty_views_*.json` | `run.py` | **Derived**: Titles with 0 views. Can be queried: `SELECT title FROM titles WHERE (lang, title) NOT IN (SELECT lang, title FROM views WHERE year=?)` |
+| `all_languages_titles.json` | `titles_loader.py` | **Derived**: Aggregate of all titles. Query: `SELECT lang, GROUP_CONCAT(title) FROM titles GROUP BY lang` |
+| `<year>_views_by_lang.json` | `report_generator.py` | **Out of scope**: Read-only, generated by `ReportGenerator` |
+| `<year>_stats_all.json` | `stats.py` | **Stored**: In `statistics` table |
 
-**Files to Modify**:
-- `src/app/config.py` (add `database_path`)
-- `src/app/titles_loader.py` (convert to use database)
-- `src/app/all_years/run.py` (convert to use database)
-- `src/app/all_years/views.py` (convert to use database)
-- `src/app/all_years/stats.py` (convert to use database)
-- `src/after1.py` (convert to use database)
-- `src/after2.py` (convert to use database)
-- `src/app/report_generator.py` (convert to use database)
-- `src/app/io/dump_utils.py` (add database helpers or deprecate)
+### A5. Incremental Logic
 
-**Module-by-Module Migration Order**:
-1. `config.py` - Add database path
-2. Models - Create all models
-3. `DatabaseService` - Initialize database
-4. `TitlesLoader` - Convert title storage
-5. `MultiYearViewsService` - Convert view caching
-6. `MultiYearViewsPipeline` - Convert view writing
-7. `MultiYearStatsService` - Convert statistics
-8. `after1.py` - Convert filtering
-9. `after2.py` - Convert aggregation
-10. `ReportGenerator` - Convert report generation
-11. `ImportService` - Write import tool
-12. Tests - Update all tests
+**Current Behavior** (`all_years/views.py`):
+- Checks if `<year>/<lang>.json` exists before fetching
+- If exists, loads and merges with new data
+- Batch size: 500 titles per API call
 
-**Verification Plan**:
-- Unit tests for each service (using `tmp_path` and temporary database)
-- Parity tests: run legacy JSON pipeline and new database pipeline on same input, compare outputs
-- Import tests: import existing JSON, verify counts and sums match
-- Integration tests: run full pipeline end-to-end with database
-- Performance tests: measure import time, query time, database size
+**Database Implementation**:
+- Query: `SELECT title FROM views WHERE lang=? AND year=? AND agent_type=?`
+- If titles exist, skip fetching for those titles
+- Batch size remains 500
+
+### A6. `dump_utils.py` Fate
+
+| Helper | Decision | Reason |
+|--------|----------|--------|
+| `replace_underscores()` | **Keep** | Used by multiple modules for normalization |
+| `json_load()` | **Keep** | Used by `report_generator.py` (read-only) |
+| `dump_one()`, `dump_list()` | **Remove** | Replaced by database writes |
+| `dump_languages_titles_counts()` | **Remove** | Replaced by `language_counts` table |
+| `load_languages_counts()` | **Replace** | Query from `language_counts` table |
+| `count_languages_in_json()` | **Remove** | Replaced by database query |
+| `load_lang_titles_from_dump()` | **Replace** | Query from `titles` table |
+
+### A7. Final Report Additions
+
+**(a) Behavior Described but Not Implemented**:
+- None found in current code review
+
+**(b) Readers of Old JSON Files Not Converted**:
+- `report_generator.py`: Reads `dumps/views_by_year/<year>/<lang>.json` (out of scope, read-only)
+
+**(c) Differences Found by Parity Checks**:
+- To be determined after implementation
 
 ---
 
-## Phase B: Implementation
+## Phase B: Implementation (To Be Completed)
 
-### Implementation Order
+### Implementation Status
 
-1. **Database Infrastructure**
-   - Create models (title, view, language_count, statistic, metadata)
-   - Create `DatabaseService` (engine initialization, table creation, session management)
-   - Update `Config` to include `database_path`
+**Completed**:
+- ✅ Updated `Config` to include `database_path`
+- ✅ Created models (title, view, language_count, statistic)
+- ✅ Created `DatabaseService` with pragma setup
+- ✅ Created service classes (title, view, aggregation)
+- ✅ Created import tool
+- ✅ Created unit tests
 
-2. **Services**
-   - `TitleService` - CRUD for titles
-   - `ViewService` - CRUD for views (both agent types)
-   - `AggregationService` - Compute and cache derived data
-   - `ImportService` - Import JSON files
-
-3. **Convert Collectors**
-   - `TitlesLoader` - Write titles to database
-   - `MultiYearViewsService` - Cache views in database
-   - `MultiYearViewsPipeline` - Write views to database
-   - `MultiYearStatsService` - Write statistics to database
-   - `after1.py` - Filter and write to database
-   - `after2.py` - Aggregate and write to database
-   - `ReportGenerator` - Read from database
-
-4. **Import Tool**
-   - `src/import_json_to_db.py` - Import existing JSON files
-   - Idempotent, resumable, with progress tracking
-
-5. **Tests**
-   - Unit tests for each service
-   - Parity tests for each collector
-   - Import verification tests
-   - Update existing tests
+**TODO**:
+- ⏳ Convert `TitlesLoader` to use database
+- ⏳ Convert `MultiYearViewsPipeline` to use database
+- ⏳ Convert `after1.py` to use database
+- ⏳ Convert `after2.py` to use database
+- ⏳ Update tests for converted modules
+- ⏳ Run parity checks
+- ⏳ Update documentation
 
 ### Verification Checklist
 
 - [ ] All unit tests pass
-- [ ] All parity tests pass (JSON vs database outputs match)
+- [ ] Parity tests pass (JSON vs database outputs match)
 - [ ] Import tool successfully imports existing data
-- [ ] Re-running import is idempotent (no duplicates)
-- [ ] Full pipeline runs end-to-end with database
-- [ ] Database queries are performant (indexes working)
+- [ ] Re-running import is idempotent
 - [ ] Comments and docstrings accurately describe code
 - [ ] No display or query-endpoint code added
 - [ ] Existing JSON files not deleted
 
 ---
 
-## Appendix: Data Shape Examples
+## Appendix: Code Verification Results
 
-### Titles
-```json
-// dumps/titles/en.json
-["Article_One", "Article_Two", "Article_Three"]
+### Agent Type Sources
+
+**Code Search**:
+```bash
+grep -r "views_by_year_users_agents" src/
 ```
 
-### Views (single year)
-```json
-// dumps/views_by_year/2024/en.json
-{"Article One": 1234, "Article Two": 5678}
+**Findings**:
+- `config.py`: Creates directory
+- `after2.py`: Reads from directory
+- **No writer found**: Data comes from external source
+
+**Conclusion**: `users_agents` data is imported externally, not generated by the pipeline.
+
+### Title Normalization
+
+**Code Search**:
+```bash
+grep -n "replace.*_.*\|_.*replace" src/app/*.py
 ```
 
-### Views (all years)
-```json
-// dumps/views_by_year/2024/en.json (when collecting all years)
-{"Article One": {"2020": 100, "2021": 200, "2022": 300, "2023": 400, "2024": 500, "all": 1500}}
+**Findings**:
+- `titles_loader.py:52`: `data = [x.replace("_", " ") for x in data]`
+- `views_fetcher.py:60,90`: `title = title.replace("_", " ")`
+- `dump_utils.py:68,84,87`: `replace_underscores()` utility
+
+**Conclusion**: All titles normalized to spaces at load/write time.
+
+### "All" Total Rule
+
+**Code Search**:
+```bash
+grep -n "all" src/app/views_utils/views_fetcher.py
 ```
 
-### Language Counts
-```json
-// update_med_views/views_by_year_all_agents/2024_languages_counts.json
-{"en": 12345678, "de": 2345678, "fr": 3456789}
-```
+**Findings**:
+- Line 62: `new_data[title] = views.get(str(year)) or views.get("all", 0)`
+- Line 90: `new_data[title] = views` (includes "all" key)
 
-### Statistics
-```json
-// dumps/2024_summary.json
-{
-  "articles": 50000,
-  "empty_views": 10000,
-  "not_empty_views": 40000,
-  "hash": 500,
-  "total_views": 123456789
-}
-```
-
----
-
-## Appendix: Behavior Preserved
-
-The following behaviors are preserved exactly as in the original code:
-
-1. **after1.py**:
-   - Skip excluded years (2015)
-   - Skip non-numeric folder names
-   - Skip invalid JSON files
-   - Only keep titles with views > 0
-   - Write nothing for language/year with no positive views
-
-2. **after2.py**:
-   - Read all `<year>/<lang>.json` files
-   - Sum views per language per year
-   - Write sorted (descending) language counts
-   - Skip invalid JSON files
-
-3. **MultiYearViewsService**:
-   - Check existing files before fetching (incremental updates)
-   - Batch fetch in groups of 500 titles
-   - Replace underscores with spaces in titles
-   - Track empty data (titles with 0 views)
-
-4. **TitlesLoader**:
-   - Load from SQL or local files
-   - Normalize underscores to spaces
-   - Write per-language files and aggregate counts
-
-5. **ReportGenerator**:
-   - Load language counts
-   - Fetch views per language per year
-   - Generate wiki text
-   - Upload to MDWiki (if save=True)
-
----
-
-## Appendix: Implementation Notes
-
-### SQLite-Specific Considerations
-
-**WAL Mode**:
-```python
-engine = create_engine(
-    f"sqlite:///{database_path}",
-    connect_args={"check_same_thread": False},
-)
-with engine.connect() as conn:
-    conn.execute(text("PRAGMA journal_mode=WAL"))
-    conn.execute(text("PRAGMA synchronous=NORMAL"))
-    conn.commit()
-```
-
-**Bulk Inserts**:
-```python
-# Use SQLAlchemy Core for bulk inserts
-stmt = insert(ViewAllAgents).values([
-    {"title_id": 1, "year": 2024, "views": 100},
-    {"title_id": 2, "year": 2024, "views": 200},
-])
-session.execute(stmt)
-session.commit()
-```
-
-**Upserts**:
-```python
-# SQLite supports INSERT OR REPLACE
-stmt = insert(ViewAllAgents).values(...)
-stmt = stmt.on_conflict_do_update(
-    index_elements=['title_id', 'year'],
-    set_={'views': stmt.excluded.views}
-)
-session.execute(stmt)
-```
-
-### Chunking Strategy
-
-For large datasets, chunk inserts to avoid memory issues:
-
-```python
-CHUNK_SIZE = 1000
-
-for i in range(0, len(data), CHUNK_SIZE):
-    chunk = data[i:i + CHUNK_SIZE]
-    session.execute(insert(ViewAllAgents).values(chunk))
-    session.commit()
-```
-
-### Progress Tracking
-
-Use `tqdm` for progress bars (already a dependency):
-
-```python
-from tqdm import tqdm
-
-for lang in tqdm(languages, desc="Importing languages"):
-    import_language(lang)
-```
-
-### Logging
-
-Use existing logging infrastructure:
-
-```python
-logger = logging.getLogger(__name__)
-logger.info(f"Imported {count} titles for {lang}")
-```
+**Conclusion**: API returns `"all"` value including 2015. Database `SUM(views)` excludes 2015.
 
 ---
 
 ## Conclusion
 
-This design provides a complete, tested, and verified migration path from file-based storage to SQLite. The schema is optimized for the existing pipeline and future read-side enhancements. The implementation follows a phased approach with verification at each step, ensuring correctness and enabling rollback if needed.
+The corrected design addresses all issues raised:
+- Single `views` table with `agent_type` column
+- Proper upsert strategy without FK cascade issues
+- Composite primary keys, denormalized `lang`
+- Clear title normalization rule
+- Explicit handling of uncovered outputs
+- Removed unnecessary tables and columns
+
+Phase B implementation is in progress. The database infrastructure is complete; collector conversion remains.
