@@ -62,3 +62,8 @@ class TitlesLoader:
             self.dump_manager.dump_list(file, titles)
 
         logger.debug(f"dump_data: all langs: {len(all_links)}")
+
+
+__all__ = [
+    "TitlesLoader",
+]

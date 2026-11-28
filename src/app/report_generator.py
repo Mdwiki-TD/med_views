@@ -154,3 +154,8 @@ class ReportGenerator:
             target_page.save(newtext=newtext, summary="update")
         else:
             target_page.create(newtext, summary="update")
+
+
+__all__ = [
+    "ReportGenerator",
+]

@@ -37,3 +37,8 @@ class MwclientPage:
 
     def create(self, newtext: str, summary: str) -> None:
         self.page.save(newtext, summary=summary)
+
+
+__all__ = [
+    "MwclientPage",
+]
