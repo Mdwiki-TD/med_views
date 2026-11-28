@@ -64,11 +64,11 @@ class JsonImporter:
         titles_dir = self.config.paths.dump_dir_titles_path
 
         if not titles_dir.exists():
-            logger.warning(f"Titles directory does not exist: {titles_dir}")
+            logger.warning("Titles directory does not exist: %s", titles_dir)
             return
 
         json_files = list(titles_dir.glob("*.json"))
-        logger.info(f"Found {len(json_files)} title files to import")
+        logger.info("Found %d title files to import", len(json_files))
 
         for json_file in tqdm(json_files, desc="Importing titles"):
             lang = json_file.stem
@@ -78,44 +78,50 @@ class JsonImporter:
                     titles = json.load(f)
 
                 if not isinstance(titles, list):
-                    logger.warning(f"Invalid title data in {json_file}")
+                    logger.warning("Invalid title data in %s", json_file)
                     continue
 
                 # Normalize titles (replace underscores with spaces)
                 titles = [t.replace("_", " ") for t in titles]
 
                 count = self.title_service.insert_titles(lang, titles)
-                logger.debug(f"Imported {count} titles for {lang}")
+                logger.debug("Imported %d titles for %s", count, lang)
 
             except (json.JSONDecodeError, IOError) as e:
-                logger.error(f"Error importing {json_file}: {e}")
+                logger.error("Error importing %s: %s", json_file, e)
                 continue
 
         logger.info("Title import completed")
 
     def import_views_by_year(self, agent_type: str = "all_agents") -> None:
         """
-        Import views from dumps/views_by_year/<year>/<lang>.json files.
+        Import views from the appropriate directory based on agent_type.
+
+        - all_agents: reads from dumps/views_by_year/<year>/<lang>.json
+        - users_agents: reads from update_med_views/views_by_year_users_agents/<year>/<lang>.json
 
         Parameters:
             agent_type: Type of agent data ('all_agents' or 'users_agents').
         """
-        views_dir = self.config.paths.dump_dir_views_by_year_path
+        if agent_type == "users_agents":
+            views_dir = self.config.paths.update_med_views / "views_by_year_users_agents"
+        else:
+            views_dir = self.config.paths.dump_dir_views_by_year_path
 
         if not views_dir.exists():
-            logger.warning(f"Views directory does not exist: {views_dir}")
+            logger.warning("Views directory does not exist: %s", views_dir)
             return
 
         # Process each year directory
         year_dirs = [d for d in views_dir.iterdir() if d.is_dir() and d.name.isdigit()]
-        logger.info(f"Found {len(year_dirs)} year directories to import")
+        logger.info("Found %d year directories to import", len(year_dirs))
 
         for year_dir in tqdm(year_dirs, desc="Importing years"):
             year = int(year_dir.name)
 
             # Skip excluded years
             if year == 2015:
-                logger.debug(f"Skipping excluded year {year}")
+                logger.debug("Skipping excluded year %d", year)
                 continue
 
             # Process each language file
@@ -129,7 +135,7 @@ class JsonImporter:
                         views_data = json.load(f)
 
                     if not isinstance(views_data, dict):
-                        logger.warning(f"Invalid view data in {json_file}")
+                        logger.warning("Invalid view data in %s", json_file)
                         continue
 
                     # Handle nested year data (for all-years collection)
@@ -154,13 +160,13 @@ class JsonImporter:
                         views_data=processed_data,
                         agent_type=agent_type,
                     )
-                    logger.debug(f"Imported {count} views for {lang}/{year}")
+                    logger.debug("Imported %d views for %s/%s", count, lang, year)
 
                 except (json.JSONDecodeError, IOError) as e:
-                    logger.error(f"Error importing {json_file}: {e}")
+                    logger.error("Error importing %s: %s", json_file, e)
                     continue
 
-        logger.info(f"View import completed for {agent_type}")
+        logger.info("View import completed for %s", agent_type)
 
     def import_all(self) -> None:
         """Import all data (titles and views)."""
@@ -181,7 +187,8 @@ class JsonImporter:
         """
         Verify the import by comparing database counts with file counts.
 
-        Logs warnings if counts don't match.
+        Logs warnings if counts don't match. Normalizes titles (underscores
+        to spaces) and deduplicates before counting, matching the import logic.
         """
         logger.info("Verifying import...")
 
@@ -192,16 +199,23 @@ class JsonImporter:
                 lang = json_file.stem
 
                 with open(json_file, encoding="utf-8") as f:
-                    file_count = len(json.load(f))
+                    raw_titles = json.load(f)
+
+                # Normalize and deduplicate, matching import logic
+                normalized = {t.replace("_", " ") for t in raw_titles}
+                file_count = len(normalized)
 
                 db_count = self.title_service.get_title_count_for_language(lang)
 
                 if file_count != db_count:
                     logger.warning(
-                        f"Title count mismatch for {lang}: file={file_count}, db={db_count}"
+                        "Title count mismatch for %s: file=%d, db=%d",
+                        lang,
+                        file_count,
+                        db_count,
                     )
                 else:
-                    logger.debug(f"Title count verified for {lang}: {db_count}")
+                    logger.debug("Title count verified for %s: %d", lang, db_count)
 
         logger.info("Verification completed")
 
@@ -244,7 +258,7 @@ def main() -> None:
         logger.info("Import completed successfully")
 
     except Exception as e:
-        logger.exception(f"Import failed: {e}")
+        logger.exception("Import failed: %s", e)
         sys.exit(1)
 
 

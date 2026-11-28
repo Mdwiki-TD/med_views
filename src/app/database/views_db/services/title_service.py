@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import logging
 
-from sqlalchemy import delete, select
+from sqlalchemy import delete, func, select
 from sqlalchemy.dialects.sqlite import insert
 
 from ..models import Title
@@ -66,9 +66,9 @@ class TitleService:
                 result = session.execute(stmt)
                 inserted_count += result.rowcount
 
-                logger.debug(f"Inserted {result.rowcount} titles for {lang}")
+                logger.debug("Inserted %d titles for %s", result.rowcount, lang)
 
-        logger.info(f"Inserted {inserted_count} titles for {lang}")
+        logger.info("Inserted %d titles for %s", inserted_count, lang)
         return inserted_count
 
     def get_titles_for_language(self, lang: str) -> list[str]:
@@ -97,8 +97,8 @@ class TitleService:
             int: Number of titles.
         """
         with self.db_service.get_session() as session:
-            stmt = select(Title).where(Title.lang == lang)
-            return len(session.execute(stmt).scalars().all())
+            stmt = select(func.count(Title.title)).where(Title.lang == lang)
+            return session.execute(stmt).scalar_one()
 
     def get_all_language_counts(self) -> dict[str, int]:
         """
@@ -108,14 +108,9 @@ class TitleService:
             dict[str, int]: Mapping of language code to title count.
         """
         with self.db_service.get_session() as session:
-            stmt = select(Title.lang, Title.title)
+            stmt = select(Title.lang, func.count(Title.title)).group_by(Title.lang)
             results = session.execute(stmt).all()
-
-            counts: dict[str, int] = {}
-            for lang, _ in results:
-                counts[lang] = counts.get(lang, 0) + 1
-
-            return counts
+            return {lang: count for lang, count in results}
 
     def delete_titles_for_language(self, lang: str) -> int:
         """
@@ -131,7 +126,7 @@ class TitleService:
             stmt = delete(Title).where(Title.lang == lang)
             result = session.execute(stmt)
             deleted_count = result.rowcount
-            logger.info(f"Deleted {deleted_count} titles for {lang}")
+            logger.info("Deleted %d titles for %s", deleted_count, lang)
             return deleted_count
 
     def title_exists(self, lang: str, title: str) -> bool:
@@ -145,8 +140,9 @@ class TitleService:
         Returns:
             bool: True if title exists, False otherwise.
         """
+        normalized_title = title.replace("_", " ")
         with self.db_service.get_session() as session:
-            stmt = select(Title).where(Title.lang == lang, Title.title == title)
+            stmt = select(Title).where(Title.lang == lang, Title.title == normalized_title)
             result = session.execute(stmt).scalar_one_or_none()
             return result is not None
 

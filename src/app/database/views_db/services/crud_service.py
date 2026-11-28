@@ -46,21 +46,21 @@ class CRUDService[ModelT]:
         return self.get_record_by_id(pk)
 
     def get_record_by_id(self, pk: PKT) -> ModelT | None:  # pyright: ignore[reportInvalidTypeVarUse]
-        """Fetch a single row by primary key, or None if it doesn't exist."""
-        try:
-            return self.session.get(self.model, pk)
-        except Exception as exc:
-            logger.error("Error getting %s id=%s: %s", self.model_name, pk, exc)
-            return None
+        """Fetch a single row by primary key, or None if it doesn't exist.
+
+        Raises database connection errors to the caller; only returns None
+        when the row genuinely does not exist.
+        """
+        return self.session.get(self.model, pk)
 
     def get_by(self, **filters: Any) -> ModelT | None:
-        """Fetch a single row matching the given column=value filters."""
-        try:
-            stmt = self._base_select().filter_by(**filters)
-            return self.session.execute(stmt).scalars().first()  # pyright: ignore[reportReturnType]
-        except Exception as exc:
-            logger.error("Error getting %s by filters: %s", self.model_name, exc)
-            return None
+        """Fetch a single row matching the given column=value filters.
+
+        Raises database connection errors to the caller; only returns None
+        when no matching row is found.
+        """
+        stmt = self._base_select().filter_by(**filters)
+        return self.session.execute(stmt).scalars().first()  # pyright: ignore[reportReturnType]
 
     def list_all(
         self,
@@ -296,7 +296,7 @@ class CRUDService[ModelT]:
             self.commit_or_rollback()
             return True
         except Exception as e:
-            logger.error(f"Error deleting {self.model_name} {e}")
+            logger.error("Error deleting %s %s", self.model_name, e)
             return False
 
     # ------------------------------------------------------------------ #
@@ -341,7 +341,9 @@ class CRUDService[ModelT]:
             return 0
 
         mapper = inspect(self.model)
-        pk_names = [mapper.get_property_by_column(col).key for col in mapper.primary_key]  # pyright: ignore[reportOptionalMemberAccess]
+        pk_names = [
+            mapper.get_property_by_column(col).key for col in mapper.primary_key
+        ]  # pyright: ignore[reportOptionalMemberAccess]
 
         for row in rows:
             missing = [name for name in pk_names if name not in row]
@@ -411,7 +413,7 @@ class CRUDService[ModelT]:
     @staticmethod
     def validate_or_raise(**kwargs) -> None:
         for x, v in kwargs.items():
-            if not v:
+            if v is None:
                 raise ValueError(f"{x.capitalize()} is required")
 
     # ------------------------------------------------------------------

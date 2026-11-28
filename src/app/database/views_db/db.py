@@ -50,6 +50,10 @@ def init_db(database_url: str, **engine_kwargs: Any) -> sessionmaker[Session]:
     """Initialize the SQLAlchemy engine and session factory."""
     global engine, SessionLocal
 
+    # Dispose old engine to release connections before replacing it
+    if engine is not None:
+        engine.dispose()
+
     # expire_on_commit=False preserves behavior where objects remain accessible
     # after commit without triggering new queries.
     engine = create_engine(database_url, **engine_kwargs)

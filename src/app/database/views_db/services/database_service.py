@@ -27,7 +27,6 @@ class DatabaseService:
     """
 
     _instance = None
-    _session_factory = None
 
     def __init__(self, database_path: Path) -> None:
         """
@@ -38,6 +37,7 @@ class DatabaseService:
         """
         self.database_path = database_path
         self._engine = None
+        self._session_factory = None
 
     @classmethod
     def get_instance(cls, database_path: Path | None = None) -> DatabaseService:
@@ -59,8 +59,12 @@ class DatabaseService:
     @classmethod
     def reset_instance(cls) -> None:
         """Reset the singleton instance (useful for testing)."""
+        if cls._instance is not None and cls._instance._session_factory is not None:
+            from ..db import engine
+
+            if engine is not None:
+                engine.dispose()
         cls._instance = None
-        cls._session_factory = None
 
     def initialize(self) -> sessionmaker[Session]:
         """
@@ -73,7 +77,7 @@ class DatabaseService:
             logger.debug("Database already initialized")
             return self._session_factory
 
-        logger.info(f"Initializing database at {self.database_path}")
+        logger.info("Initializing database at %s", self.database_path)
 
         # Create parent directory if needed
         self.database_path.parent.mkdir(parents=True, exist_ok=True)

@@ -53,9 +53,8 @@ class AggregationService:
         """
         with self.db_service.get_session() as session:
             # Compute total views
-            stmt = (
-                select(func.sum(View.views).label("total_views"))
-                .where(View.lang == lang, View.year == year, View.agent_type == agent_type)
+            stmt = select(func.sum(View.views).label("total_views")).where(
+                View.lang == lang, View.year == year, View.agent_type == agent_type
             )
             result = session.execute(stmt).one()
 
@@ -94,7 +93,7 @@ class AggregationService:
             )
             session.execute(stmt)
 
-        logger.debug(f"Cached language counts for {lang}/{year} ({agent_type})")
+        logger.debug("Cached language counts for %s/%s (%s)", lang, year, agent_type)
 
     def get_cached_language_counts(
         self,
@@ -155,7 +154,7 @@ class AggregationService:
     def cache_statistics(
         self,
         lang: str,
-        year: int | None,
+        year: int,
         articles: int,
         empty_views: int,
         not_empty_views: int,
@@ -167,7 +166,7 @@ class AggregationService:
 
         Parameters:
             lang: Language code.
-            year: Year (None for all-years summary).
+            year: Year (0 for all-years summary).
             articles: Total number of articles.
             empty_views: Number of articles with zero views.
             not_empty_views: Number of articles with non-zero views.
@@ -198,19 +197,19 @@ class AggregationService:
             )
             session.execute(stmt)
 
-        logger.debug(f"Cached statistics for {lang}/{year}")
+        logger.debug("Cached statistics for %s/%s", lang, year)
 
     def get_cached_statistics(
         self,
         lang: str,
-        year: int | None,
+        year: int,
     ) -> dict[str, Any] | None:
         """
         Get cached statistics from the database.
 
         Parameters:
             lang: Language code.
-            year: Year (None for all-years summary).
+            year: Year (0 for all-years summary).
 
         Returns:
             dict | None: Cached statistics or None if not found.
@@ -232,13 +231,13 @@ class AggregationService:
 
     def get_all_statistics_for_year(
         self,
-        year: int | None,
+        year: int,
     ) -> dict[str, dict[str, int]]:
         """
         Get cached statistics for all languages in a year.
 
         Parameters:
-            year: Year (None for all-years summary).
+            year: Year (0 for all-years summary).
 
         Returns:
             dict[str, dict[str, int]]: Mapping of language code to statistics, sorted by total_views descending.

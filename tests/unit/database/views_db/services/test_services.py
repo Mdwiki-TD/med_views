@@ -120,6 +120,15 @@ class TestTitleService:
         assert title_service.title_exists("en", "Article One") is True
         assert title_service.title_exists("en", "Article Two") is False
 
+    def test_title_exists_normalizes_underscores(self, title_service):
+        """Test that title_exists normalizes underscores, matching insert_titles."""
+        title_service.insert_titles("en", ["Article_One"])
+
+        # Should find it with underscore form (normalized at query time)
+        assert title_service.title_exists("en", "Article_One") is True
+        # Should also find it with space form
+        assert title_service.title_exists("en", "Article One") is True
+
 
 class TestViewService:
     """Tests for ViewService."""
@@ -243,6 +252,33 @@ class TestAggregationService:
         assert cached is not None
         assert cached["articles"] == 100
         assert cached["total_views"] == 10000
+
+    def test_cache_statistics_upsert_with_year_zero(self, aggregation_service):
+        """Test that year=0 (all-years summary) upserts correctly."""
+        aggregation_service.cache_statistics(
+            lang="en",
+            year=0,
+            articles=100,
+            empty_views=20,
+            not_empty_views=80,
+            hash_count=5,
+            total_views=10000,
+        )
+        # Second call should update, not insert a duplicate
+        aggregation_service.cache_statistics(
+            lang="en",
+            year=0,
+            articles=200,
+            empty_views=40,
+            not_empty_views=160,
+            hash_count=10,
+            total_views=20000,
+        )
+
+        cached = aggregation_service.get_cached_statistics("en", 0)
+        assert cached is not None
+        assert cached["articles"] == 200
+        assert cached["total_views"] == 20000
 
 
 class TestDatabaseService:

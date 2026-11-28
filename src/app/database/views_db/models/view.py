@@ -30,6 +30,7 @@ class View(BaseModel):
     # Index for paginated queries: WHERE lang=? AND year=? AND agent_type=? ORDER BY views DESC
     __table_args__ = (
         Index("idx_views_lang_year_agent_views", "lang", "year", "agent_type", "views"),
+        {"sqlite_with_rowid": False},
     )
 
     def __repr__(self) -> str:

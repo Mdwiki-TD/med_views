@@ -91,9 +91,9 @@ class ViewService:
                 result = session.execute(stmt)
                 inserted_count += result.rowcount
 
-                logger.debug(f"Inserted {result.rowcount} views for {lang}/{year}")
+                logger.debug("Inserted %d views for %s/%s", result.rowcount, lang, year)
 
-        logger.info(f"Inserted {inserted_count} views for {lang}/{year} ({agent_type})")
+        logger.info("Inserted %d views for %s/%s (%s)", inserted_count, lang, year, agent_type)
         return inserted_count
 
     def get_views_for_language_year(
@@ -114,9 +114,8 @@ class ViewService:
             dict[str, int]: Mapping of title to view count.
         """
         with self.db_service.get_session() as session:
-            stmt = (
-                select(View.title, View.views)
-                .where(View.lang == lang, View.year == year, View.agent_type == agent_type)
+            stmt = select(View.title, View.views).where(
+                View.lang == lang, View.year == year, View.agent_type == agent_type
             )
             results = session.execute(stmt).all()
             return {title: views for title, views in results}
@@ -139,9 +138,8 @@ class ViewService:
             int: Total view count.
         """
         with self.db_service.get_session() as session:
-            stmt = (
-                select(func.sum(View.views))
-                .where(View.lang == lang, View.year == year, View.agent_type == agent_type)
+            stmt = select(func.sum(View.views)).where(
+                View.lang == lang, View.year == year, View.agent_type == agent_type
             )
             result = session.execute(stmt).scalar_one_or_none()
             return result or 0
@@ -166,14 +164,11 @@ class ViewService:
             int: Number of titles.
         """
         with self.db_service.get_session() as session:
-            stmt = (
-                select(func.count(View.title))
-                .where(
-                    View.lang == lang,
-                    View.year == year,
-                    View.agent_type == agent_type,
-                    View.views > min_views,
-                )
+            stmt = select(func.count(View.title)).where(
+                View.lang == lang,
+                View.year == year,
+                View.agent_type == agent_type,
+                View.views > min_views,
             )
             result = session.execute(stmt).scalar_one()
             return result
@@ -203,7 +198,7 @@ class ViewService:
             )
             result = session.execute(stmt)
             deleted_count = result.rowcount
-            logger.info(f"Deleted {deleted_count} views for {lang}/{year} ({agent_type})")
+            logger.info("Deleted %d views for %s/%s (%s)", deleted_count, lang, year, agent_type)
             return deleted_count
 
 

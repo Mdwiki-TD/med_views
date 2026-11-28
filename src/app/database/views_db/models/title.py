@@ -18,6 +18,7 @@ class Title(BaseModel):
     and agent types. Each title is unique per language.
 
     Uses composite primary key (lang, title) - no surrogate ID.
+    WITHOUT ROWID for space efficiency with composite PKs.
     """
 
     __tablename__ = "titles"
@@ -25,6 +26,8 @@ class Title(BaseModel):
     # Composite primary key
     lang: Mapped[str] = mapped_column(String(20), primary_key=True)
     title: Mapped[str] = mapped_column(Text, primary_key=True)
+
+    __table_args__ = {"sqlite_with_rowid": False}
 
     def __repr__(self) -> str:
         return f"<Title(lang='{self.lang}', title='{self.title[:30]}...')>"

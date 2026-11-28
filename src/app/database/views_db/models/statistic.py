@@ -25,17 +25,18 @@ class Statistic(BaseModel):
 
     # Composite primary key
     lang: Mapped[str] = mapped_column(String(20), primary_key=True)
-    year: Mapped[int | None] = mapped_column(
+    year: Mapped[int] = mapped_column(
         Integer,
         primary_key=True,
-        nullable=True,
-        comment="Year (NULL for all-years summary)",
+        comment="Year (0 for all-years summary, since NULL breaks SQLite upsert conflict detection)",
     )
     articles: Mapped[int] = mapped_column(Integer, nullable=False)
     empty_views: Mapped[int] = mapped_column(Integer, nullable=False)
     not_empty_views: Mapped[int] = mapped_column(Integer, nullable=False)
     hash_count: Mapped[int] = mapped_column(Integer, nullable=False)
     total_views: Mapped[int] = mapped_column(Integer, nullable=False)
+
+    __table_args__ = {"sqlite_with_rowid": False}
 
     def __repr__(self) -> str:
         return (
