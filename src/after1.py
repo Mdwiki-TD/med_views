@@ -90,6 +90,7 @@ def process_raw_views(
             titles_data = {title: count for title, count in data.items() if count > 0}
 
             # Nothing positive for this language/year: no file is written
+            # TODO: Remove an existing output when no positive views remain.
             if not titles_data:
                 continue
 

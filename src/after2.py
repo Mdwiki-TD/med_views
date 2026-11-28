@@ -92,6 +92,7 @@ def process_pre_split_years(years_root_dir: Path) -> None:
 
             languages_counts_by_year[lang][year] = sum(data.values())
 
+    # TODO: Refresh summaries for empty year directories.
     dump_languages_views_counts(languages_counts_by_year, years_root_dir)
 
 
