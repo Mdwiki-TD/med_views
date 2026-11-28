@@ -1,16 +1,16 @@
 """
-View service for CRUD operations on article views.
+View service for CRUD operations on article views (revised).
 """
 
 from __future__ import annotations
 
 import logging
-from typing import Any, Literal
+from typing import Literal
 
 from sqlalchemy import delete, func, select
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.dialects.sqlite import insert
 
-from ..models import Title, ViewAllAgents, ViewUsersAgents
+from ..models import Title, View
 from .database_service import DatabaseService
 
 logger = logging.getLogger(__name__)
@@ -23,7 +23,7 @@ class ViewService:
     Service for CRUD operations on article views.
 
     Provides methods for inserting, querying, and managing view counts
-    for both all_agents and users_agents types.
+    for both agent types using a single View table.
     """
 
     def __init__(self, db_service: DatabaseService | None = None) -> None:
@@ -34,15 +34,6 @@ class ViewService:
             db_service: Database service instance. If None, uses singleton.
         """
         self.db_service = db_service or DatabaseService.get_instance()
-
-    def _get_view_model(self, agent_type: AgentType) -> type[ViewAllAgents | ViewUsersAgents]:
-        """Get the appropriate view model class for the agent type."""
-        if agent_type == "all_agents":
-            return ViewAllAgents
-        elif agent_type == "users_agents":
-            return ViewUsersAgents
-        else:
-            raise ValueError(f"Invalid agent_type: {agent_type}")
 
     def insert_views(
         self,
@@ -55,20 +46,21 @@ class ViewService:
         """
         Insert view counts for a language and year in bulk.
 
+        Uses SQLite-specific upsert to handle duplicates.
+
         Parameters:
             lang: Language code.
             year: Year.
             views_data: Mapping of title to view count.
             agent_type: Type of agent data ('all_agents' or 'users_agents').
-            chunk_size: Number of records to insert per transaction.
+            chunk_size: Number of records to insert per chunk.
 
         Returns:
-            int: Number of views inserted.
+            int: Number of views inserted/updated.
         """
         if not views_data:
             return 0
 
-        view_model = self._get_view_model(agent_type)
         inserted_count = 0
 
         with self.db_service.get_session() as session:
@@ -76,17 +68,32 @@ class ViewService:
             title_ids = {}
             for title in views_data.keys():
                 # Check if title exists
-                stmt = select(Title.id).where(Title.lang == lang, Title.title == title)
-                title_id = session.execute(stmt).scalar_one_or_none()
+                stmt = select(Title.title).where(Title.lang == lang, Title.title == title)
+                existing_title = session.execute(stmt).scalar_one_or_none()
 
-                if title_id is None:
-                    # Create title
-                    new_title = Title(lang=lang, title=title)
-                    session.add(new_title)
-                    session.flush()
-                    title_id = new_title.id
+                if existing_title is None:
+                    # Create title using upsert
+                    title_stmt = insert(Title).values(lang=lang, title=title)
+                    title_stmt = title_stmt.on_conflict_do_nothing(index_elements=["lang", "title"])
+                    session.execute(title_stmt)
 
-                title_ids[title] = title_id
+                # Get the title_id (rowid)
+                stmt = select(Title.title).where(Title.lang == lang, Title.title == title)
+                title_row = session.execute(stmt).scalar_one_or_none()
+                if title_row:
+                    # For composite PK, we need to use the rowid
+                    # Since Title doesn't have an id column, we'll use a workaround
+                    # Actually, with composite PK and WITHOUT ROWID, we can't use rowid
+                    # We need to store title_id differently or use the title itself
+                    # Let me reconsider the schema...
+                    pass
+
+            # Actually, with composite PK (lang, title), we can't have a title_id foreign key
+            # We need to change the View model to use (lang, title) instead of title_id
+            # Or keep a surrogate ID in Title
+
+            # For now, let's use lang+title as the reference
+            # This means View table will have (lang, title, year, agent_type, views)
 
             # Process in chunks
             items = list(views_data.items())
@@ -96,47 +103,26 @@ class ViewService:
                 # Prepare data for bulk insert
                 data = [
                     {
-                        "title_id": title_ids[title],
+                        "lang": lang,
+                        "title": title.replace("_", " "),
                         "year": year,
+                        "agent_type": agent_type,
                         "views": views,
                     }
                     for title, views in chunk
                 ]
 
-                try:
-                    # Insert records
-                    for item in data:
-                        view_record = view_model(**item)
-                        session.add(view_record)
+                # Use SQLite-specific upsert
+                stmt = insert(View).values(data)
+                stmt = stmt.on_conflict_do_update(
+                    index_elements=["lang", "title", "year", "agent_type"],
+                    set_={"views": stmt.excluded.views},
+                )
 
-                    session.flush()
-                    inserted_count += len(chunk)
-                    logger.debug(f"Inserted {len(chunk)} views for {lang}/{year}")
+                result = session.execute(stmt)
+                inserted_count += result.rowcount
 
-                except IntegrityError:
-                    # Some records already exist, update them
-                    session.rollback()
-                    logger.debug(f"Some views already exist for {lang}/{year}, updating")
-
-                    # Insert/update one by one
-                    for item in data:
-                        try:
-                            view_record = view_model(**item)
-                            session.add(view_record)
-                            session.flush()
-                            inserted_count += 1
-                        except IntegrityError:
-                            session.rollback()
-                            # Update existing record
-                            stmt = select(view_model).where(
-                                view_model.title_id == item["title_id"],
-                                view_model.year == item["year"],
-                            )
-                            existing = session.execute(stmt).scalar_one_or_none()
-                            if existing:
-                                existing.views = item["views"]
-                                session.flush()
-                            continue
+                logger.debug(f"Inserted {result.rowcount} views for {lang}/{year}")
 
         logger.info(f"Inserted {inserted_count} views for {lang}/{year} ({agent_type})")
         return inserted_count
@@ -158,13 +144,10 @@ class ViewService:
         Returns:
             dict[str, int]: Mapping of title to view count.
         """
-        view_model = self._get_view_model(agent_type)
-
         with self.db_service.get_session() as session:
             stmt = (
-                select(Title.title, view_model.views)
-                .join(view_model, Title.id == view_model.title_id)
-                .where(Title.lang == lang, view_model.year == year)
+                select(View.title, View.views)
+                .where(View.lang == lang, View.year == year, View.agent_type == agent_type)
             )
             results = session.execute(stmt).all()
             return {title: views for title, views in results}
@@ -186,13 +169,10 @@ class ViewService:
         Returns:
             int: Total view count.
         """
-        view_model = self._get_view_model(agent_type)
-
         with self.db_service.get_session() as session:
             stmt = (
-                select(func.sum(view_model.views))
-                .join(Title, Title.id == view_model.title_id)
-                .where(Title.lang == lang, view_model.year == year)
+                select(func.sum(View.views))
+                .where(View.lang == lang, View.year == year, View.agent_type == agent_type)
             )
             result = session.execute(stmt).scalar_one_or_none()
             return result or 0
@@ -216,13 +196,15 @@ class ViewService:
         Returns:
             int: Number of titles.
         """
-        view_model = self._get_view_model(agent_type)
-
         with self.db_service.get_session() as session:
             stmt = (
-                select(func.count(view_model.id))
-                .join(Title, Title.id == view_model.title_id)
-                .where(Title.lang == lang, view_model.year == year, view_model.views > min_views)
+                select(func.count(View.title))
+                .where(
+                    View.lang == lang,
+                    View.year == year,
+                    View.agent_type == agent_type,
+                    View.views > min_views,
+                )
             )
             result = session.execute(stmt).scalar_one()
             return result
@@ -244,48 +226,16 @@ class ViewService:
         Returns:
             int: Number of records deleted.
         """
-        view_model = self._get_view_model(agent_type)
-
         with self.db_service.get_session() as session:
-            # Get title IDs for this language
-            stmt = select(Title.id).where(Title.lang == lang)
-            title_ids = session.execute(stmt).scalars().all()
-
-            if not title_ids:
-                return 0
-
-            # Delete views for these titles and year
-            stmt = delete(view_model).where(
-                view_model.title_id.in_(title_ids),
-                view_model.year == year,
+            stmt = delete(View).where(
+                View.lang == lang,
+                View.year == year,
+                View.agent_type == agent_type,
             )
             result = session.execute(stmt)
             deleted_count = result.rowcount
             logger.info(f"Deleted {deleted_count} views for {lang}/{year} ({agent_type})")
             return deleted_count
-
-    def filter_views_greater_than_zero(
-        self,
-        lang: str,
-        year: int,
-    ) -> dict[str, int]:
-        """
-        Get views for a language and year, filtered to only include views > 0.
-
-        This is used for the users_agents data.
-
-        Parameters:
-            lang: Language code.
-            year: Year.
-
-        Returns:
-            dict[str, int]: Mapping of title to view count (only where views > 0).
-        """
-        return self.get_views_for_language_year(lang, year, "all_agents")
-
-        # Filter to views > 0
-        # filtered = {title: views for title, views in all_views.items() if views > 0}
-        # return filtered
 
 
 __all__ = [

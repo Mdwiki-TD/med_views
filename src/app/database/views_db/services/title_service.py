@@ -1,14 +1,13 @@
 """
-Title service for CRUD operations on article titles.
+Title service for CRUD operations on article titles (revised).
 """
 
 from __future__ import annotations
 
 import logging
-from typing import Any
 
 from sqlalchemy import delete, select
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.dialects.sqlite import insert
 
 from ..models import Title
 from .database_service import DatabaseService
@@ -37,13 +36,15 @@ class TitleService:
         """
         Insert titles for a language in bulk.
 
+        Uses SQLite-specific upsert to handle duplicates.
+
         Parameters:
             lang: Language code.
             titles: List of article titles.
             chunk_size: Number of titles to insert per transaction.
 
         Returns:
-            int: Number of titles inserted.
+            int: Number of titles inserted/updated.
         """
         if not titles:
             return 0
@@ -55,34 +56,17 @@ class TitleService:
             for i in range(0, len(titles), chunk_size):
                 chunk = titles[i : i + chunk_size]
 
-                # Prepare data for bulk insert
+                # Normalize titles (replace underscores with spaces)
                 data = [{"lang": lang, "title": title.replace("_", " ")} for title in chunk]
 
-                try:
-                    # Use INSERT OR IGNORE to skip duplicates
-                    for item in data:
-                        title = Title(**item)
-                        session.add(title)
+                # Use SQLite-specific upsert
+                stmt = insert(Title).values(data)
+                stmt = stmt.on_conflict_do_nothing(index_elements=["lang", "title"])
 
-                    session.flush()
-                    inserted_count += len(chunk)
-                    logger.debug(f"Inserted {len(chunk)} titles for {lang}")
+                result = session.execute(stmt)
+                inserted_count += result.rowcount
 
-                except IntegrityError:
-                    # Some titles already exist, skip them
-                    session.rollback()
-                    logger.debug(f"Some titles already exist for {lang}, skipping duplicates")
-
-                    # Insert one by one to handle duplicates
-                    for item in data:
-                        try:
-                            title = Title(**item)
-                            session.add(title)
-                            session.flush()
-                            inserted_count += 1
-                        except IntegrityError:
-                            session.rollback()
-                            continue
+                logger.debug(f"Inserted {result.rowcount} titles for {lang}")
 
         logger.info(f"Inserted {inserted_count} titles for {lang}")
         return inserted_count
@@ -165,22 +149,6 @@ class TitleService:
             stmt = select(Title).where(Title.lang == lang, Title.title == title)
             result = session.execute(stmt).scalar_one_or_none()
             return result is not None
-
-    def get_title_id(self, lang: str, title: str) -> int | None:
-        """
-        Get the ID of a title.
-
-        Parameters:
-            lang: Language code.
-            title: Article title.
-
-        Returns:
-            int | None: Title ID if found, None otherwise.
-        """
-        with self.db_service.get_session() as session:
-            stmt = select(Title.id).where(Title.lang == lang, Title.title == title)
-            result = session.execute(stmt).scalar_one_or_none()
-            return result
 
 
 __all__ = [
