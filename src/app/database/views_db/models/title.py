@@ -1,10 +1,10 @@
 """
-Title model for storing article titles.
+Title model for storing article titles (revised schema).
 """
 
 from __future__ import annotations
 
-from sqlalchemy import String, Text, UniqueConstraint
+from sqlalchemy import String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from ..db import BaseModel
@@ -16,22 +16,23 @@ class Title(BaseModel):
 
     Normalized storage for article titles to avoid duplication across years
     and agent types. Each title is unique per language.
+
+    Uses composite primary key (lang, title) - no surrogate ID.
     """
 
     __tablename__ = "titles"
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    lang: Mapped[str] = mapped_column(String(20), nullable=False, index=True)
-    title: Mapped[str] = mapped_column(Text, nullable=False, index=True)
+    # Composite primary key
+    lang: Mapped[str] = mapped_column(String(20), primary_key=True)
+    title: Mapped[str] = mapped_column(Text, primary_key=True)
 
-    # Unique constraint on (lang, title) to prevent duplicates
+    # WITHOUT ROWID for composite PK table
     __table_args__ = (
-        UniqueConstraint("lang", "title", name="uq_title_lang_title"),
-        {"sqlite_autoincrement": True},
+        {"sqlite_without_rowid": True},
     )
 
     def __repr__(self) -> str:
-        return f"<Title(id={self.id}, lang='{self.lang}', title='{self.title[:30]}...')>"
+        return f"<Title(lang='{self.lang}', title='{self.title[:30]}...')>"
 
 
 __all__ = [

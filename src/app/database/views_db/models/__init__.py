@@ -1,18 +1,15 @@
 """
-SQLAlchemy models for the medical views database.
+SQLAlchemy models for the medical views database (revised schema).
 """
 
 from .language_count import LanguageCount
-from .metadata import PipelineMetadata
 from .statistic import Statistic
 from .title import Title
-from .view import ViewAllAgents, ViewUsersAgents
+from .view import View
 
 __all__ = [
     "Title",
-    "ViewAllAgents",
-    "ViewUsersAgents",
+    "View",
     "LanguageCount",
     "Statistic",
-    "PipelineMetadata",
 ]

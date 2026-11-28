@@ -1,84 +1,51 @@
 """
-View models for storing article view counts.
+View model for storing article view counts (revised schema).
 """
 
 from __future__ import annotations
 
-from sqlalchemy import ForeignKey, Integer, UniqueConstraint
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import ForeignKey, Index, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column
 
 from ..db import BaseModel
 
 
-class ViewAllAgents(BaseModel):
+class View(BaseModel):
     """
-    View counts for all agents (raw data from API).
+    View counts for articles with agent type.
 
-    Stores the number of views for each article per year, including all
-    user agents (bots, spiders, etc.).
+    Single table for both 'all_agents' and 'users_agents' data.
+    Uses composite primary key (title_id, year, agent_type).
+
+    Denormalized lang column for query performance (avoids joins).
     """
 
-    __tablename__ = "views_all_agents"
+    __tablename__ = "views"
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    # Composite primary key
     title_id: Mapped[int] = mapped_column(
-        ForeignKey("titles.id", ondelete="CASCADE"),
-        nullable=False,
-        index=True,
+        Integer,
+        ForeignKey("titles.rowid", ondelete="CASCADE"),
+        primary_key=True,
     )
-    year: Mapped[int] = mapped_column(Integer, nullable=False, index=True)
-    views: Mapped[int] = mapped_column(Integer, nullable=False, index=True)
+    lang: Mapped[str] = mapped_column(String(20), primary_key=True)  # Denormalized
+    year: Mapped[int] = mapped_column(Integer, primary_key=True)
+    agent_type: Mapped[str] = mapped_column(String(20), primary_key=True)
+    views: Mapped[int] = mapped_column(Integer, nullable=False)
 
-    # Relationship to Title
-    title: Mapped["Title"] = relationship("Title", backref="views_all_agents")
-
-    # Unique constraint on (title_id, year) to prevent duplicates
+    # Index for paginated queries: WHERE lang=? AND year=? AND agent_type=? ORDER BY views DESC
     __table_args__ = (
-        UniqueConstraint("title_id", "year", name="uq_views_all_agents_title_year"),
-        {"sqlite_autoincrement": True},
+        Index("idx_views_lang_year_agent_views", "lang", "year", "agent_type", "views"),
+        {"sqlite_without_rowid": True},
     )
 
     def __repr__(self) -> str:
-        return f"<ViewAllAgents(id={self.id}, title_id={self.title_id}, year={self.year}, views={self.views})>"
-
-
-class ViewUsersAgents(BaseModel):
-    """
-    View counts for users agents only (filtered views > 0).
-
-    Stores the number of views for each article per year, filtered to only
-    include human users (excluding bots and spiders), and only where views > 0.
-    """
-
-    __tablename__ = "views_users_agents"
-
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    title_id: Mapped[int] = mapped_column(
-        ForeignKey("titles.id", ondelete="CASCADE"),
-        nullable=False,
-        index=True,
-    )
-    year: Mapped[int] = mapped_column(Integer, nullable=False, index=True)
-    views: Mapped[int] = mapped_column(Integer, nullable=False, index=True)
-
-    # Relationship to Title
-    title: Mapped["Title"] = relationship("Title", backref="views_users_agents")
-
-    # Unique constraint on (title_id, year) to prevent duplicates
-    __table_args__ = (
-        UniqueConstraint("title_id", "year", name="uq_views_users_agents_title_year"),
-        {"sqlite_autoincrement": True},
-    )
-
-    def __repr__(self) -> str:
-        return f"<ViewUsersAgents(id={self.id}, title_id={self.title_id}, year={self.year}, views={self.views})>"
-
-
-# Import Title for type hints (avoid circular import)
-from .title import Title  # noqa: E402
+        return (
+            f"<View(title_id={self.title_id}, lang='{self.lang}', "
+            f"year={self.year}, agent_type='{self.agent_type}', views={self.views})>"
+        )
 
 
 __all__ = [
-    "ViewAllAgents",
-    "ViewUsersAgents",
+    "View",
 ]

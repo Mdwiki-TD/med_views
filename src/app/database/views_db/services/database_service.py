@@ -1,5 +1,5 @@
 """
-Database service for initialization and session management.
+Database service for initialization and session management (revised).
 """
 
 from __future__ import annotations
@@ -9,18 +9,11 @@ from collections.abc import Generator
 from contextlib import contextmanager
 from pathlib import Path
 
-from sqlalchemy import text
+from sqlalchemy import event, text
 from sqlalchemy.orm import Session, sessionmaker
 
 from ..db import BaseModel, init_db
-from ..models import (
-    LanguageCount,
-    PipelineMetadata,
-    Statistic,
-    Title,
-    ViewAllAgents,
-    ViewUsersAgents,
-)
+from ..models import LanguageCount, Statistic, Title, View
 
 logger = logging.getLogger(__name__)
 
@@ -93,8 +86,8 @@ class DatabaseService:
             echo=False,
         )
 
-        # Set SQLite pragmas for performance
-        self._set_sqlite_pragmas()
+        # Set SQLite pragmas via connect event (applies to every connection)
+        self._setup_pragma_events()
 
         # Create all tables
         self._create_tables()
@@ -102,25 +95,22 @@ class DatabaseService:
         logger.info("Database initialized successfully")
         return self._session_factory
 
-    def _set_sqlite_pragmas(self) -> None:
-        """Set SQLite pragmas for optimal performance."""
+    def _setup_pragma_events(self) -> None:
+        """Set SQLite pragmas via connect event (applies to every connection)."""
         from ..db import engine
 
         if engine is None:
             raise RuntimeError("Database engine not initialized")
 
-        with engine.connect() as conn:
-            # Enable WAL mode for better concurrent read/write performance
-            conn.execute(text("PRAGMA journal_mode=WAL"))
-            # Use NORMAL synchronous mode for better write performance
-            conn.execute(text("PRAGMA synchronous=NORMAL"))
-            # Increase cache size (in pages)
-            conn.execute(text("PRAGMA cache_size=10000"))
-            # Enable foreign key enforcement
-            conn.execute(text("PRAGMA foreign_keys=ON"))
-            conn.commit()
+        @event.listens_for(engine, "connect")
+        def set_sqlite_pragmas(dbapi_connection, connection_record):
+            cursor = dbapi_connection.cursor()
+            cursor.execute("PRAGMA journal_mode=WAL")
+            cursor.execute("PRAGMA synchronous=NORMAL")
+            cursor.execute("PRAGMA foreign_keys=ON")
+            cursor.close()
 
-        logger.debug("SQLite pragmas configured")
+        logger.debug("SQLite pragma events configured")
 
     def _create_tables(self) -> None:
         """Create all database tables."""

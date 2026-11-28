@@ -101,12 +101,15 @@ Read-Only (Out of Scope):
 
 - **Total titles**: 385,436
 - **Languages**: 337
-- **Years**: 10 (year range: 2016-2026; 2015 excluded, maximum 10 years)
-- **Maximum view rows**: ~3,850,000 (385,436 titles × 10 years; fewer after dropping zero-view rows)
-- **File count**: ~3,370 files (337 languages × 10 years)
-- **Data size**: ~500 MB uncompressed (estimated from row count)
+- **Years**: 20 (current: 2016-2026 = 10 years; planned: up to 2036 = 20 years maximum; 2015 excluded)
+- **Current view rows**: ~3,850,000 (385,436 titles × 10 years; fewer after dropping zero-view rows)
+- **Maximum view rows**: ~7,700,000 (385,436 titles × 20 years)
+- **Current file count**: ~3,370 files (337 languages × 10 years)
+- **Maximum file count**: ~6,740 files (337 languages × 20 years)
+- **Current data size**: ~500 MB
+- **Maximum data size**: ~1 GB
 
-**Note**: Actual data is much smaller than initial estimates. This simplifies implementation.
+**Note**: Current data is small (~3.85M rows). Even at maximum (20 years, ~7.7M rows), remains manageable with simple implementation.
 
 ### A2. Design Decisions (Corrected)
 
@@ -243,7 +246,8 @@ session.execute(stmt)
 - Keep current rule: if no positive titles, write nothing (no rows inserted)
 
 **Performance**:
-- ~3.85M rows is small; no special optimization needed
+- Current: ~3.85M rows (small); Maximum: ~7.7M rows (still small)
+- No special optimization needed even at maximum size
 - Simple per-language/year transactions are fast and easy to reason about
 
 #### 5. Configuration
