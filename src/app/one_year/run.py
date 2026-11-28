@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 """
-Collects and stores article views for single year.
+Collects and stores article views for single year or all years (2015-2025)
 """
 
 from __future__ import annotations
 
+import datetime
 import json
 import logging
 from pathlib import Path
@@ -21,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 class SingleYearViewsPipeline:
-    """Orchestrates single-year view collection pipeline."""
+    """Orchestrates single-year/multi-year view collection pipeline."""
 
     def __init__(
         self,
@@ -40,14 +41,18 @@ class SingleYearViewsPipeline:
 
         self.dump_dir_path = dump_dir_path or Config.get_instance().paths.dump_dir_path
 
-    def dump_empty_data_all(self, year: int) -> None:
-        file = self.dump_dir_path / f"empty_views_{year}.json"
-        logger.debug(f"dump_empty_data_all({file}), {len(self.empty_data_all)=}")
+    def dump_empty_data_all(
+        self,
+        year: int | None = None,
+    ) -> None:
+        file = f"empty_views_{year}.json" if year else "empty_views_all_years.json"
+        file_path = self.dump_dir_path / file
+        logger.debug(f"dump_empty_data_all({file_path}), {len(self.empty_data_all)=}")
 
         # sort empty_data_all by len of values desc
         empty_data_all_sorted = dict(sorted(self.empty_data_all.items(), key=lambda item: len(item[1]), reverse=True))
 
-        with open(file, "w", encoding="utf-8") as f:
+        with open(file_path, "w", encoding="utf-8") as f:
             json.dump(empty_data_all_sorted, f, ensure_ascii=False, indent=4)
 
     def dump_one_lang_files(
@@ -55,31 +60,61 @@ class SingleYearViewsPipeline:
         titles: list[str],
         data: dict,
         lang: str,
-        year: int,
+        year: int | None = None,
     ) -> None:
-        file = self.views_fetcher.get_view_file(lang, year)
-
         if not data:
             return
 
         titles = [x.replace("_", " ") for x in titles]
 
-        logger.debug(f"{file=}, {len(data)=}")
-
-        empty_data = []
-        not_empty_data = {}
+        logger.debug(f"{lang=}, {len(data)=}")
 
         data = {x.replace("_", " "): v for x, v in data.items()}
-        empty_data = [k for k in titles if data.get(k, 0) == 0]
-        not_empty_data = {k: v for k, v in data.items() if v != 0}
 
         self.stats_service.dump_stats(titles, data, lang)
 
+        # Separate data by year and save to corresponding year folders
+        # First, organize data by year
+        years_data = {}
+
+        if year:
+            years_data[year] = data
+        else:
+            for title, views in data.items():
+                if isinstance(views, dict):
+                    # views is a dictionary of {year: count}
+                    for y, count in views.items():
+                        if y not in years_data:
+                            years_data[y] = {}
+                        years_data[y][title] = count
+                elif isinstance(views, int):
+                    # Single value, might be from "all" or a specific year
+                    # We'll skip this for now or handle as needed
+                    pass
+
+        # Save each year's data to its corresponding folder
+        for y, year_data in years_data.items():
+            file = self.views_fetcher.get_view_file(lang, y)
+            # Filter out zero values
+            not_empty_data = {k: v for k, v in year_data.items() if v != 0}
+
+            if not_empty_data:
+                with open(file, "w", encoding="utf-8") as f:
+                    json.dump(not_empty_data, f, ensure_ascii=False)
+
+        # Track empty data across all years
+        empty_data = []
+        for k in titles:
+            val = data.get(k, 0)
+            if val == 0:
+                empty_data.append(k)
+            elif isinstance(val, dict):
+                # Check if all year values are 0
+                if all(v == 0 for v in val.values()):
+                    empty_data.append(k)
+
         if empty_data:
             self.empty_data_all[lang] = empty_data
-
-        with open(file, "w", encoding="utf-8") as f:
-            json.dump(not_empty_data, f, ensure_ascii=False)
 
     def get_languages_articles_counts(self) -> dict:
         all_infos = self.dump_manager.load_languages_counts()
@@ -98,7 +133,13 @@ class SingleYearViewsPipeline:
 
         return result
 
-    def make_views(self, languages, year, limit, maxv=0) -> dict[str, int]:
+    def make_views(
+        self,
+        languages,
+        limit: int,
+        year: int | None = None,
+        maxv: int = 0,
+    ) -> dict[str, int | dict]:
         views = {}
 
         for n, (lang, _) in enumerate(languages.items(), start=1):
@@ -106,7 +147,11 @@ class SingleYearViewsPipeline:
                 logger.info(f"limit {limit} reached, break")
                 break
 
-            data = self.process_language_views(year, lang, maxv)
+            data = self.process_language_views(
+                lang,
+                maxv,
+                year=year,
+            )
 
             views[lang] = data
 
@@ -120,37 +165,48 @@ class SingleYearViewsPipeline:
 
     def process_language_views(
         self,
-        year: int,
         lang: str,
         maxv: int = 0,
-    ) -> dict[str, int]:
+        year: int | None = None,
+    ) -> dict[str, int | dict]:
         titles = self.titles_loader.load_lang_titles(lang)
+        if year is None:
+            # For all years, we'll check an existing file from the current year to see what titles we already have
+            # Use the current year or latest available year as reference
+            current_year = datetime.datetime.now().year
+            # Ensure we don't go beyond 2025
+            year = min(current_year, 2025)
 
         json_file = self.views_fetcher.get_view_file(
-            lang,
-            year,
+            lang=lang,
+            year=year,
         )
 
         data = self.views_service.get_one_lang_views(
             lang,
             titles,
             json_file,
-            year=year,
             maxv=maxv,
+            year=year,
         )
 
-        self.dump_one_lang_files(titles, data, lang, year)
+        self.dump_one_lang_files(
+            titles,
+            data,
+            lang,
+            year=year,
+        )
 
         return data
 
     def start(
         self,
-        year,
-        limit,
-        maxv,
-    ):
+        limit: int,
+        maxv: int,
+        year: int | None = None,
+    ) -> None:
         """
-        Orchestrates collection of per-language pageview totals for a given year.
+        Orchestrates collection of per-language pageview totals for a given year or all years (2015-2025).
         """
         languages = self.get_languages_articles_counts()
 
@@ -163,7 +219,12 @@ class SingleYearViewsPipeline:
         # sort languages ASC
         languages = dict(sorted(languages.items(), key=lambda item: item[1], reverse=False))
 
-        self.make_views(languages, year, limit, maxv)
+        self.make_views(
+            languages=languages,
+            limit=limit,
+            maxv=maxv,
+            year=year,
+        )
 
 
 __all__ = [
