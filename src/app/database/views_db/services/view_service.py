@@ -1,5 +1,5 @@
 """
-View service for CRUD operations on article views (revised).
+View service for CRUD operations on article views (corrected).
 """
 
 from __future__ import annotations
@@ -10,7 +10,7 @@ from typing import Literal
 from sqlalchemy import delete, func, select
 from sqlalchemy.dialects.sqlite import insert
 
-from ..models import Title, View
+from ..models import View
 from .database_service import DatabaseService
 
 logger = logging.getLogger(__name__)
@@ -64,43 +64,12 @@ class ViewService:
         inserted_count = 0
 
         with self.db_service.get_session() as session:
-            # First, get or create title IDs
-            title_ids = {}
-            for title in views_data.keys():
-                # Check if title exists
-                stmt = select(Title.title).where(Title.lang == lang, Title.title == title)
-                existing_title = session.execute(stmt).scalar_one_or_none()
-
-                if existing_title is None:
-                    # Create title using upsert
-                    title_stmt = insert(Title).values(lang=lang, title=title)
-                    title_stmt = title_stmt.on_conflict_do_nothing(index_elements=["lang", "title"])
-                    session.execute(title_stmt)
-
-                # Get the title_id (rowid)
-                stmt = select(Title.title).where(Title.lang == lang, Title.title == title)
-                title_row = session.execute(stmt).scalar_one_or_none()
-                if title_row:
-                    # For composite PK, we need to use the rowid
-                    # Since Title doesn't have an id column, we'll use a workaround
-                    # Actually, with composite PK and WITHOUT ROWID, we can't use rowid
-                    # We need to store title_id differently or use the title itself
-                    # Let me reconsider the schema...
-                    pass
-
-            # Actually, with composite PK (lang, title), we can't have a title_id foreign key
-            # We need to change the View model to use (lang, title) instead of title_id
-            # Or keep a surrogate ID in Title
-
-            # For now, let's use lang+title as the reference
-            # This means View table will have (lang, title, year, agent_type, views)
-
             # Process in chunks
             items = list(views_data.items())
             for i in range(0, len(items), chunk_size):
                 chunk = items[i : i + chunk_size]
 
-                # Prepare data for bulk insert
+                # Prepare data for bulk insert (normalize titles)
                 data = [
                     {
                         "lang": lang,
