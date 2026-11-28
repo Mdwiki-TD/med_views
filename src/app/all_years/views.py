@@ -115,10 +115,15 @@ class MultiYearViewsService:
 
         if json_file.exists():
             u_data: dict = self.dump_manager.json_load(json_file)  # pyright: ignore[reportAssignmentType]
-            # TODO: Select the requested year from nested cached values.
-            # For year=2024, a cached value of {"2023": 10, "2024": 20, "all": 30} remains unchanged. The title then counts as cached, so no fetch replaces the value. The shared statistics service reports 30 instead of 20, and the yearly writer preserves the nested value.
-            # When year is supplied, extract that year's count before checking cache completeness. Fetch entries that lack the requested year. Preserve nested values when year is None.
+            # When year is supplied, extract that year's count from nested cached values.
+            # For year=2024, a cached value of {"2023": 10, "2024": 20, "all": 30} becomes 20.
+            # Fetch entries that lack the requested year. Preserve nested values when year is None.
             u_data = {x.replace("_", " "): v for x, v in u_data.items()}
+            if year is not None:
+                u_data = {
+                    title: (v.get(str(year), 0) if isinstance(v, dict) else v)
+                    for title, v in u_data.items()
+                }
         else:
             logger.info(f"{json_file} not found.")
 

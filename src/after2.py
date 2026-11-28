@@ -52,6 +52,7 @@ USERS_AGENTS_YEAR_PATH = BASE_PATH / "views_by_year_users_agents"
 def dump_languages_views_counts(
     languages_counts_by_year: defaultdict[str, defaultdict[str, int]],
     output_dir: Path,
+    all_years: set[str] | None = None,
 ) -> None:
     """Aggregate counts by year, sort descending by view count, and write JSON summaries."""
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -60,6 +61,12 @@ def dump_languages_views_counts(
     for lang, years in languages_counts_by_year.items():
         for year, count in years.items():
             years_data.setdefault(year, {})[lang] = count
+
+    # Ensure all years are represented, even empty ones
+    if all_years:
+        for year in all_years:
+            if year not in years_data:
+                years_data[year] = {}
 
     for year, lang_counts in years_data.items():
         sorted_counts = dict(sorted(lang_counts.items(), key=lambda item: item[1], reverse=True))
@@ -92,8 +99,10 @@ def process_pre_split_years(years_root_dir: Path) -> None:
 
             languages_counts_by_year[lang][year] = sum(data.values())
 
-    # TODO: Refresh summaries for empty year directories.
-    dump_languages_views_counts(languages_counts_by_year, years_root_dir)
+    # Refresh summaries for empty year directories by ensuring all years are represented
+    all_years = {p.name for p in years_paths}
+
+    dump_languages_views_counts(languages_counts_by_year, years_root_dir, all_years)
 
 
 def start() -> None:

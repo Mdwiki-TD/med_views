@@ -36,7 +36,6 @@ class MultiYearViewsPipeline:
         self.local = local
         self.zero = zero
 
-        # TODO: Forward the dump-directory override to the statistics service.
         self.dump_dir_path = dump_dir_path or Config.get_instance().paths.dump_dir_path
 
         self.dump_manager = dump_manager or DumpManager()
@@ -47,7 +46,7 @@ class MultiYearViewsPipeline:
             zero=self.zero,
             local=self.local,
         )
-        self.stats_service = MultiYearStatsService()
+        self.stats_service = MultiYearStatsService(dump_dir_path=self.dump_dir_path)
         self.views_fetcher = views_fetcher or ViewsFetcher()
         self.empty_data_all: dict[str, list[str]] = {}
 
@@ -185,7 +184,6 @@ class MultiYearViewsPipeline:
             # Use the current year or latest available year as reference
             current_year = datetime.datetime.now().year
             # Ensure we don't go beyond 2025
-            # TODO: Preserve None for all-years collection.
             year = min(current_year, 2025)
 
         json_file = self.views_fetcher.get_view_file(

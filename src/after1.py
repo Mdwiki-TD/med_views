@@ -89,13 +89,15 @@ def process_raw_views(
             # {title: view_count} restricted to titles with views > 0
             titles_data = {title: count for title, count in data.items() if count > 0}
 
-            # Nothing positive for this language/year: no file is written
-            # TODO: Remove an existing output when no positive views remain.
-            if not titles_data:
-                continue
-
             output_year_dir = create_year_folder(output_dir, year)
             output_file = output_year_dir / f"{lang}.json"
+
+            # Nothing positive for this language/year: remove existing output if present
+            if not titles_data:
+                if output_file.exists():
+                    output_file.unlink()
+                continue
+
             with open(output_file, "w", encoding="utf-8") as f:
                 json.dump(titles_data, f, ensure_ascii=False, indent=4)
 

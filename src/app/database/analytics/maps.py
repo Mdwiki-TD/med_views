@@ -99,12 +99,15 @@ class WikiReplicaMaps:
 
         logger.info("Loading wiki map from meta_p...")
 
-        # TODO: Metadata-map load failure can stop title collection before select_safe handles errors.
-        self._wiki_map = self._load_new_maps()
+        try:
+            self._wiki_map = self._load_new_maps()
+        except Exception as e:
+            logger.error("Failed to load wiki map from meta_p: %s", e)
+            self._wiki_map = {}
 
         logger.info("Loaded %d wiki entries from meta_p", len(self._wiki_map))
 
-        if self.save_new_data:
+        if self.save_new_data and self._wiki_map:
             data = {
                 "last_cache_update": now,
                 "data": self._wiki_map,
