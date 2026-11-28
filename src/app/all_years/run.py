@@ -220,9 +220,9 @@ class MultiYearViewsPipeline:
         languages = dict(sorted(languages.items(), key=lambda item: item[1], reverse=False))
 
         self.make_views(
-            languages,
-            limit,
-            maxv,
+            languages=languages,
+            limit=limit,
+            maxv=maxv,
             year=year,
         )
 

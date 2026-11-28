@@ -181,12 +181,12 @@ class TestDumpEmptyDataAll:
 class TestDumpOneLangFiles:
     """Tests for dump_one_lang_files method."""
 
-    def test_skips_when_data_is_empty(self, pipeline, mock_deps):
-        """Test that nothing is written when data is empty."""
-        pipeline.dump_one_lang_files(["Art1", "Art2"], {}, "en")
-
-        # stats_service.dump_stats should not be called
-        pipeline.stats_service.dump_stats.assert_not_called()
+    def test_returns_early_when_data_is_empty(self, pipeline, mock_deps):
+        """Test that method returns early when data is empty."""
+        with patch("builtins.open") as mock_open:
+            pipeline.dump_one_lang_files(["Art1", "Art2"], {}, "en")
+            # open should not be called to write data
+            mock_open.assert_not_called()
 
     def test_writes_multi_year_data_to_separate_year_files(self, pipeline, mock_deps, tmp_paths):
         """Test that multi-year data is written to separate year files."""
@@ -212,6 +212,9 @@ class TestDumpOneLangFiles:
 
     def test_normalizes_underscores_in_titles(self, pipeline, mock_deps):
         """Test that underscores are normalized to spaces."""
+        # Replace stats_service with a mock for this test
+        pipeline.stats_service = MagicMock()
+
         titles = ["Heart_Attack", "Lung_Cancer"]
         data = {"Heart_Attack": 500, "Lung_Cancer": 300}
 
@@ -293,6 +296,7 @@ class TestMakeViews:
 
     def test_dumps_stats_after_processing(self, pipeline):
         """Test that stats are dumped after processing all languages."""
+        pipeline.stats_service = MagicMock()
         languages = {"en": 100}
 
         with patch.object(pipeline, "process_language_views") as mock_process:
@@ -302,9 +306,10 @@ class TestMakeViews:
 
             pipeline.stats_service.dump_stats_all.assert_called_once()
 
-    def test_sorts_languages_by_count_ascending(self, pipeline):
-        """Test that languages are processed in ascending order by count."""
-        languages = {"en": 100, "fr": 50, "de": 25}
+    def test_processes_languages_in_iteration_order(self, pipeline):
+        """Test that languages are processed in the order they are provided."""
+        # Note: sorting happens in start(), not in make_views()
+        languages = {"de": 25, "fr": 50, "en": 100}  # Already sorted ascending
         processed_order = []
 
         with patch.object(pipeline, "process_language_views") as mock_process:

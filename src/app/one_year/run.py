@@ -163,7 +163,12 @@ class SingleYearViewsPipeline:
         # sort languages ASC
         languages = dict(sorted(languages.items(), key=lambda item: item[1], reverse=False))
 
-        self.make_views(languages, year, limit, maxv)
+        self.make_views(
+            languages,
+            year=year,
+            limit=limit,
+            maxv=maxv,
+        )
 
 
 __all__ = [
