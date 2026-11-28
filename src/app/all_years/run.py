@@ -31,6 +31,9 @@ class MultiYearViewsPipeline:
         local: bool = False,
         dump_dir_path: Path | None = None,
     ) -> None:
+        # TODO: Forward the dump-directory override to the statistics service.
+        self.dump_dir_path = dump_dir_path or Config.get_instance().paths.dump_dir_path
+
         self.dump_manager = dump_manager or DumpManager()
         self.titles_loader = TitlesLoader()
         self.views_service = MultiYearViewsService()
@@ -38,8 +41,6 @@ class MultiYearViewsPipeline:
         self.views_fetcher = views_fetcher or ViewsFetcher()
         self.empty_data_all: dict = {}
         self.local = local
-
-        self.dump_dir_path = dump_dir_path or Config.get_instance().paths.dump_dir_path
 
     def dump_empty_data_all(
         self,
