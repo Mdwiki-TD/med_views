@@ -11,11 +11,6 @@ tests/
 │   ├── io/
 │   │   └── test_dump_utils.py
 │   │
-│   ├── one_year/
-│   │   ├── test_one_year_run.py
-│   │   ├── test_stats_bot.py
-│   │   └── test_views.py
-│   │
 │   ├── services/
 │   │   ├── __init__.py
 │   │   ├── test_mdwiki_page_mwclient.py

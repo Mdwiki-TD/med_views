@@ -22,7 +22,7 @@ src/
 │   ├── io/
 │   │   └── dump_utils.py
 │   │
-│   ├── one_year/
+│   ├── all_years/
 │   │   ├── __init__.py
 │   │   ├── run.py
 │   │   ├── stats.py

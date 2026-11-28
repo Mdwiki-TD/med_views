@@ -181,11 +181,6 @@ med_views/
 │       ├── views_utils/
 │       │   └── views_helps.py  # View processing utilities
 |       |
-│       ├── one_year/
-│       |   ├── run.py          # Single-year processing
-│       |   ├── views.py        # Single-year processing
-│       |   └── stats.py        # Single-year statistics
-|       |
 │       ├── all_years/
 │       |   ├── run.py          # Multi-year processing
 │       |   ├── views.py        # Multi-year processing

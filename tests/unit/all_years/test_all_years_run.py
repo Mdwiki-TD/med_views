@@ -416,7 +416,7 @@ class TestStart:
             mock_make.assert_called_once()
             call_args = mock_make.call_args
             # make_views is called with all keyword arguments
-            languages = call_args.kwargs.get("languages")
+            languages = call_args.kwargs.get("languages") or {}
             # Should be sorted ascending by count
             assert list(languages.keys()) == ["de", "fr", "en"]
 

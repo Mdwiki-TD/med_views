@@ -8,7 +8,7 @@ from __future__ import annotations
 import logging
 import sys
 
-from src.app.one_year.run import SingleYearViewsPipeline
+from src.app.all_years.run import MultiYearViewsPipeline
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +30,7 @@ def parse_args():
 
 if __name__ == "__main__":
     year, limit, maxv = parse_args()
-    pipeline = SingleYearViewsPipeline(
+    pipeline = MultiYearViewsPipeline(
         local="local" in sys.argv,
     )
     pipeline.start(

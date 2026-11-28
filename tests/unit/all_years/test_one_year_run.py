@@ -1,7 +1,7 @@
 """
-Unit tests for src/app/one_year/run.py module.
+Unit tests for src/app/all_years/run.py module.
 
-Tests for: SingleYearViewsPipeline
+Tests for: MultiYearViewsPipeline
 """
 
 import json
@@ -10,7 +10,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from src.app.one_year.run import SingleYearViewsPipeline
+from src.app.all_years.run import MultiYearViewsPipeline
 
 
 @pytest.fixture
@@ -58,8 +58,8 @@ def mock_deps(tmp_paths):
 
 @pytest.fixture
 def pipeline(tmp_paths, mock_deps):
-    """Create a SingleYearViewsPipeline with mocked dependencies."""
-    return SingleYearViewsPipeline(
+    """Create a MultiYearViewsPipeline with mocked dependencies."""
+    return MultiYearViewsPipeline(
         views_fetcher=mock_deps["views_fetcher"],
         dump_manager=mock_deps["dump_manager"],
         local=True,
@@ -68,13 +68,13 @@ def pipeline(tmp_paths, mock_deps):
 
 
 class TestSingleYearViewsPipelineInit:
-    """Tests for SingleYearViewsPipeline initialization."""
+    """Tests for MultiYearViewsPipeline initialization."""
 
     def test_init_with_default_dependencies(self):
         """Test initialization creates default dependencies."""
-        with patch("src.app.one_year.run.Config") as mock_config:
+        with patch("src.app.all_years.run.Config") as mock_config:
             mock_config.get_instance.return_value.paths.dump_dir_path = Path("/tmp/test")
-            pipeline = SingleYearViewsPipeline()
+            pipeline = MultiYearViewsPipeline()
             assert pipeline.views_fetcher is not None
             assert pipeline.dump_manager is not None
             assert pipeline.views_service is not None
@@ -84,7 +84,7 @@ class TestSingleYearViewsPipelineInit:
 
     def test_init_with_injected_dependencies(self, mock_deps, tmp_paths):
         """Test initialization uses injected dependencies."""
-        pipeline = SingleYearViewsPipeline(
+        pipeline = MultiYearViewsPipeline(
             views_fetcher=mock_deps["views_fetcher"],
             dump_manager=mock_deps["dump_manager"],
             local=True,
@@ -111,14 +111,14 @@ class TestGetLanguagesArticlesCounts:
         """Test fallback to SQL when not in local mode and no cached data."""
         mock_deps["dump_manager"].load_languages_counts.return_value = {}
 
-        pipeline = SingleYearViewsPipeline(
+        pipeline = MultiYearViewsPipeline(
             views_fetcher=mock_deps["views_fetcher"],
             dump_manager=mock_deps["dump_manager"],
             local=False,
             dump_dir_path=tmp_paths["dump_dir"],
         )
 
-        with patch("src.app.one_year.run.MedicalTitlesRepository") as mock_repo_cls:
+        with patch("src.app.all_years.run.MedicalTitlesRepository") as mock_repo_cls:
             mock_repo = MagicMock()
             mock_repo.get_language_article_counts_sql.return_value = {"en": 200}
             mock_repo_cls.return_value = mock_repo
@@ -370,11 +370,11 @@ class TestStart:
 
 
 class TestIntegration:
-    """Integration tests for SingleYearViewsPipeline."""
+    """Integration tests for MultiYearViewsPipeline."""
 
     def test_full_pipeline_with_mocked_services(self, tmp_paths, mock_deps):
         """Test full pipeline execution with mocked external services."""
-        pipeline = SingleYearViewsPipeline(
+        pipeline = MultiYearViewsPipeline(
             views_fetcher=mock_deps["views_fetcher"],
             dump_manager=mock_deps["dump_manager"],
             local=True,
