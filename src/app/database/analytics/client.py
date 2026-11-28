@@ -34,6 +34,8 @@ class WikiReplicaDB(WikiReplicaBaseDB):
             logger.error("Unknown wiki: %s", wiki_identifier)
             if not safe_load:
                 raise ValueError(f"Unknown wiki: {wiki_identifier}")
+
+            # TODO: Do not return an uninitialized database client.
             return
 
         dbname = info["dbname"]
