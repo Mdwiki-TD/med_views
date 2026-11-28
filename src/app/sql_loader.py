@@ -125,8 +125,7 @@ class MedicalTitlesRepository:
 
         logger.info("def langs_titles():")
 
-        # TODO: Keep the multilingual query on enwiki.
-        enwiki_db = self.sql_client.load("arwiki")
+        enwiki_db = self.sql_client.load("enwiki")
         result = enwiki_db.select_safe(query)
 
         titles = {"en": []}
@@ -171,9 +170,12 @@ class MedicalTitlesRepository:
 
         logger.debug(f"def one_lang_titles({langcode}):")
 
-        # TODO: Catch unresolved-wiki errors in the title repository, as the previous client did.
-        enwiki_db = self.sql_client.load("enwiki")
-        result = enwiki_db.select_safe(query, (langcode,))
+        try:
+            enwiki_db = self.sql_client.load("enwiki")
+            result = enwiki_db.select_safe(query, (langcode,))
+        except (ValueError, Exception) as e:
+            logger.error("Failed to load titles for %s: %s", langcode, e)
+            return []
 
         titles = [x["ll_title"] for x in result]
 

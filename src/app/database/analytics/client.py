@@ -28,6 +28,8 @@ class WikiReplicaDB(WikiReplicaBaseDB):
         #     )
         # )
 
+        config = Config.get_instance()
+
         # wiki_identifier can be "arwiki", "enwiki", "ar", etc.
         info = self.maps.resolve_wiki(wiki_identifier)
         if not info:
@@ -35,7 +37,14 @@ class WikiReplicaDB(WikiReplicaBaseDB):
             if not safe_load:
                 raise ValueError(f"Unknown wiki: {wiki_identifier}")
 
-            # TODO: Do not return an uninitialized database client.
+            # Initialize with empty/invalid values so the client is usable but will fail gracefully
+            super().__init__(
+                dbname="",
+                host="",
+                user=config.analytics_database.user,
+                password=config.analytics_database.password,
+                port=config.analytics_database.port,
+            )
             return
 
         dbname = info["dbname"]
@@ -44,14 +53,12 @@ class WikiReplicaDB(WikiReplicaBaseDB):
 
         logger.info("Resolved wiki '%s' -> dbname='%s', host='%s'", wiki_identifier, dbname, host)
 
-        config = Config.get_instance()
-
-        # TODO: Pass the configured database host and port to both connection paths.
         super().__init__(
             dbname=f"{dbname}_p",
             host=host,
             user=config.analytics_database.user,
             password=config.analytics_database.password,
+            port=config.analytics_database.port,
         )
 
     @staticmethod

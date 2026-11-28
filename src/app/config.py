@@ -90,8 +90,7 @@ class ViewsDataPaths:
     def load(cls) -> ViewsDataPaths:
         """Initialize paths and create directories after dataclass init."""
         _views_data_path = os.getenv("MED_VIEWS_PATH", "")
-        # TODO: Expand the home directory in MED_VIEWS_PATH.
-        views_data_path = Path(_views_data_path) if _views_data_path else Path.home() / "data/views"
+        views_data_path = Path(_views_data_path).expanduser() if _views_data_path else Path.home() / "data/views"
 
         # --------------------------
         # update_med_views paths
