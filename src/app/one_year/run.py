@@ -120,35 +120,40 @@ class SingleYearViewsPipeline:
 
     def process_language_views(
         self,
-        year: int,
         lang: str,
+        year: int,
         maxv: int = 0,
     ) -> dict[str, int]:
         titles = self.titles_loader.load_lang_titles(lang)
 
         json_file = self.views_fetcher.get_view_file(
-            lang,
-            year,
+            lang=lang,
+            year=year,
         )
 
         data = self.views_service.get_one_lang_views(
             lang,
             titles,
             json_file,
-            year=year,
             maxv=maxv,
+            year=year,
         )
 
-        self.dump_one_lang_files(titles, data, lang, year)
+        self.dump_one_lang_files(
+            titles,
+            data,
+            lang,
+            year=year,
+        )
 
         return data
 
     def start(
         self,
-        year,
-        limit,
-        maxv,
-    ):
+        limit: int,
+        maxv: int,
+        year: int,
+    ) -> None:
         """
         Orchestrates collection of per-language pageview totals for a given year.
         """
