@@ -5,12 +5,13 @@ from __future__ import annotations
 
 import json
 import logging
+from pathlib import Path
+from typing import Any
 
-from app.config import get_config
-from app.helps import JsonHelper
-from app.views_utils.views_helps import ViewsFetcher
-from app.wikitext import MwclientPage
+from app.config import Config
+from app.services import MwclientPage
 from src.app.io.dump_utils import DumpManager
+from src.app.views_utils.views_fetcher import ViewsFetcher
 from src.app.wikitext.texts_utils import WikiTextBuilder
 
 logger = logging.getLogger(__name__)
@@ -19,15 +20,22 @@ logger = logging.getLogger(__name__)
 class ReportGenerator:
     """Generates and uploads wiki reports for medical pageview statistics."""
 
-    def __init__(self, save: bool = True) -> None:
-        self.config = get_config()
-        self.dump_manager = DumpManager(config=self.config)
-        self.json_helper = JsonHelper()
-        self.wiki_builder = WikiTextBuilder()
-        self.views_fetcher = ViewsFetcher()
+    def __init__(
+        self,
+        dump_manager: DumpManager | None = None,
+        wiki_builder: WikiTextBuilder | None = None,
+        views_fetcher: ViewsFetcher | None = None,
+        dump_dir_path: Path | None = None,
+        save: bool = True,
+    ) -> None:
+        self.dump_manager = dump_manager or DumpManager()
+        self.wiki_builder = wiki_builder or WikiTextBuilder()
+        self.views_fetcher = views_fetcher or ViewsFetcher()
+
+        self.dump_dir_path = dump_dir_path or Config.get_instance().paths.dump_dir_path
         self.save = save
 
-    def get_languages_articles_counts(self) -> dict:
+    def get_languages_articles_counts(self) -> dict[str, int]:
         all_infos = self.dump_manager.load_languages_counts()
 
         if all_infos:
@@ -39,7 +47,10 @@ class ReportGenerator:
 
         return result
 
-    def calculate_total_views(self, langcode, u_data) -> int:
+    def calculate_total_views(self, langcode: str, u_data: dict[str, Any] | None) -> int:
+        if u_data is None:
+            return 0
+
         total = 0
 
         for _, views in u_data.items():
@@ -51,13 +62,17 @@ class ReportGenerator:
             logger.info(f"No views for {langcode}")
         return total
 
-    def fetch_language_statistics(self, year, langcode) -> int:
+    def fetch_language_statistics(self, year: int, langcode: str) -> int:
         json_file = self.views_fetcher.get_view_file(langcode, year)
         year_data = self.dump_manager.json_load(json_file)
 
+        # Handle case where json_load returns a list or None
+        if not isinstance(year_data, dict):
+            return 0
+
         return self.calculate_total_views(langcode, year_data)
 
-    def make_views_local(self, languages, year, limit) -> dict:
+    def make_views_local(self, languages: dict[str, int], year: int, limit: int) -> dict[str, int]:
         views = {}
 
         for n, (lang, _) in enumerate(languages.items(), start=1):
@@ -69,7 +84,7 @@ class ReportGenerator:
 
         return views
 
-    def make_page_text(self, year, limit) -> str | None:
+    def make_page_text(self, year: int, limit: int) -> str | None:
         """
         Orchestrates collection of per-language pageview totals for a given year.
 
@@ -105,17 +120,17 @@ class ReportGenerator:
         views = dict(sorted(views.items(), key=lambda item: item[1], reverse=True))
 
         # dump views
-        with open(self.config.main_dump_path / f"{year}_views_by_lang.json", "w", encoding="utf-8") as f:
+        with open(self.dump_dir_path / f"{year}_views_by_lang.json", "w", encoding="utf-8") as f:
             json.dump(views, f, ensure_ascii=False, indent=4)
 
         newtext = self.wiki_builder.build_wiki_text(languages, views)
 
-        with open(self.config.main_dump_path / f"{year}_text.txt", "w", encoding="utf-8") as f:
+        with open(self.dump_dir_path / f"{year}_text.txt", "w", encoding="utf-8") as f:
             f.write(newtext)
 
         return newtext
 
-    def start(self, year, limit):
+    def start(self, year: int, limit: int) -> None:
         newtext = self.make_page_text(year, limit)
 
         if not self.save:

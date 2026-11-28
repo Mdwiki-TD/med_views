@@ -6,7 +6,7 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-from ..config import Config, get_config
+from ..config import Config
 from ..services.mw_views import PageviewsClient
 
 logger = logging.getLogger(__name__)
@@ -22,19 +22,18 @@ class ViewsFetcher:
     def __init__(
         self,
         pageviews_client: PageviewsClient | None = None,
-        config: Config | None = None,
+        dump_dir_views_by_year_path: Path | None = None,
     ) -> None:
-        """Initialize the ViewsFetcher.
+        """Initialize the ViewsFetcher."""
+        self.dump_dir_views_by_year_path = (
+            dump_dir_views_by_year_path or Config.get_instance().paths.dump_dir_views_by_year_path
+        )
 
-        Parameters:
-            pageviews_client: Optional PageviewsClient for API calls.
-                Defaults to a new client with config parallelism.
-            config: Optional configuration object. Defaults to get_config().
-        """
-        self._config = config or get_config()
-        self._client = pageviews_client or PageviewsClient(parallelism=self._config.parallelism)
+        self._client = pageviews_client or PageviewsClient(
+            parallelism=Config.get_instance().parallelism,
+        )
 
-    def article_views(self, site: str, articles: list, year: int = 2024) -> dict:
+    def article_views(self, site: str, articles: list[str], year: int = 2024) -> dict[str, int]:
         """Get article views for a specific site and year.
 
         Parameters:
@@ -55,16 +54,16 @@ class ViewsFetcher:
             end=f"{year}1231",
         )
 
-        new_data = {}
+        new_data: dict[str, int] = {}
 
         for title, views in data.items():
             title = title.replace("_", " ")
 
-            new_data[title] = views.get(year) or views.get(str(year)) or views.get("all", 0)
+            new_data[title] = views.get(str(year)) or views.get("all", 0)
 
         return new_data
 
-    def article_views_all_years(self, site: str, articles: list) -> dict:
+    def article_views_all_years(self, site: str, articles: list[str]) -> dict[str, dict[str, int]]:
         """Get article views for all years (2015-2025).
 
         Parameters:
@@ -104,7 +103,7 @@ class ViewsFetcher:
         Returns:
             pathlib.Path: Path to the "{lang}.json" file inside the year directory.
         """
-        dir_v = self._config.views_by_year_path / str(year)
+        dir_v = self.dump_dir_views_by_year_path / str(year)
 
         if not dir_v.exists():
             dir_v.mkdir(parents=True)

@@ -16,8 +16,7 @@ ruff check src/ tests/
 
 # Workflow execution (in order)
 python3 start_titles.py             # 1. Collect titles from DB
-python3 start_views.py              # 2. Fetch pageviews (single year)
-python3 start_views_all_years.py    # 2. Fetch pageviews (2015-2025)
+python3 start_views.py              # 2. Fetch pageviews (2016-2025)
 python3 save_reports.py             # 3. Generate/upload reports
 ```
 
@@ -30,15 +29,14 @@ DB Query → Titles JSON → API Fetch → Views JSON → Aggregation → Wiki R
 ```
 
 1. **start_titles.py**: Queries Wikimedia Labs DB for medical articles across all language editions
-2. **start_views.py / start_views_all_years.py**: Fetches pageview data via Wikimedia API
+2. **start_views.py**: Fetches pageview data via Wikimedia API
 3. **save_reports.py**: Aggregates statistics and generates MediaWiki tables for MDWiki
 
 ### Dual-System Design
 
 Two parallel implementations exist:
 
-- **Single-year** (`one_year/views.py`, `one_year/stats.py`): Processes one year
-- **Multi-year** (`all_years/views.py`, `all_years/stats.py`): Processes 2015-2025 simultaneously
+- **Single/Multi-year** (`all_years/views.py`, `all_years/stats.py`): Processes 2015-2025 simultaneously
 
 Both share utilities in `src/app/views_utils/`.
 
@@ -70,24 +68,45 @@ Runtime arguments passed via sys.argv with `key:value` format:
 ## Environment Variables
 
 ```bash
-MDWIKI_USERNAME=your_username      # MDWiki login
-MDWIKI_HIMO_PASSWORD=your_password # MDWiki password
-VIEWS_DUMP_PATH=/path/to/output    # Output directory (default: ~data/views_dumps/)
+MDWIKI_USERNAME=your_username         # MDWiki login
+MDWIKI_HIMO_PASSWORD=your_password    # MDWiki password
+
+MED_VIEWS_PATH=~/data/views           # Output directory (default: ~data/views/)
+
 ```
 
 ## Data Structure
 
 ```
-~data/views_dumps/
-├── titles/*.json              # Per-language article lists
-├── views_by_year/YYYY/*.json  # Yearly view data per language
-├── all_languages_titles.json  # Title count summary
-└── YYYY_summary.json          # Annual statistics
+$MED_VIEWS_PATH (default: ~data/views/)
+    ├── dumps
+    │   ├── titles/
+    │   │   └─── ar.json, ..., en.json
+    │   │
+    │   └── views_by_year/
+    │       └── 2016, ..., 2025
+    │           └── ar.json, ..., en.json
+    │
+    └── update_med_views
+        ├── languages_titles_counts.json
+        ├── views_by_year_all_agents
+        │   ├── 2016, ..., 2025
+        │   │   └── ar.json, ..., en.json
+        │   │
+        │   ├── 2016_languages_counts.json
+        │   └── 2025_languages_counts.json
+        │
+        └── views_by_year_users_agents
+            ├── 2016, ..., 2025
+            │   └── ar.json, ..., en.json
+            │
+            ├── 2016_languages_counts.json
+            └── 2025_languages_counts.json
 ```
 
 ## Key Patterns
 
-- **Config dataclass**: `src/app/config.py` uses a `@dataclass` with singleton access via `get_config()`. The dataclass handles env var loading and path computation in `__post_init__`. Use `config = get_config()` to get the singleton instance.
+- **Config dataclass**: `src/app/config.py` uses a `@dataclass` with singleton access via `Config.get_instance()`. The dataclass handles env var loading and path computation in `__post_init__`. Use `config = Config.get_instance()` to get the singleton instance.
 - **Batch processing**: 500 articles per API call
 - **Incremental updates**: Checks existing files before re-fetching
 - **Title normalization**: Automatic underscore↔space conversion for wiki compatibility

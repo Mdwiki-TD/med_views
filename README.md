@@ -37,12 +37,14 @@ Copy `example.env` to `.env` and configure:
 ```bash
 MDWIKI_USERNAME=your_username
 MDWIKI_HIMO_PASSWORD=your_password
-MAIN_PATH=/path/to/output/directory
+
+MED_VIEWS_PATH=~/data/views           # Output directory (default: ~data/views/)
+
 ```
 
 - `MDWIKI_USERNAME`: Username for MDWiki uploads
 - `MDWIKI_HIMO_PASSWORD`: Password for MDWiki uploads
-- `MAIN_PATH`: Output directory for JSON dumps (defaults to `~/data/views_dumps/`)
+- `MED_VIEWS_PATH`: Output directory (default: `~data/views/`)
 
 ## Workflow and Execution
 
@@ -59,7 +61,7 @@ python3 start_titles.py
 **What it does:**
 
 - Retrieves medicine-related titles using SQL queries
-- Saves per-language JSON files to `~/data/views_dumps/titles/`
+- Saves per-language JSON files to `~/data/views/dumps/titles/`
 - Creates `all_languages_titles.json` summary
 
 **Options:**
@@ -73,20 +75,20 @@ Fetch historical pageview data for the collected titles.
 **Single-year mode:**
 
 ```bash
-python3 start_views.py
+python3 start_views.py -year:<year>
 ```
 
 **Multi-year mode (2015-2025):**
 
 ```bash
-python3 start_views_all_years.py
+python3 start_views.py
 ```
 
 **What it does:**
 
 - Iterates through collected titles
 - Uses Wikimedia Pageviews API to fetch view counts
-- Stores yearly JSON data in `~/data/views_dumps/views_by_year/YYYY/`
+- Stores yearly JSON data in `~/data/views/dumps/views_by_year/YYYY/`
 
 **Parameters:**
 
@@ -94,7 +96,13 @@ python3 start_views_all_years.py
 - `-min:<number>`: Minimum number of titles required to process a language
 - `-para:<number>`: Number of parallel threads (default: 10)
 
-### 3. Generate Reports and Upload
+### 3. Generate Reports
+
+```bash
+python3 report_generator.py
+```
+
+### 4. Save Reports and Upload
 
 Aggregate the data and generate a summary report for MDWiki.
 
@@ -113,6 +121,23 @@ python3 save_reports.py
 - `year:<year>`: The year for which to generate stats (default: 2024)
 - `limit:<number>`: Limit the number of languages processed
 - `save`: Actually upload to MDWiki (without this, just generates locally)
+
+### Full Workflow
+
+```bash
+
+python3 start_titles.py
+
+python3 start_views.py
+
+python3 report_generator.py
+
+python3 save_reports.py
+
+python3 after1.py
+
+python3 after2.py
+```
 
 ## Testing
 
@@ -160,15 +185,13 @@ Configuration is in `pyproject.toml`:
 med_views/
 ├── src/
 │   ├── start_titles.py             # Entry point: title collection
-│   ├── start_views.py              # Entry point: single-year view collection
-│   ├── start_views_all_years.py    # Entry point: multi-year view collection
+│   ├── start_views.py              # Entry point: multi/single-year view collection
 │   ├── save_reports.py             # Entry point: report generation
 |   |
 │   └── app/
 │       ├── config.py           # Centralized configuration
 │       ├── services/
 │       │   ├── mw_views.py     # Pageviews API client
-│       │   └── mysql_client.py # Database client
 │       │   └── mdwiki_page_mwclient.py  # MDWiki operations
 |       |
 │       ├── api_sql/
@@ -179,11 +202,6 @@ med_views/
 |       |
 │       ├── views_utils/
 │       │   └── views_helps.py  # View processing utilities
-|       |
-│       ├── one_year/
-│       |   ├── run.py          # Single-year processing
-│       |   ├── views.py        # Single-year processing
-│       |   └── stats.py        # Single-year statistics
 |       |
 │       ├── all_years/
 │       |   ├── run.py          # Multi-year processing
@@ -202,20 +220,30 @@ med_views/
 The system generates JSON files in the following structure:
 
 ```
-~/data/views_dumps/
-├── titles/
-│   ├── en.json                 # English medical article titles
-│   ├── ar.json                 # Arabic medical article titles
-│   └── ...                     # Other languages
-├── views_by_year/
-│   ├── 2024/
-│   │   ├── en.json             # English 2024 view data
-│   │   └── ...
-│   └── 2025/
-│       └── ...
-├── all_languages_titles.json   # Summary of all language titles
-├── 2024_summary.json           # Annual statistics
-└── 2024_stats_all.json         # Per-language statistics
+$MED_VIEWS_PATH (default: ~data/views/)
+    ├── dumps
+    │   ├── titles/
+    │   │   └─── ar.json, ..., en.json
+    │   │
+    │   └── views_by_year/
+    │       └── 2016, ..., 2025
+    │           └── ar.json, ..., en.json
+    │
+    └── update_med_views
+        ├── languages_titles_counts.json
+        ├── views_by_year_all_agents
+        │   ├── 2016, ..., 2025
+        │   │   └── ar.json, ..., en.json
+        │   │
+        │   ├── 2016_languages_counts.json
+        │   └── 2025_languages_counts.json
+        │
+        └── views_by_year_users_agents
+            ├── 2016, ..., 2025
+            │   └── ar.json, ..., en.json
+            │
+            ├── 2016_languages_counts.json
+            └── 2025_languages_counts.json
 ```
 
 ## Key Features

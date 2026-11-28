@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import logging
 
-from .wiki_sql import WikiSQLClient
+from .database import WikiReplicaDB
 
 logger = logging.getLogger(__name__)
 
@@ -19,17 +19,17 @@ class MedicalTitlesRepository:
 
     def __init__(
         self,
-        sql_client: WikiSQLClient | None = None,
+        sql_client: type[WikiReplicaDB] | None = None,
     ) -> None:
         """Initialize the repository.
 
         Parameters:
             sql_client: Optional WikiSQL client for executing queries.
-                Defaults to WikiSQLClient.
+                Defaults to WikiReplicaDB.
         """
-        self._sql_client = sql_client or WikiSQLClient()
+        self.sql_client = sql_client or WikiReplicaDB
 
-    def get_en_articles(self) -> list:
+    def get_en_articles(self) -> list[str]:
         """Get English medical article titles.
 
         Returns:
@@ -47,13 +47,14 @@ class MedicalTitlesRepository:
 
         logger.debug("def get_en_articles():")
 
-        result = self._sql_client.retrieve_sql_results(query, "enwiki")
+        enwiki_db = self.sql_client.load("enwiki")
+        result = enwiki_db.select_safe(query)
 
         articles = [x["page_title"] for x in result]
 
         return articles
 
-    def get_language_article_counts_sql(self) -> dict:
+    def get_language_article_counts_sql(self) -> dict[str, int]:
         """Get article counts per language from SQL.
 
         Returns:
@@ -74,20 +75,21 @@ class MedicalTitlesRepository:
 
         logger.debug("def get_language_article_counts_sql():")
 
-        result = self._sql_client.retrieve_sql_results(query, "enwiki")
+        enwiki_db = self.sql_client.load("enwiki")
+        result = enwiki_db.select_safe(query)
 
         languages = {x["ll_lang"]: x["counts"] for x in result}
 
         languages["en"] = len(self.get_en_articles())
         return languages
 
-    def get_ar_results(self) -> list:
+    def get_ar_results(self) -> list[str]:
         """Get Arabic medical article titles.
 
         Returns:
             list: List of Arabic medical article titles.
         """
-        qua = """
+        query = """
             select page_title
                 from page, page_assessments, page_assessments_projects
                 where pap_project_title = "طب"
@@ -97,13 +99,14 @@ class MedicalTitlesRepository:
                 and page_namespace = 0
         """
 
-        result = self._sql_client.retrieve_sql_results(qua, "arwiki")
+        arwiki_db = self.sql_client.load("arwiki")
+        result = arwiki_db.select_safe(query)
 
         ar_titles = [x["page_title"].replace("_", " ") for x in result]
 
         return ar_titles
 
-    def retrieve_medicine_titles(self) -> dict:
+    def retrieve_medicine_titles(self) -> dict[str, list[str]]:
         """Retrieve all medical article titles across all languages.
 
         Returns:
@@ -122,7 +125,9 @@ class MedicalTitlesRepository:
 
         logger.info("def langs_titles():")
 
-        result = self._sql_client.retrieve_sql_results(query, "enwiki")
+        # TODO: Keep the multilingual query on enwiki.
+        enwiki_db = self.sql_client.load("arwiki")
+        result = enwiki_db.select_safe(query)
 
         titles = {"en": []}
 
@@ -140,7 +145,7 @@ class MedicalTitlesRepository:
 
         return titles
 
-    def one_lang_titles(self, langcode: str) -> list:
+    def one_lang_titles(self, langcode: str) -> list[str]:
         """Get medical article titles for a single language.
 
         Parameters:
@@ -166,7 +171,9 @@ class MedicalTitlesRepository:
 
         logger.debug(f"def one_lang_titles({langcode}):")
 
-        result = self._sql_client.retrieve_sql_results(query, "enwiki", values=(langcode,))
+        # TODO: Catch unresolved-wiki errors in the title repository, as the previous client did.
+        enwiki_db = self.sql_client.load("enwiki")
+        result = enwiki_db.select_safe(query, (langcode,))
 
         titles = [x["ll_title"] for x in result]
 

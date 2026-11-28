@@ -1,13 +1,12 @@
 """
-Tests for src.app.views_utils.views_helps
+Tests for src.app.views_utils.views_fetcher
 """
 
 import tempfile
 from pathlib import Path
 from unittest.mock import MagicMock
 
-from src.app.config import Config
-from src.app.views_utils.views_helps import ViewsFetcher
+from src.app.views_utils.views_fetcher import ViewsFetcher
 
 
 class TestViewsFetcher:
@@ -66,10 +65,7 @@ class TestViewsFetcher:
     def test_get_view_file(self):
         """Test computing view file path."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_config = MagicMock(spec=Config)
-            mock_config.views_by_year_path = Path(tmpdir)
-
-            fetcher = ViewsFetcher(config=mock_config)
+            fetcher = ViewsFetcher(dump_dir_views_by_year_path=Path(tmpdir))
             result = fetcher.get_view_file("en", 2024)
 
             expected_dir = Path(tmpdir) / "2024"

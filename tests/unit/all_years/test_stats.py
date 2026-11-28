@@ -5,10 +5,8 @@ Tests for src.app.all_years.stats_bot_all_years
 import json
 import tempfile
 from pathlib import Path
-from unittest.mock import MagicMock
 
 from src.app.all_years.stats import MultiYearStatsService
-from src.app.config import Config
 
 
 class TestMultiYearStatsService:
@@ -17,10 +15,7 @@ class TestMultiYearStatsService:
     def test_dump_stats_with_single_year_data(self):
         """Test calculating statistics with single year data"""
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_config = MagicMock(spec=Config)
-            mock_config.main_dump_path = Path(tmpdir)
-
-            service = MultiYearStatsService(config=mock_config)
+            service = MultiYearStatsService(dump_dir_path=Path(tmpdir))
 
             articles = ["Art1", "Art2", "Art3"]
             new_data = {
@@ -32,17 +27,14 @@ class TestMultiYearStatsService:
             result = service.dump_stats(articles, new_data, "en")
 
             assert result["articles"] == 3
-            assert result["views"] == 600  # 300 from 2024 + 300 from all
+            assert result["views"] == 300
             assert result["empty"] == 1
             assert result["not_empty"] == 2
 
     def test_dump_stats_with_multi_year_data(self):
         """Test calculating statistics with multi-year data"""
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_config = MagicMock(spec=Config)
-            mock_config.main_dump_path = Path(tmpdir)
-
-            service = MultiYearStatsService(config=mock_config)
+            service = MultiYearStatsService(dump_dir_path=Path(tmpdir))
 
             articles = ["Art1", "Art2"]
             new_data = {
@@ -53,16 +45,13 @@ class TestMultiYearStatsService:
             result = service.dump_stats(articles, new_data, "en")
 
             assert result["articles"] == 2
-            # Views sum all int values: (100+200+300) + (50+75+125) = 850
-            assert result["views"] == 850
+            # Views sum all int values without "all"
+            assert result["views"] == 425
 
     def test_dump_stats_with_empty_entries(self):
         """Test calculating statistics with empty entries"""
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_config = MagicMock(spec=Config)
-            mock_config.main_dump_path = Path(tmpdir)
-
-            service = MultiYearStatsService(config=mock_config)
+            service = MultiYearStatsService(dump_dir_path=Path(tmpdir))
 
             articles = ["Art1", "Art2", "Art3"]
             new_data = {
@@ -79,10 +68,7 @@ class TestMultiYearStatsService:
     def test_dump_stats_with_missing_entries(self):
         """Test calculating statistics with missing entries"""
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_config = MagicMock(spec=Config)
-            mock_config.main_dump_path = Path(tmpdir)
-
-            service = MultiYearStatsService(config=mock_config)
+            service = MultiYearStatsService(dump_dir_path=Path(tmpdir))
 
             articles = ["Art1", "Art2", "Art3"]
             new_data = {
@@ -101,10 +87,7 @@ class TestMultiYearStatsService:
     def test_dump_stats_with_mixed_data_types(self):
         """Test calculating statistics with mixed int and dict data"""
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_config = MagicMock(spec=Config)
-            mock_config.main_dump_path = Path(tmpdir)
-
-            service = MultiYearStatsService(config=mock_config)
+            service = MultiYearStatsService(dump_dir_path=Path(tmpdir))
 
             articles = ["Art1", "Art2", "Art3"]
             new_data = {
@@ -116,16 +99,13 @@ class TestMultiYearStatsService:
             result = service.dump_stats(articles, new_data, "en")
 
             assert result["articles"] == 3
-            assert result["views"] == 250  # 200 from Art1 + 50 from Art2
+            assert result["views"] == 150  # 100 from Art1 + 50 from Art2 without "all"
             assert result["empty"] == 1  # Art3
 
     def test_dump_stats_filters_hash_in_articles_list(self):
         """Test that hash entries in articles list are counted separately"""
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_config = MagicMock(spec=Config)
-            mock_config.main_dump_path = Path(tmpdir)
-
-            service = MultiYearStatsService(config=mock_config)
+            service = MultiYearStatsService(dump_dir_path=Path(tmpdir))
 
             articles = ["Art1", "Art2#section"]
             new_data = {
@@ -136,15 +116,12 @@ class TestMultiYearStatsService:
             result = service.dump_stats(articles, new_data, "en")
 
             assert result["hash"] == 1
-            assert result["views"] == 200  # Only Art1 counted in views
+            assert result["views"] == 100  # Only Art1 counted in views without "all"
 
     def test_dump_stats_all(self):
         """Test writing all statistics to files."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_config = MagicMock(spec=Config)
-            mock_config.main_dump_path = Path(tmpdir)
-
-            service = MultiYearStatsService(config=mock_config)
+            service = MultiYearStatsService(dump_dir_path=Path(tmpdir))
 
             # Add some stats
             service.stats_all_data = {
@@ -152,11 +129,71 @@ class TestMultiYearStatsService:
                 "ar": {"articles": 50, "empty": 5, "not_empty": 45, "hash": 2, "views": 2500},
             }
 
-            service.dump_stats_all(service.stats_all_data)
+            service.dump_stats_all(data=service.stats_all_data)
 
             # Check files were created
             summary_file = Path(tmpdir) / "all_years_summary.json"
             stats_file = Path(tmpdir) / "all_years_stats_all.json"
+
+            assert summary_file.exists()
+            assert stats_file.exists()
+
+            with open(summary_file) as f:
+                summary = json.load(f)
+                assert summary["articles"] == 150
+                assert summary["total_views"] == 7500
+
+
+class TestSingleYearStatsService:
+    """Tests for the MultiYearStatsService class."""
+
+    def test_dump_stats(self):
+        """Test calculating statistics for one language."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            service = MultiYearStatsService(dump_dir_path=Path(tmpdir))
+
+            articles = ["Cancer", "Diabetes", "Empty"]
+            new_data = {"Cancer": 1000, "Diabetes": 500, "Empty": 0}
+
+            result = service.dump_stats(articles, new_data, "en")
+
+            assert result["articles"] == 3
+            assert result["views"] == 1500
+            assert result["empty"] == 1
+            assert result["not_empty"] == 2
+
+    def test_dump_stats_filters_hash(self):
+        """Test that hash entries are filtered out."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            service = MultiYearStatsService(dump_dir_path=Path(tmpdir))
+
+            articles = ["Cancer", "Test#section"]
+            new_data = {"Cancer": 1000, "Test#section": 500}
+
+            result = service.dump_stats(articles, new_data, "en")
+
+            assert result["hash"] == 1
+            assert result["views"] == 1000  # Only Cancer counted
+
+    def test_dump_stats_all(self):
+        """Test writing all statistics to files."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            service = MultiYearStatsService(dump_dir_path=Path(tmpdir))
+
+            # Add some stats
+            service.stats_all_data = {
+                "en": {"articles": 100, "empty": 10, "not_empty": 90, "hash": 5, "views": 5000},
+                "ar": {"articles": 50, "empty": 5, "not_empty": 45, "hash": 2, "views": 2500},
+            }
+
+            service.dump_stats_all(
+                data=service.stats_all_data,
+                year=2024,
+            )
+
+            # Check files were created
+            summary_file = Path(tmpdir) / "2024_summary.json"
+            stats_file = Path(tmpdir) / "2024_stats_all.json"
 
             assert summary_file.exists()
             assert stats_file.exists()

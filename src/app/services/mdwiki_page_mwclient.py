@@ -7,14 +7,14 @@ import logging
 import mwclient
 import mwclient.errors
 
-from ..config import get_config
+from ..config import Config
 
 logger = logging.getLogger(__name__)
 
 
 class MwclientPage:
     def __init__(self, title: str) -> None:
-        config = get_config()
+        config = Config.get_instance()
         self.site_mw = mwclient.Site("www.mdwiki.org")
         self.username = config.my_username
         self.password = config.mdwiki_pass

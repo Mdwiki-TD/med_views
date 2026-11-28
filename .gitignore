@@ -3,5 +3,5 @@
 views_all_run_it.py
 *.zip
 _works_files/**
-!_works_files/test_tree.md
-!_works_files/tree.md
+!_works_files/*.md
+/src/app/database/tools

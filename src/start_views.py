@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 """
 python src/start_views.py
+
+Collects and stores article views for all years (2015-2025)
 """
 
 from __future__ import annotations
@@ -8,13 +10,13 @@ from __future__ import annotations
 import logging
 import sys
 
-from src.app.one_year.run import SingleYearViewsPipeline
+from src.app.all_years.run import MultiYearViewsPipeline
 
 logger = logging.getLogger(__name__)
 
 
-def parse_args():
-    year = 2025
+def parse_args() -> tuple[int | None, int, int]:
+    year = None
     limit = 0
     maxv = 0
     for arg in sys.argv:
@@ -30,7 +32,12 @@ def parse_args():
 
 if __name__ == "__main__":
     year, limit, maxv = parse_args()
-    pipeline = SingleYearViewsPipeline(
+    pipeline = MultiYearViewsPipeline(
         local="local" in sys.argv,
+        zero="zero" in sys.argv,
     )
-    pipeline.start(year, limit, maxv)
+    pipeline.start(
+        year=year,
+        limit=limit,
+        maxv=maxv,
+    )

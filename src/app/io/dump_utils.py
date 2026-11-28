@@ -8,7 +8,7 @@ import logging
 from pathlib import Path
 from typing import Any
 
-from ..config import Config, get_config
+from ..config import Config
 
 logger = logging.getLogger(__name__)
 
@@ -22,19 +22,17 @@ class DumpManager:
 
     def __init__(
         self,
-        config: Config | None = None,
+        dump_dir_path: Path | None = None,
+        dump_dir_titles_path: Path | None = None,
     ) -> None:
-        """Initialize the DumpManager.
+        """Initialize the DumpManager."""
+        self.dump_dir_titles_path = dump_dir_titles_path or Config.get_instance().paths.dump_dir_titles_path
+        self.dump_dir_path = dump_dir_path or Config.get_instance().paths.dump_dir_path
 
-        Parameters:
-            config: Optional configuration object. Defaults to get_config().
-        """
-        self._config = config or get_config()
+    def count_languages_in_json(self) -> dict[str, int]:
+        """Count items in each language JSON file in dump_dir_titles_path.
 
-    def count_languages_in_json(self) -> dict[str, list[str]]:
-        """Count items in each language JSON file in json_titles_path.
-
-        Scans json_titles_path for files with a .json extension, uses each
+        Scans dump_dir_titles_path for files with a .json extension, uses each
         file's stem as the language key, and records the number of top-level
         items in that file.
 
@@ -44,10 +42,10 @@ class DumpManager:
         """
         result = {}
 
-        for json_file in self._config.json_titles_path.glob("*.json"):
+        for json_file in self.dump_dir_titles_path.glob("*.json"):
             lang = json_file.stem
             with open(json_file, encoding="utf-8") as f:
-                result[lang] = len(json.load(f))
+                result[str(lang)] = len(json.load(f))
 
         return result
 
@@ -61,7 +59,7 @@ class DumpManager:
             list[str]: A list of title strings with underscores replaced by
                 spaces; returns an empty list if the language file does not exist.
         """
-        json_file = self._config.json_titles_path / f"{lang}.json"
+        json_file = self.dump_dir_titles_path / f"{lang}.json"
 
         if json_file.exists():
             with open(json_file, encoding="utf-8") as f:
@@ -73,7 +71,7 @@ class DumpManager:
         return []
 
     @staticmethod
-    def replace_underscores(data: dict | list | Any):
+    def replace_underscores(data: dict[str, Any] | list[Any] | Any) -> dict[str, Any] | list[Any] | Any:
         """Replace underscores with spaces in data.
 
         Parameters:
@@ -90,7 +88,7 @@ class DumpManager:
 
         raise TypeError(f"Unsupported type: {type(data)}")
 
-    def dump_one(self, file, data) -> None:
+    def dump_one(self, file: str | Path, data: dict[str, Any] | list[Any]) -> None:
         """Write data to a JSON file.
 
         Parameters:
@@ -119,22 +117,19 @@ class DumpManager:
 
         logger.debug(f"{file=}, {len(data)=}")
 
-        data = self.replace_underscores(data)
+        normlized_data = self.replace_underscores(data)
 
         with open(file, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False)
+            json.dump(normlized_data, f, ensure_ascii=False)
 
-    def dump_languages_counts(self, data: dict[str, int]) -> None:
+    def dump_languages_titles_counts(self, data: dict[str, int]) -> None:
         """Write language count data to the main dump file.
 
         The input mapping is sorted by count in descending order and written
-        to main_dump_path/languages_counts.json as JSON. If data is empty or
+        to dump_dir_path/languages_titles_counts.json as JSON. If data is empty or
         has 200 or fewer entries, no file is written.
-
-        Parameters:
-            data: Mapping of language identifiers to integer counts.
         """
-        file = self._config.main_dump_path / "languages_counts.json"
+        file = self.dump_dir_path / "languages_titles_counts.json"
 
         # sort data
         data = dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
@@ -145,15 +140,15 @@ class DumpManager:
             with open(file, "w", encoding="utf-8") as f:
                 json.dump(fix_data, f, ensure_ascii=False, indent=4)
 
-    def load_languages_counts(self) -> dict:
+    def load_languages_counts(self) -> dict[str, int]:
         """Load the saved mapping of language codes to article counts.
 
         Returns:
             dict: A mapping from language code (str) to count (int) loaded
-                from "languages_counts.json", or an empty dict if the file
+                from "languages_titles_counts.json", or an empty dict if the file
                 does not exist.
         """
-        file = self._config.main_dump_path / "languages_counts.json"
+        file = self.dump_dir_path / "languages_titles_counts.json"
 
         data = {}
 

@@ -13,7 +13,7 @@ import logging
 from pathlib import Path
 from typing import Any
 
-from ..config import Config, get_config
+from ..config import Config
 
 logger = logging.getLogger(__name__)
 
@@ -26,23 +26,18 @@ class MultiYearStatsService:
 
     def __init__(
         self,
-        config: Config | None = None,
+        dump_dir_path: Path | None = None,
     ) -> None:
-        """Initialize the service.
-
-        Parameters:
-            config: Optional configuration object. Defaults to get_config().
-        """
-        _config = config or get_config()
-        self.stats_all_data: dict = {}
-        self.main_dump_path = _config.main_dump_path
+        """Initialize the service."""
+        self.stats_all_data: dict[str, dict[str, int]] = {}
+        self.dump_dir_path = dump_dir_path or Config.get_instance().paths.dump_dir_path
 
     def dump_stats(
         self,
         articles: list[str],
-        new_data: dict[str, dict | int],
+        new_data: dict[str, Any],
         lang: str,
-    ) -> dict[str, Any]:
+    ) -> dict[str, int]:
         """Calculate and store statistics for one language across all years.
 
         Parameters:
@@ -73,12 +68,15 @@ class MultiYearStatsService:
 
         # Calculate total views across all years
         views = 0
-        for v in data2.values():
+        for k, v in data2.items():
+            if k == "all":
+                continue
+
             if isinstance(v, int):
                 views += v
             elif isinstance(v, dict):
                 # Sum all year views
-                views += sum(year_view for year_view in v.values() if isinstance(year_view, int))
+                views += sum(year_view for x, year_view in v.items() if isinstance(year_view, int) and x != "all")
 
         stats = {
             "articles": len(articles),
@@ -95,11 +93,18 @@ class MultiYearStatsService:
     def dump_stats_all(
         self,
         data: dict[str, dict],
+        year: int | str | None = None,
     ) -> None:
         """Write all statistics to summary files."""
+        file_name_1 = "all_years_summary.json"
+        file_name_2 = "all_years_stats_all.json"
+        if year:
+            file_name_1 = f"{year}_summary.json"
+            file_name_2 = f"{year}_stats_all.json"
+
         self._dump_stats_all(
-            self.main_dump_path / "all_years_summary.json",
-            self.main_dump_path / "all_years_stats_all.json",
+            self.dump_dir_path / file_name_1,
+            self.dump_dir_path / file_name_2,
             data,
         )
 

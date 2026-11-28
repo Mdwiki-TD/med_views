@@ -9,15 +9,20 @@ src/
 │   │   ├── stats.py
 │   │   └── views.py
 │   │
-│   ├── api_sql/
-│   │   ├── __init__.py
-│   │   ├── sql_utils.py
-│   │   └── wiki_sql.py
+│   ├── database/
+│   │   │
+│   │   ├── analytics/
+│   │   │   ├── __init__.py
+│   │   │   ├── client.py
+│   │   │   ├── maps.py
+│   │   │   └── replica_db.py
+│   │   │
+│   │   └── __init__.py
 │   │
 │   ├── io/
 │   │   └── dump_utils.py
 │   │
-│   ├── one_year/
+│   ├── all_years/
 │   │   ├── __init__.py
 │   │   ├── run.py
 │   │   ├── stats.py
@@ -26,12 +31,11 @@ src/
 │   ├── services/
 │   │   ├── __init__.py
 │   │   ├── mdwiki_page_mwclient.py
-│   │   ├── mw_views.py
-│   │   └── mysql_client.py
+│   │   └── mw_views.py
 │   │
 │   ├── views_utils/
 │   │   ├── __init__.py
-│   │   └── views_helps.py
+│   │   └── views_fetcher.py
 │   │
 │   ├── wikitext/
 │   │   ├── __init__.py
@@ -39,15 +43,15 @@ src/
 │   │
 │   ├── __init__.py
 │   ├── config.py
-│   ├── helps.py
 │   ├── report_generator.py
+│   ├── sql_loader.py
+│   ├── titles_loader.py
 │   └── titles_utils.py
 │
 ├── __init__.py
 ├── after.py
 ├── save_reports.py
 ├── start_titles.py
-├── start_views.py
-└── start_views_all_years.py
+└── start_views.py
 
 ```
