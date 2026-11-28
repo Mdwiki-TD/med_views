@@ -20,6 +20,7 @@ class TitlesLoader:
         self,
         dump_manager: DumpManager | None = None,
         titles_repo: MedicalTitlesRepository | None = None,
+        local: bool = False,
     ) -> None:
         """Initialize the TitlesLoader.
 
@@ -32,7 +33,9 @@ class TitlesLoader:
         self._dump_manager = dump_manager or DumpManager()
         self._titles_repo = titles_repo or MedicalTitlesRepository()
 
-    def load_lang_titles(self, lang: str) -> list:
+        self.local = local
+
+    def load_lang_titles(self, lang: str) -> list[str]:
         """Retrieve page titles for the given language.
 
         Prefers a dump-derived source and falls back to a SQL source.
@@ -53,7 +56,7 @@ class TitlesLoader:
         if data:
             return data
 
-        if "local" in sys.argv:
+        if self.local:
             return []
 
         data = self._titles_repo.one_lang_titles(lang)

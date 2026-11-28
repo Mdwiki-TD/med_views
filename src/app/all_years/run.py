@@ -9,6 +9,7 @@ import datetime
 import json
 import logging
 from pathlib import Path
+from typing import Any
 
 from ..config import Config
 from ..io.dump_utils import DumpManager
@@ -39,7 +40,7 @@ class MultiYearViewsPipeline:
         self.views_service = MultiYearViewsService()
         self.stats_service = MultiYearStatsService()
         self.views_fetcher = views_fetcher or ViewsFetcher()
-        self.empty_data_all: dict = {}
+        self.empty_data_all: dict[str, list[str]] = {}
         self.local = local
 
     def dump_empty_data_all(
@@ -59,7 +60,7 @@ class MultiYearViewsPipeline:
     def dump_one_lang_files(
         self,
         titles: list[str],
-        data: dict,
+        data: dict[str, Any],
         lang: str,
         year: int | None = None,
     ) -> None:
@@ -117,7 +118,7 @@ class MultiYearViewsPipeline:
         if empty_data:
             self.empty_data_all[lang] = empty_data
 
-    def get_languages_articles_counts(self) -> dict:
+    def get_languages_articles_counts(self) -> dict[str, int]:
         all_infos = self.dump_manager.load_languages_counts()
 
         if not all_infos and not self.local:
@@ -136,11 +137,11 @@ class MultiYearViewsPipeline:
 
     def make_views(
         self,
-        languages,
+        languages: dict[str, int],
         limit: int,
         year: int | None = None,
         maxv: int = 0,
-    ) -> dict[str, int | dict]:
+    ) -> dict[str, Any]:
         views = {}
 
         for n, (lang, _) in enumerate(languages.items(), start=1):
@@ -169,7 +170,7 @@ class MultiYearViewsPipeline:
         lang: str,
         maxv: int = 0,
         year: int | None = None,
-    ) -> dict[str, int | dict]:
+    ) -> dict[str, Any]:
         titles = self.titles_loader.load_lang_titles(lang)
         if year is None:
             # For all years, we'll check an existing file from the current year to see what titles we already have

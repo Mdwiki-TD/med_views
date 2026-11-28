@@ -71,7 +71,7 @@ class DumpManager:
         return []
 
     @staticmethod
-    def replace_underscores(data: dict | list | Any):
+    def replace_underscores(data: dict[str, Any] | list[Any] | Any) -> dict[str, Any] | list[Any] | Any:
         """Replace underscores with spaces in data.
 
         Parameters:
@@ -88,7 +88,7 @@ class DumpManager:
 
         raise TypeError(f"Unsupported type: {type(data)}")
 
-    def dump_one(self, file, data) -> None:
+    def dump_one(self, file: str | Path, data: dict[str, Any] | list[Any]) -> None:
         """Write data to a JSON file.
 
         Parameters:
@@ -140,7 +140,7 @@ class DumpManager:
             with open(file, "w", encoding="utf-8") as f:
                 json.dump(fix_data, f, ensure_ascii=False, indent=4)
 
-    def load_languages_counts(self) -> dict:
+    def load_languages_counts(self) -> dict[str, int]:
         """Load the saved mapping of language codes to article counts.
 
         Returns:

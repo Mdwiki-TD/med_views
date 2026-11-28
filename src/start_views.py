@@ -15,7 +15,7 @@ from src.app.all_years.run import MultiYearViewsPipeline
 logger = logging.getLogger(__name__)
 
 
-def parse_args():
+def parse_args() -> tuple[int | None, int, int]:
     year = None
     limit = 0
     maxv = 0

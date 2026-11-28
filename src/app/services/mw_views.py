@@ -7,8 +7,10 @@ import logging
 import sys
 import time
 from collections import defaultdict
+from collections.abc import Iterator
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
+from typing import Any
 from urllib.parse import quote
 
 import requests
@@ -16,22 +18,25 @@ from tqdm import tqdm
 
 logger = logging.getLogger(__name__)
 
-default_user_agent = "himo bot/1.0 (https://himo.toolforge.org/; tools.himo@toolforge.org)"
+default_user_agent: str = "himo bot/1.0 (https://himo.toolforge.org/; tools.himo@toolforge.org)"
 
-endpoints = {
+endpoints: dict[str, str] = {
     "article": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article",
 }
 
 
-def parse_date(string_date: str):
+def parse_date(string_date: str) -> datetime:
     return datetime.strptime(string_date.ljust(10, "0"), "%Y%m%d%H")
 
 
-def format_date(d):
-    return datetime.strftime(d, "%Y%m%d%H")
+def format_date(d: date | datetime) -> str:
+    if isinstance(d, datetime):
+        return d.strftime("%Y%m%d%H")
+    # For date objects, convert to datetime first
+    return datetime(d.year, d.month, d.day).strftime("%Y%m%d%H")
 
 
-def timestamps_between(start, end, increment):
+def timestamps_between(start: date | datetime, end: date | datetime, increment: timedelta) -> Iterator[datetime]:
     # convert both start and end to datetime just in case either are dates
     start = datetime(start.year, start.month, start.day, getattr(start, "hour", 0))
     end = datetime(end.year, end.month, end.day, getattr(end, "hour", 0))
@@ -41,7 +46,7 @@ def timestamps_between(start, end, increment):
         start += increment
 
 
-def month_from_day(dt):
+def month_from_day(dt: date | datetime) -> datetime:
     return datetime(dt.year, dt.month, 1)
 
 
@@ -49,20 +54,22 @@ class PageviewsClientHelper:
     def format_article_title(self, title: str) -> str:
         return title.replace(" ", "_")
 
-    def filter_data(self, data):
+    def filter_data(self, data: dict[str, dict[str, int]]) -> dict[str, dict[str, int]]:
         # remove any key < 2015 and not = "all"
 
-        new_data = {}
+        new_data: dict[str, dict[str, int]] = {}
 
         for title, views in data.items():
             new_data[title] = {
-                k: v for k, v in views.items() if (k.isnumeric() and int(k) >= 2015) or k == "all" or v > 0
+                k: v for k, v in views.items() if (k.isnumeric() and int(k) >= 2015) or k == "all" or (v is not None and v > 0)
             }
 
         return new_data
 
-    def summarize_monthly_views(self, article_monthly_data):
-        new_data = {}
+    def summarize_monthly_views(
+        self, article_monthly_data: defaultdict[datetime, dict[str, int | None]]
+    ) -> dict[str, dict[str, int]]:
+        new_data: dict[str, dict[str, int]] = {}
 
         for month, y in article_monthly_data.items():
             # month = datetime.datetime(2024, 5, 1, 0, 0)
@@ -103,14 +110,14 @@ class PageviewsClient(PageviewsClientHelper):
 
     def article_views(
         self,
-        project,
-        articles,
+        project: str,
+        articles: str | list[str],
         access: str = "all-access",
         agent: str = "all-agents",
         granularity: str = "daily",
-        start=None,
-        end=None,
-    ) -> defaultdict[datetime, dict]:
+        start: str | date | None = None,
+        end: str | date | None = None,
+    ) -> defaultdict[datetime, dict[str, int | None]]:
         """
         Get pageview counts for one or more articles
         See `<https://wikimedia.org/api/rest_v1/metrics/pageviews/?doc#!/Pageviews_data/get_metrics_pageviews_per_article_project_access_agent_article_granularity_start_end>`_
@@ -219,8 +226,8 @@ class PageviewsClient(PageviewsClientHelper):
 
         return output
 
-    def get_concurrent(self, urls):
-        def fetch(url):
+    def get_concurrent(self, urls: list[str]) -> list[dict[str, Any]]:
+        def fetch(url: str) -> dict[str, Any]:
             try:
                 resp = requests.get(url, headers=self.headers, timeout=10)
                 resp.raise_for_status()
@@ -242,7 +249,7 @@ class PageviewsClient(PageviewsClientHelper):
 
             return list(results)
 
-    def article_views_new(self, project, articles, **kwargs) -> dict:
+    def article_views_new(self, project: str, articles: list[str], **kwargs: Any) -> dict[str, dict[str, int]]:
         """
         Aggregate pageview counts per article into yearly totals and an overall total.
 

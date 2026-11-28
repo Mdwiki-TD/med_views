@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import logging
 from pathlib import Path
+from typing import Any
 
 from app.config import Config
 from app.services import MwclientPage
@@ -46,7 +47,10 @@ class ReportGenerator:
 
         return result
 
-    def calculate_total_views(self, langcode: str, u_data) -> int:
+    def calculate_total_views(self, langcode: str, u_data: dict[str, Any] | None) -> int:
+        if u_data is None:
+            return 0
+
         total = 0
 
         for _, views in u_data.items():
@@ -62,9 +66,13 @@ class ReportGenerator:
         json_file = self.views_fetcher.get_view_file(langcode, year)
         year_data = self.dump_manager.json_load(json_file)
 
+        # Handle case where json_load returns a list or None
+        if not isinstance(year_data, dict):
+            return 0
+
         return self.calculate_total_views(langcode, year_data)
 
-    def make_views_local(self, languages: dict[str, int], year: int, limit: int) -> dict:
+    def make_views_local(self, languages: dict[str, int], year: int, limit: int) -> dict[str, int]:
         views = {}
 
         for n, (lang, _) in enumerate(languages.items(), start=1):

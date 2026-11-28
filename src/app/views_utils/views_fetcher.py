@@ -33,7 +33,7 @@ class ViewsFetcher:
             parallelism=Config.get_instance().parallelism,
         )
 
-    def article_views(self, site: str, articles: list, year: int = 2024) -> dict:
+    def article_views(self, site: str, articles: list[str], year: int = 2024) -> dict[str, int]:
         """Get article views for a specific site and year.
 
         Parameters:
@@ -54,16 +54,16 @@ class ViewsFetcher:
             end=f"{year}1231",
         )
 
-        new_data = {}
+        new_data: dict[str, int] = {}
 
         for title, views in data.items():
             title = title.replace("_", " ")
 
-            new_data[title] = views.get(year) or views.get(str(year)) or views.get("all", 0)
+            new_data[title] = views.get(str(year)) or views.get("all", 0)
 
         return new_data
 
-    def article_views_all_years(self, site: str, articles: list) -> dict:
+    def article_views_all_years(self, site: str, articles: list[str]) -> dict[str, dict[str, int]]:
         """Get article views for all years (2015-2025).
 
         Parameters:

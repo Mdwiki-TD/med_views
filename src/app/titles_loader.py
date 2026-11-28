@@ -32,11 +32,11 @@ class TitlesLoader:
         self.dump_dir_path = dump_dir_path or self.config.paths.dump_dir_path
         self.dump_dir_titles_path = self.config.paths.dump_dir_titles_path
 
-    def start(self):
+    def start(self) -> None:
 
         file = self.dump_dir_path / "all_languages_titles.json"
 
-        if "local" in sys.argv:
+        if self.local:
             logger.info("dump_data: loading from local files")
             all_links = {}
             with open(file, encoding="utf-8") as f:

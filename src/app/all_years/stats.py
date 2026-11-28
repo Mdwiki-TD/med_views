@@ -29,7 +29,7 @@ class MultiYearStatsService:
         dump_dir_path: Path | None = None,
     ) -> None:
         """Initialize the service."""
-        self.stats_all_data: dict = {}
+        self.stats_all_data: dict[str, dict[str, int]] = {}
         self.dump_dir_path = dump_dir_path or Config.get_instance().paths.dump_dir_path
 
     def dump_stats(

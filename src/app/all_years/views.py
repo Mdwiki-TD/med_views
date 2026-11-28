@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import logging
 import sys
+from pathlib import Path
 from typing import Any
 
 from ..io.dump_utils import DumpManager
@@ -29,10 +30,13 @@ class MultiYearViewsService:
         self,
         views_fetcher: ViewsFetcher | None = None,
         dump_manager: DumpManager | None = None,
+        local: bool = False,
     ) -> None:
         """Initialize the service."""
         self._fetcher = views_fetcher or ViewsFetcher()
         self.dump_manager = dump_manager or DumpManager()
+
+        self.local = local
 
     @staticmethod
     def calculate_total_views(langcode: str, u_data: dict[str, Any]) -> int:
@@ -124,7 +128,7 @@ class MultiYearViewsService:
 
         if maxv > 0 and len(titles_not_in_file) > maxv:
             logger.info(f"{langcode}: {len(titles):,} titles > max {maxv}, skipping")
-        elif "local" in sys.argv:
+        elif self.local:
             logger.info(f"load_one_lang_views(lang:{langcode}) \t titles: {len(titles):,}")
         else:
             views_t = self.load_one_lang_views(

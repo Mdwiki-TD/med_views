@@ -13,7 +13,7 @@ from app.report_generator import ReportGenerator
 logger = logging.getLogger(__name__)
 
 
-def parse_args():
+def parse_args() -> tuple[int, int]:
     year = 2025
     limit = 0
     for arg in sys.argv:
