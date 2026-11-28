@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import json
 import logging
-import sys
 from pathlib import Path
 
 from .config import Config
@@ -62,3 +61,8 @@ class TitlesLoader:
             self.dump_manager.dump_list(file, titles)
 
         logger.debug(f"dump_data: all langs: {len(all_links)}")
+
+
+__all__ = [
+    "TitlesLoader",
+]

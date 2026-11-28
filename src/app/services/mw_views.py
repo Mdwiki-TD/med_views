@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import logging
-import sys
 import time
 from collections import defaultdict
 from collections.abc import Iterator
@@ -61,7 +60,9 @@ class PageviewsClientHelper:
 
         for title, views in data.items():
             new_data[title] = {
-                k: v for k, v in views.items() if (k.isnumeric() and int(k) >= 2015) or k == "all" or (v is not None and v > 0)
+                k: v
+                for k, v in views.items()
+                if (k.isnumeric() and int(k) >= 2015) or k == "all" or (v is not None and v > 0)
             }
 
         return new_data
@@ -267,3 +268,13 @@ class PageviewsClient(PageviewsClientHelper):
         logger.debug(f"article_views, (articles:{len(articles):,}) new_data:{len(new_data):,} time: {delta:.2f} sec")
 
         return new_data
+
+
+__all__ = [
+    "PageviewsClientHelper",
+    "PageviewsClient",
+    "parse_date",
+    "format_date",
+    "timestamps_between",
+    "month_from_day",
+]

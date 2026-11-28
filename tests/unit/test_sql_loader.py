@@ -67,3 +67,42 @@ class TestMedicalTitlesRepository:
         result = repo.one_lang_titles("fr")
 
         assert result == ["T1", "T2"]
+
+    def test_get_language_article_counts_sql(self):
+        mock_sql_client = MagicMock()
+        mock_sql_client.select_safe.side_effect = [
+            # First call: get_language_article_counts_sql query
+            [
+                {"ll_lang": "fr", "counts": 100},
+                {"ll_lang": "de", "counts": 50},
+            ],
+            # Second call: get_en_articles query (called inside get_language_article_counts_sql)
+            [{"page_title": "EnT1"}, {"page_title": "EnT2"}],
+        ]
+        mock_sql_client.load.return_value = mock_sql_client
+
+        repo = MedicalTitlesRepository(sql_client=mock_sql_client)  # pyright: ignore[reportArgumentType]
+        result = repo.get_language_article_counts_sql()
+
+        assert result["fr"] == 100
+        assert result["de"] == 50
+        assert result["en"] == 2
+
+    def test_get_ar_results(self):
+        mock_sql_client = MagicMock()
+        mock_sql_client.select_safe.return_value = [
+            {"page_title": "Title_1"},
+            {"page_title": "Title_2"},
+        ]
+        mock_sql_client.load.return_value = mock_sql_client
+
+        repo = MedicalTitlesRepository(sql_client=mock_sql_client)  # pyright: ignore[reportArgumentType]
+        result = repo.get_ar_results()
+
+        assert result == ["Title 1", "Title 2"]
+
+    def test_init_default_client(self):
+        """Test initialization with default sql_client."""
+        repo = MedicalTitlesRepository()
+        # Should use WikiReplicaDB as default
+        assert repo.sql_client is not None

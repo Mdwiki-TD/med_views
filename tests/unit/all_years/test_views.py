@@ -65,6 +65,113 @@ class TestMultiYearViewsService:
         assert call_count == 3  # Should have made 3 API calls
         assert len(result) == 1200  # Should have all titles in result
 
+    def test_get_one_lang_views_by_titles_with_year(self):
+        """Test get_one_lang_views_by_titles with specific year"""
+        mock_fetcher = MagicMock()
+        mock_fetcher.article_views.return_value = {"Art1": 100}
+
+        service = MultiYearViewsService(views_fetcher=mock_fetcher)
+        result = service.get_one_lang_views_by_titles("en", ["Art1"], year=2024)
+
+        mock_fetcher.article_views.assert_called_once()
+        assert result == {"Art1": 100}
+
+    def test_load_one_lang_views_zero_true(self):
+        """Test load_one_lang_views returns zeros when zero=True"""
+        service = MultiYearViewsService(zero=True)
+        result = service.load_one_lang_views("en", ["Art1", "Art2"])
+
+        assert result == {"Art1": 0, "Art2": 0}
+
+    def test_load_one_lang_views_zero_false(self):
+        """Test load_one_lang_views fetches data when zero=False"""
+        mock_fetcher = MagicMock()
+        mock_fetcher.article_views_all_years.return_value = {"Art1": {2020: 100}}
+
+        service = MultiYearViewsService(views_fetcher=mock_fetcher, zero=False)
+        result = service.load_one_lang_views("en", ["Art1"])
+
+        assert result == {"Art1": {2020: 100}}
+
+    def test_load_one_lang_views_with_year(self):
+        """Test load_one_lang_views passes year to fetcher"""
+        mock_fetcher = MagicMock()
+        mock_fetcher.article_views.return_value = {"Art1": 500}
+
+        service = MultiYearViewsService(views_fetcher=mock_fetcher, zero=False)
+        result = service.load_one_lang_views("en", ["Art1"], year=2024)
+
+        mock_fetcher.article_views.assert_called_once()
+        assert result == {"Art1": 500}
+
+    def test_get_one_lang_views_from_cache(self, tmp_path):
+        """Test get_one_lang_views loads from cache file"""
+        json_file = tmp_path / "en.json"
+        json_file.write_text('{"Art1": {"all": 100}, "Art2": {"all": 200}}')
+
+        mock_fetcher = MagicMock()
+        service = MultiYearViewsService(views_fetcher=mock_fetcher, local=True)
+
+        result = service.get_one_lang_views("en", ["Art1", "Art2"], json_file)
+
+        # Should not call fetcher because local=True
+        mock_fetcher.article_views_all_years.assert_not_called()
+        assert result == {"Art1": {"all": 100}, "Art2": {"all": 200}}
+
+    def test_get_one_lang_views_missing_cache(self, tmp_path):
+        """Test get_one_lang_views handles missing cache file"""
+        json_file = tmp_path / "nonexistent.json"
+
+        mock_fetcher = MagicMock()
+        mock_fetcher.article_views_all_years.return_value = {"Art1": {2020: 100}}
+
+        service = MultiYearViewsService(views_fetcher=mock_fetcher, local=True)
+        result = service.get_one_lang_views("en", ["Art1"], json_file)
+
+        # With local=True and missing file, returns empty dict
+        assert result == {}
+
+    def test_get_one_lang_views_fetches_missing_titles(self, tmp_path):
+        """Test get_one_lang_views fetches titles not in cache"""
+        json_file = tmp_path / "en.json"
+        json_file.write_text('{"Art1": {"all": 100}}')
+
+        mock_fetcher = MagicMock()
+        mock_fetcher.article_views_all_years.return_value = {"Art2": {2020: 200}}
+
+        service = MultiYearViewsService(views_fetcher=mock_fetcher, local=False)
+        result = service.get_one_lang_views("en", ["Art1", "Art2"], json_file)
+
+        assert "Art1" in result
+        assert "Art2" in result
+
+    def test_get_one_lang_views_maxv_skip(self, tmp_path):
+        """Test get_one_lang_views skips when titles exceed maxv"""
+        json_file = tmp_path / "en.json"
+        # File doesn't exist, so all 100 titles are "not in file"
+
+        mock_fetcher = MagicMock()
+        service = MultiYearViewsService(views_fetcher=mock_fetcher, local=False)
+
+        titles = [f"Art{i}" for i in range(100)]
+        result = service.get_one_lang_views("en", titles, json_file, maxv=50)
+
+        # Should not fetch because len(titles_not_in_file) > maxv
+        mock_fetcher.article_views_all_years.assert_not_called()
+        assert result == {}
+
+    def test_get_one_lang_views_normalizes_underscores(self, tmp_path):
+        """Test get_one_lang_views normalizes underscores in titles"""
+        json_file = tmp_path / "en.json"
+        json_file.write_text('{"hello_world": {"all": 100}}')
+
+        mock_fetcher = MagicMock()
+        service = MultiYearViewsService(views_fetcher=mock_fetcher, local=True)
+
+        result = service.get_one_lang_views("en", ["hello_world"], json_file)
+
+        assert "hello world" in result
+
 
 class TestSingleYearViewsService:
     """Tests for the MultiYearViewsService class."""

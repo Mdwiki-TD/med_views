@@ -34,6 +34,7 @@ class MultiYearViewsPipeline:
         dump_dir_path: Path | None = None,
     ) -> None:
         self.local = local
+        self.zero = zero
 
         # TODO: Forward the dump-directory override to the statistics service.
         self.dump_dir_path = dump_dir_path or Config.get_instance().paths.dump_dir_path
@@ -43,7 +44,7 @@ class MultiYearViewsPipeline:
             local=self.local,
         )
         self.views_service = MultiYearViewsService(
-            zero=zero,
+            zero=self.zero,
             local=self.local,
         )
         self.stats_service = MultiYearStatsService()

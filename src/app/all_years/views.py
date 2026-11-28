@@ -9,7 +9,6 @@ for all years from 2015 to 2025, as opposed to single-year collection.
 from __future__ import annotations
 
 import logging
-import sys
 from pathlib import Path
 from typing import Any
 

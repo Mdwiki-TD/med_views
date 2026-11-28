@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-import sys
 
 from .io.dump_utils import DumpManager
 from .sql_loader import MedicalTitlesRepository
