@@ -83,8 +83,8 @@ class ViewsDataPaths:
     dump_dir_path: Path
     dump_dir_titles_path: Path
     dump_dir_views_by_year_path: Path
-
     update_med_views: Path
+    database_path: Path  # SQLite database file path
 
     @classmethod
     def load(cls) -> ViewsDataPaths:
@@ -106,6 +106,10 @@ class ViewsDataPaths:
         dump_dir_titles_path = dump_dir_path / "titles"
         dump_dir_views_by_year_path = dump_dir_path / "views_by_year"
 
+        # --------------------------
+        # database path
+        database_path = views_data_path / "med_views.db"
+
         # Create directories
         dump_dir_titles_path.mkdir(parents=True, exist_ok=True)
         dump_dir_views_by_year_path.mkdir(parents=True, exist_ok=True)
@@ -119,6 +123,7 @@ class ViewsDataPaths:
             dump_dir_titles_path=dump_dir_titles_path,
             dump_dir_views_by_year_path=dump_dir_views_by_year_path,
             update_med_views=update_med_views,
+            database_path=database_path,
         )
 
 
