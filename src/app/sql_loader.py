@@ -29,7 +29,7 @@ class MedicalTitlesRepository:
         """
         self.sql_client = sql_client or WikiReplicaDB
 
-    def get_en_articles(self) -> list:
+    def get_en_articles(self) -> list[str]:
         """Get English medical article titles.
 
         Returns:
@@ -54,7 +54,7 @@ class MedicalTitlesRepository:
 
         return articles
 
-    def get_language_article_counts_sql(self) -> dict:
+    def get_language_article_counts_sql(self) -> dict[str, int]:
         """Get article counts per language from SQL.
 
         Returns:
@@ -83,7 +83,7 @@ class MedicalTitlesRepository:
         languages["en"] = len(self.get_en_articles())
         return languages
 
-    def get_ar_results(self) -> list:
+    def get_ar_results(self) -> list[str]:
         """Get Arabic medical article titles.
 
         Returns:
@@ -106,7 +106,7 @@ class MedicalTitlesRepository:
 
         return ar_titles
 
-    def retrieve_medicine_titles(self) -> dict:
+    def retrieve_medicine_titles(self) -> dict[str, list[str]]:
         """Retrieve all medical article titles across all languages.
 
         Returns:
@@ -144,7 +144,7 @@ class MedicalTitlesRepository:
 
         return titles
 
-    def one_lang_titles(self, langcode: str) -> list:
+    def one_lang_titles(self, langcode: str) -> list[str]:
         """Get medical article titles for a single language.
 
         Parameters:
@@ -170,6 +170,7 @@ class MedicalTitlesRepository:
 
         logger.debug(f"def one_lang_titles({langcode}):")
 
+        # TODO: Catch unresolved-wiki errors in the title repository, as the previous client did.
         enwiki_db = self.sql_client.load("enwiki")
         result = enwiki_db.select_safe(query, (langcode,))
 
