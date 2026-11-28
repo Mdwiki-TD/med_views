@@ -8,11 +8,11 @@ import logging
 from pathlib import Path
 from typing import Any
 
-from app.config import Config
-from app.services import MwclientPage
-from src.app.io.dump_utils import DumpManager
-from src.app.views_utils.views_fetcher import ViewsFetcher
-from src.app.wikitext.texts_utils import WikiTextBuilder
+from .config import Config
+from .services import MwclientPage
+from .io.dump_utils import DumpManager
+from .views_utils.views_fetcher import ViewsFetcher
+from .wikitext.texts_utils import WikiTextBuilder
 
 logger = logging.getLogger(__name__)
 
