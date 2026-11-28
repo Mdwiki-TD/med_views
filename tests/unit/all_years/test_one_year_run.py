@@ -362,9 +362,10 @@ class TestStart:
             pipeline.start(2024, limit=10, maxv=500)
 
             call_args = mock_make.call_args
-            assert call_args[0][1] == 2024  # year
-            assert call_args[0][2] == 10  # limit
-            assert call_args[0][3] == 500  # maxv
+            # make_views is called with keyword arguments
+            assert call_args.kwargs.get("year") == 2024
+            assert call_args.kwargs.get("limit") == 10
+            assert call_args.kwargs.get("maxv") == 500
 
 
 class TestIntegration:
