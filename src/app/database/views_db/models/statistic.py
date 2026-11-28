@@ -37,11 +37,6 @@ class Statistic(BaseModel):
     hash_count: Mapped[int] = mapped_column(Integer, nullable=False)
     total_views: Mapped[int] = mapped_column(Integer, nullable=False)
 
-    # WITHOUT ROWID for composite PK table
-    __table_args__ = (
-        {"sqlite_without_rowid": True},
-    )
-
     def __repr__(self) -> str:
         return (
             f"<Statistic(lang='{self.lang}', year={self.year}, "

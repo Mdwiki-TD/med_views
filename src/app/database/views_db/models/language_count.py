@@ -29,11 +29,6 @@ class LanguageCount(BaseModel):
     agent_type: Mapped[str] = mapped_column(String(20), primary_key=True)
     total_views: Mapped[int] = mapped_column(Integer, nullable=False)
 
-    # WITHOUT ROWID for composite PK table
-    __table_args__ = (
-        {"sqlite_without_rowid": True},
-    )
-
     def __repr__(self) -> str:
         return (
             f"<LanguageCount(lang='{self.lang}', year={self.year}, "

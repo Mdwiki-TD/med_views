@@ -26,11 +26,6 @@ class Title(BaseModel):
     lang: Mapped[str] = mapped_column(String(20), primary_key=True)
     title: Mapped[str] = mapped_column(Text, primary_key=True)
 
-    # WITHOUT ROWID for composite PK table
-    __table_args__ = (
-        {"sqlite_without_rowid": True},
-    )
-
     def __repr__(self) -> str:
         return f"<Title(lang='{self.lang}', title='{self.title[:30]}...')>"
 
