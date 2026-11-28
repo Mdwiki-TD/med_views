@@ -176,6 +176,7 @@ class MultiYearViewsPipeline:
             # Use the current year or latest available year as reference
             current_year = datetime.datetime.now().year
             # Ensure we don't go beyond 2025
+            # TODO: Preserve None for all-years collection.
             year = min(current_year, 2025)
 
         json_file = self.views_fetcher.get_view_file(
