@@ -4,7 +4,7 @@ Statistics model for storing summary statistics per language.
 
 from __future__ import annotations
 
-from sqlalchemy import Integer, String, UniqueConstraint
+from sqlalchemy import Integer, String, Text, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from ..db import BaseModel
@@ -33,6 +33,11 @@ class Statistic(BaseModel):
     not_empty_views: Mapped[int] = mapped_column(Integer, nullable=False)
     hash_count: Mapped[int] = mapped_column(Integer, nullable=False)
     total_views: Mapped[int] = mapped_column(Integer, nullable=False)
+    updated_at: Mapped[str] = mapped_column(
+        Text,
+        nullable=False,
+        comment="ISO 8601 timestamp of last update",
+    )
 
     # Unique constraint on (lang, year) to prevent duplicates
     __table_args__ = (

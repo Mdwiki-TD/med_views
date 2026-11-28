@@ -155,6 +155,7 @@ class TestViewsDataPaths:
             dump_dir_titles_path=Path("/data/views/dumps/titles"),
             dump_dir_views_by_year_path=Path("/data/views/dumps/views_by_year"),
             update_med_views=Path("/data/views/update_med_views"),
+            database_path=Path("/data/views/med_views.db"),
         )
 
         assert paths.views_data_path == Path("/data/views")
@@ -162,6 +163,7 @@ class TestViewsDataPaths:
         assert paths.dump_dir_titles_path == Path("/data/views/dumps/titles")
         assert paths.dump_dir_views_by_year_path == Path("/data/views/dumps/views_by_year")
         assert paths.update_med_views == Path("/data/views/update_med_views")
+        assert paths.database_path == Path("/data/views/med_views.db")
 
     def test_load_with_env_var(self, tmp_path):
         """Test load() uses MED_VIEWS_PATH from environment."""
