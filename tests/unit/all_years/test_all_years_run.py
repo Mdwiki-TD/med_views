@@ -478,9 +478,7 @@ class TestMultiYearMode:
         pipeline.titles_loader = MagicMock()
         pipeline.titles_loader.load_lang_titles.return_value = ["Art1"]
         pipeline.views_service = MagicMock()
-        pipeline.views_service.get_one_lang_views.return_value = {
-            "Art1": {"2020": 100, "2021": 200}
-        }
+        pipeline.views_service.get_one_lang_views.return_value = {"Art1": {"2020": 100, "2021": 200}}
 
         result = pipeline.process_language_views("en")
 

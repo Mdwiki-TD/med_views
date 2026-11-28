@@ -37,11 +37,13 @@ def mock_deps(tmp_paths):
     mock_views_fetcher.get_view_file.side_effect = lambda lang, year: (
         tmp_paths["views_by_year_dir"] / str(year) / f"{lang}.json"
     )
+
     # Create year subdirectory when get_view_file is called
     def get_view_file_with_mkdir(lang, year):
         year_dir = tmp_paths["views_by_year_dir"] / str(year)
         year_dir.mkdir(exist_ok=True)
         return year_dir / f"{lang}.json"
+
     mock_views_fetcher.get_view_file.side_effect = get_view_file_with_mkdir
 
     mock_dump_manager = MagicMock()
@@ -267,9 +269,7 @@ class TestMakeViews:
         processed_order = []
 
         with patch.object(pipeline, "process_language_views") as mock_process:
-            mock_process.side_effect = lambda year, lang, maxv=0: (
-                processed_order.append(lang) or {"Art1": 100}
-            )
+            mock_process.side_effect = lambda year, lang, maxv=0: processed_order.append(lang) or {"Art1": 100}
 
             pipeline.make_views(languages, 2024, limit=0)
 
