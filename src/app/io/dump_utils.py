@@ -29,7 +29,7 @@ class DumpManager:
         self.dump_dir_titles_path = dump_dir_titles_path or Config.get_instance().paths.dump_dir_titles_path
         self.dump_dir_path = dump_dir_path or Config.get_instance().paths.dump_dir_path
 
-    def count_languages_in_json(self) -> dict[str, list[str]]:
+    def count_languages_in_json(self) -> dict[str, int]:
         """Count items in each language JSON file in dump_dir_titles_path.
 
         Scans dump_dir_titles_path for files with a .json extension, uses each
@@ -45,7 +45,7 @@ class DumpManager:
         for json_file in self.dump_dir_titles_path.glob("*.json"):
             lang = json_file.stem
             with open(json_file, encoding="utf-8") as f:
-                result[lang] = len(json.load(f))
+                result[str(lang)] = len(json.load(f))
 
         return result
 

@@ -90,11 +90,18 @@ class MultiYearStatsService:
     def dump_stats_all(
         self,
         data: dict[str, dict],
+        year: int | str | None = None,
     ) -> None:
         """Write all statistics to summary files."""
+        file_name_1 = "all_years_summary.json"
+        file_name_2 = "all_years_stats_all.json"
+        if year:
+            file_name_1 = f"{year}_summary.json"
+            file_name_2 = f"{year}_stats_all.json"
+
         self._dump_stats_all(
-            self.dump_dir_path / "all_years_summary.json",
-            self.dump_dir_path / "all_years_stats_all.json",
+            self.dump_dir_path / file_name_1,
+            self.dump_dir_path / file_name_2,
             data,
         )
 

@@ -137,7 +137,7 @@ class MultiYearViewsPipeline:
 
             views[lang] = data
 
-        self.stats_service.dump_stats_all(self.stats_service.stats_all_data)
+        self.stats_service.dump_stats_all(data=self.stats_service.stats_all_data)
         self.dump_empty_data_all()
 
         return views

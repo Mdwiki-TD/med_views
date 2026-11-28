@@ -34,7 +34,7 @@ class ReportGenerator:
         self.dump_dir_path = dump_dir_path or Config.get_instance().paths.dump_dir_path
         self.save = save
 
-    def get_languages_articles_counts(self) -> dict:
+    def get_languages_articles_counts(self) -> dict[str, int]:
         all_infos = self.dump_manager.load_languages_counts()
 
         if all_infos:
@@ -46,7 +46,7 @@ class ReportGenerator:
 
         return result
 
-    def calculate_total_views(self, langcode, u_data) -> int:
+    def calculate_total_views(self, langcode: str, u_data) -> int:
         total = 0
 
         for _, views in u_data.items():
@@ -58,13 +58,13 @@ class ReportGenerator:
             logger.info(f"No views for {langcode}")
         return total
 
-    def fetch_language_statistics(self, year, langcode) -> int:
+    def fetch_language_statistics(self, year: int, langcode: str) -> int:
         json_file = self.views_fetcher.get_view_file(langcode, year)
         year_data = self.dump_manager.json_load(json_file)
 
         return self.calculate_total_views(langcode, year_data)
 
-    def make_views_local(self, languages, year, limit) -> dict:
+    def make_views_local(self, languages: dict[str, int], year: int, limit: int) -> dict:
         views = {}
 
         for n, (lang, _) in enumerate(languages.items(), start=1):
@@ -76,7 +76,7 @@ class ReportGenerator:
 
         return views
 
-    def make_page_text(self, year, limit) -> str | None:
+    def make_page_text(self, year: int, limit: int) -> str | None:
         """
         Orchestrates collection of per-language pageview totals for a given year.
 
@@ -122,7 +122,7 @@ class ReportGenerator:
 
         return newtext
 
-    def start(self, year, limit):
+    def start(self, year: int, limit: int) -> None:
         newtext = self.make_page_text(year, limit)
 
         if not self.save:

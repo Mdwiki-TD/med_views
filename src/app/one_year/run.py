@@ -110,7 +110,10 @@ class SingleYearViewsPipeline:
 
             views[lang] = data
 
-        self.stats_service.dump_stats_all(year, self.stats_service.stats_all_data)
+        self.stats_service.dump_stats_all(
+            data=self.stats_service.stats_all_data,
+            year=year,
+        )
         self.dump_empty_data_all(year)
 
         return views

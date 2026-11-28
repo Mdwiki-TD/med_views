@@ -129,7 +129,7 @@ class TestMultiYearStatsService:
                 "ar": {"articles": 50, "empty": 5, "not_empty": 45, "hash": 2, "views": 2500},
             }
 
-            service.dump_stats_all(service.stats_all_data)
+            service.dump_stats_all(data=service.stats_all_data)
 
             # Check files were created
             summary_file = Path(tmpdir) / "all_years_summary.json"
