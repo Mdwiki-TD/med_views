@@ -8,6 +8,7 @@ from __future__ import annotations
 import json
 import logging
 from pathlib import Path
+from typing import Any
 
 from ..config import Config
 
@@ -31,7 +32,7 @@ class SingleYearStatsService:
     def dump_stats(
         self,
         articles: list[str],
-        new_data: dict[str, int],
+        new_data: dict[str, Any],
         lang: str,
     ) -> dict[str, int]:
         """Calculate and store statistics for one language.
@@ -51,9 +52,20 @@ class SingleYearStatsService:
 
         data2 = {x: new_data[x] for x in new_data if x not in data_hash}
 
+        # Calculate empty entries - entries where all years have 0 views or entry is 0
         empty = [k for k in articles if new_data.get(k, 0) == 0]
 
-        views = sum(v for v in data2.values() if isinstance(v, int))
+        # Calculate total views across all years
+        views = 0
+        for k, v in data2.items():
+            if k == "all":
+                continue
+
+            if isinstance(v, int):
+                views += v
+            elif isinstance(v, dict):
+                # Sum all year views
+                views += sum(year_view for x, year_view in v.items() if isinstance(year_view, int) and x != "all")
 
         stats = {
             "articles": len(articles),

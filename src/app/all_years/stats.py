@@ -37,7 +37,7 @@ class MultiYearStatsService:
         articles: list[str],
         new_data: dict[str, Any],
         lang: str,
-    ) -> dict[str, Any]:
+    ) -> dict[str, int]:
         """Calculate and store statistics for one language across all years.
 
         Parameters:
@@ -68,12 +68,15 @@ class MultiYearStatsService:
 
         # Calculate total views across all years
         views = 0
-        for v in data2.values():
+        for k, v in data2.items():
+            if k == "all":
+                continue
+
             if isinstance(v, int):
                 views += v
             elif isinstance(v, dict):
                 # Sum all year views
-                views += sum(year_view for year_view in v.values() if isinstance(year_view, int))
+                views += sum(year_view for x, year_view in v.items() if isinstance(year_view, int) and x != "all")
 
         stats = {
             "articles": len(articles),

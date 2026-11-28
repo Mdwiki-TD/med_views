@@ -27,7 +27,7 @@ class TestMultiYearStatsService:
             result = service.dump_stats(articles, new_data, "en")
 
             assert result["articles"] == 3
-            assert result["views"] == 600  # 300 from 2024 + 300 from all
+            assert result["views"] == 300
             assert result["empty"] == 1
             assert result["not_empty"] == 2
 
@@ -45,8 +45,8 @@ class TestMultiYearStatsService:
             result = service.dump_stats(articles, new_data, "en")
 
             assert result["articles"] == 2
-            # Views sum all int values: (100+200+300) + (50+75+125) = 850
-            assert result["views"] == 850
+            # Views sum all int values without "all"
+            assert result["views"] == 425
 
     def test_dump_stats_with_empty_entries(self):
         """Test calculating statistics with empty entries"""
@@ -99,7 +99,7 @@ class TestMultiYearStatsService:
             result = service.dump_stats(articles, new_data, "en")
 
             assert result["articles"] == 3
-            assert result["views"] == 250  # 200 from Art1 + 50 from Art2
+            assert result["views"] == 150  # 100 from Art1 + 50 from Art2 without "all"
             assert result["empty"] == 1  # Art3
 
     def test_dump_stats_filters_hash_in_articles_list(self):
@@ -116,7 +116,7 @@ class TestMultiYearStatsService:
             result = service.dump_stats(articles, new_data, "en")
 
             assert result["hash"] == 1
-            assert result["views"] == 200  # Only Art1 counted in views
+            assert result["views"] == 100  # Only Art1 counted in views without "all"
 
     def test_dump_stats_all(self):
         """Test writing all statistics to files."""
