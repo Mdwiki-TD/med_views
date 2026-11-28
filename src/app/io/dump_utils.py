@@ -122,17 +122,14 @@ class DumpManager:
         with open(file, "w", encoding="utf-8") as f:
             json.dump(normlized_data, f, ensure_ascii=False)
 
-    def dump_languages_counts(self, data: dict[str, int]) -> None:
+    def dump_languages_titles_counts(self, data: dict[str, int]) -> None:
         """Write language count data to the main dump file.
 
         The input mapping is sorted by count in descending order and written
-        to dump_dir_path/languages_counts.json as JSON. If data is empty or
+        to dump_dir_path/languages_titles_counts.json as JSON. If data is empty or
         has 200 or fewer entries, no file is written.
-
-        Parameters:
-            data: Mapping of language identifiers to integer counts.
         """
-        file = self.dump_dir_path / "languages_counts.json"
+        file = self.dump_dir_path / "languages_titles_counts.json"
 
         # sort data
         data = dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
@@ -148,10 +145,10 @@ class DumpManager:
 
         Returns:
             dict: A mapping from language code (str) to count (int) loaded
-                from "languages_counts.json", or an empty dict if the file
+                from "languages_titles_counts.json", or an empty dict if the file
                 does not exist.
         """
-        file = self.dump_dir_path / "languages_counts.json"
+        file = self.dump_dir_path / "languages_titles_counts.json"
 
         data = {}
 

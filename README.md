@@ -40,10 +40,6 @@ MDWIKI_HIMO_PASSWORD=your_password
 
 MED_VIEWS_PATH=~/data/views           # Output directory (default: ~data/views/)
 
-# or:
-# MED_VIEWS_DUMP_PATH = (default: $MED_VIEWS_PATH/dumps/)
-# MED_VIEWS_BASE_PATH = (default: $MED_VIEWS_PATH/update_med_views/)
-
 ```
 
 - `MDWIKI_USERNAME`: Username for MDWiki uploads
@@ -207,20 +203,30 @@ med_views/
 The system generates JSON files in the following structure:
 
 ```
-~/data/views/dumps/
-├── titles/
-│   ├── en.json                 # English medical article titles
-│   ├── ar.json                 # Arabic medical article titles
-│   └── ...                     # Other languages
-├── views_by_year/
-│   ├── 2024/
-│   │   ├── en.json             # English 2024 view data
-│   │   └── ...
-│   └── 2025/
-│       └── ...
-├── all_languages_titles.json   # Summary of all language titles
-├── 2024_summary.json           # Annual statistics
-└── 2024_stats_all.json         # Per-language statistics
+$MED_VIEWS_PATH (default: ~data/views/)
+    ├── dumps
+    │   ├── titles/
+    │   │   └─── ar.json, ..., en.json
+    │   │
+    │   └── views_by_year/
+    │       └── 2016, ..., 2025
+    │           └── ar.json, ..., en.json
+    │
+    └── update_med_views
+        ├── languages_titles_counts.json
+        ├── views_by_year_all_agents
+        │   ├── 2016, ..., 2025
+        │   │   └── ar.json, ..., en.json
+        │   │
+        │   ├── 2016_languages_counts.json
+        │   └── 2025_languages_counts.json
+        │
+        └── views_by_year_users_agents
+            ├── 2016, ..., 2025
+            │   └── ar.json, ..., en.json
+            │
+            ├── 2016_languages_counts.json
+            └── 2025_languages_counts.json
 ```
 
 ## Key Features

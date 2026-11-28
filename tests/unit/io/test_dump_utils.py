@@ -111,7 +111,7 @@ class TestDumpManager:
         manager.dump_one(file, [])
         assert not file.exists()
 
-    def test_dump_languages_counts(self, tmp_path):
+    def test_dump_languages_titles_counts(self, tmp_path):
         """Test dumping language counts."""
 
         manager = DumpManager(dump_dir_path=tmp_path)
@@ -119,9 +119,9 @@ class TestDumpManager:
 
         # Need more than 200 entries for file to be written
         data = {f"lang{i}": i for i in range(250)}
-        manager.dump_languages_counts(data)
+        manager.dump_languages_titles_counts(data)
 
-        file = tmp_path / "languages_counts.json"
+        file = tmp_path / "languages_titles_counts.json"
         assert file.exists()
 
     def test_load_languages_counts(self, tmp_path):
@@ -129,7 +129,7 @@ class TestDumpManager:
 
         # Create test file
         data = {"en": 1000, "fr": 500}
-        (tmp_path / "languages_counts.json").write_text(json.dumps(data))
+        (tmp_path / "languages_titles_counts.json").write_text(json.dumps(data))
 
         manager = DumpManager(dump_dir_path=tmp_path)
         result = manager.load_languages_counts()

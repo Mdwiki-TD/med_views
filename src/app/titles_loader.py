@@ -52,7 +52,7 @@ class TitlesLoader:
 
         self.dump_manager.dump_one(file, all_links)
 
-        self.dump_manager.dump_languages_counts({x: len(y) for x, y in all_links.items()})
+        self.dump_manager.dump_languages_titles_counts({x: len(y) for x, y in all_links.items()})
 
         for n, (lang, titles) in enumerate(all_links.items(), start=1):
             logger.debug(f"dump_data(): lang:{n}/{len(all_links)} \t {lang} {len(titles)}")

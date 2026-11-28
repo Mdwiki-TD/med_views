@@ -53,43 +53,30 @@ class DatabaseConfig:
 class ViewsDataPaths:
     """
     Paths for dump files.
-
     $MED_VIEWS_PATH (default: ~data/views/)
-        │
-        ├── update_med_views/
-        │   ├── views_by_year_all_agents/              # Default "all-agents" mode directory
-        │   │   ├── 2015.json                          # Skipped by default via YEARS_TO_SKIP
-        │   │   ├── 2016.json                          # Yearly data file (takes precedence over *_languages_counts.json)
-        │   │   ├── 2016_languages_counts.json         # Fallback if 2016.json is absent
-        │   │   ├── ...
-        │   │   ├── 2016/                              # Per-year subdirectory for language mode (_load_years_by_dirs)
-        │   │   │   ├── en.json                        # Article views for "en" in 2016: { "<title>": <count> }
-        │   │   │   ├── ar.json
-        │   │   │   └── ...
-        │   │   ├── ...
-        │   │   ├── 2025/
-        │   │   │   └── ab.json, ace.json, ... zu.json
-        │   │   └── 2025_languages_counts.json
+        ├── dumps
+        │   ├── titles/
+        │   │   └─── ar.json, ..., en.json
         │   │
-        │   ├── views_by_year_users_agents/            # "users-agents" mode directory (same internal layout)
-        │   │   ├── 2016.json
-        │   │   ├── 2016/
-        │   │   │   ├── en.json
-        │   │   │   └── ...
-        │   │   ├── 2016_languages_counts.json
-        │   │   ├── ...
-        │   │   └── 2025_languages_counts.json
-        │   └── languages_counts.json                  # Article counts per language (read in load_main_data)
+        │   └── views_by_year/
+        │       └── 2016, ..., 2025
+        │           └── ar.json, ..., en.json
         │
-        └── dumps/
-            ├── titles/
-            │   └── ab.json, ace.json, ... zu.json
-            ├── views_by_year/
-            │   └── 2025/
-            │       └── ab.json, ace.json, ... zu.json
+        └── update_med_views (Used by frontend API)
+            ├── languages_titles_counts.json               #
+            ├── views_by_year_all_agents
+            │   ├── 2016, ..., 2025
+            │   │   └── ar.json, ..., en.json
+            │   │
+            │   ├── 2016_languages_counts.json
+            │   └── 2025_languages_counts.json
             │
-            ├── ...
-            └── languages_counts.json
+            └── views_by_year_users_agents
+                ├── 2016, ..., 2025
+                │   └── ar.json, ..., en.json
+                │
+                ├── 2016_languages_counts.json
+                └── 2025_languages_counts.json
     """
 
     views_data_path: Path
@@ -107,28 +94,29 @@ class ViewsDataPaths:
 
         # --------------------------
         # update_med_views paths
-        _base_views_path = os.getenv("MED_VIEWS_BASE_PATH", "")
-        update_med_views = Path(_base_views_path) if _base_views_path else views_data_path / "update_med_views"
+        update_med_views = views_data_path / "update_med_views"
+        views_by_year_all_agents = update_med_views / "views_by_year_all_agents"
+        views_by_year_users_agents = update_med_views / "views_by_year_users_agents"
 
         # --------------------------
         # dumps paths
-        _dump_path = os.getenv("MED_VIEWS_DUMP_PATH", "")
-        dump_dir_path = Path(_dump_path) if _dump_path else views_data_path / "dumps"
+        dump_dir_path = views_data_path / "dumps"
 
         dump_dir_titles_path = dump_dir_path / "titles"
         dump_dir_views_by_year_path = dump_dir_path / "views_by_year"
 
         # Create directories
-        dump_dir_path.mkdir(parents=True, exist_ok=True)
         dump_dir_titles_path.mkdir(parents=True, exist_ok=True)
         dump_dir_views_by_year_path.mkdir(parents=True, exist_ok=True)
+
+        views_by_year_all_agents.mkdir(parents=True, exist_ok=True)
+        views_by_year_users_agents.mkdir(parents=True, exist_ok=True)
 
         return cls(
             views_data_path=views_data_path,
             dump_dir_path=dump_dir_path,
             dump_dir_titles_path=dump_dir_titles_path,
             dump_dir_views_by_year_path=dump_dir_views_by_year_path,
-
             update_med_views=update_med_views,
         )
 

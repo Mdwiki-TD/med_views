@@ -75,19 +75,35 @@ MDWIKI_HIMO_PASSWORD=your_password    # MDWiki password
 
 MED_VIEWS_PATH=~/data/views           # Output directory (default: ~data/views/)
 
-# or:
-# MED_VIEWS_DUMP_PATH = (default: $MED_VIEWS_PATH/dumps/)
-# MED_VIEWS_BASE_PATH = (default: $MED_VIEWS_PATH/update_med_views/)
 ```
 
 ## Data Structure
 
 ```
-~data/views/dumps/
-├── titles/*.json              # Per-language article lists
-├── views_by_year/YYYY/*.json  # Yearly view data per language
-├── all_languages_titles.json  # Title count summary
-└── YYYY_summary.json          # Annual statistics
+$MED_VIEWS_PATH (default: ~data/views/)
+    ├── dumps
+    │   ├── titles/
+    │   │   └─── ar.json, ..., en.json
+    │   │
+    │   └── views_by_year/
+    │       └── 2016, ..., 2025
+    │           └── ar.json, ..., en.json
+    │
+    └── update_med_views
+        ├── languages_titles_counts.json
+        ├── views_by_year_all_agents
+        │   ├── 2016, ..., 2025
+        │   │   └── ar.json, ..., en.json
+        │   │
+        │   ├── 2016_languages_counts.json
+        │   └── 2025_languages_counts.json
+        │
+        └── views_by_year_users_agents
+            ├── 2016, ..., 2025
+            │   └── ar.json, ..., en.json
+            │
+            ├── 2016_languages_counts.json
+            └── 2025_languages_counts.json
 ```
 
 ## Key Patterns

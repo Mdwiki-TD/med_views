@@ -25,7 +25,9 @@ class ViewsFetcher:
         dump_dir_views_by_year_path: Path | None = None,
     ) -> None:
         """Initialize the ViewsFetcher."""
-        self.dump_dir_views_by_year_path = dump_dir_views_by_year_path or Config.get_instance().paths.dump_dir_views_by_year_path
+        self.dump_dir_views_by_year_path = (
+            dump_dir_views_by_year_path or Config.get_instance().paths.dump_dir_views_by_year_path
+        )
 
         self._client = pageviews_client or PageviewsClient(
             parallelism=Config.get_instance().parallelism,
