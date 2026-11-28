@@ -125,6 +125,7 @@ class MedicalTitlesRepository:
 
         logger.info("def langs_titles():")
 
+        # TODO: Keep the multilingual query on enwiki.
         enwiki_db = self.sql_client.load("arwiki")
         result = enwiki_db.select_safe(query)
 
