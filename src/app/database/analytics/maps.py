@@ -20,7 +20,7 @@ class MapsData:
 
 
 class WikiMapsStore:
-    def load_local_wikimap(self, file_name) -> MapsData:
+    def load_local_wikimap(self, file_name: str | Path) -> MapsData:
         try:
             with open(file_name, encoding="utf-8") as f:
                 data = json.load(f)
@@ -99,6 +99,7 @@ class WikiReplicaMaps:
 
         logger.info("Loading wiki map from meta_p...")
 
+        # TODO: Metadata-map load failure can stop title collection before select_safe handles errors.
         self._wiki_map = self._load_new_maps()
 
         logger.info("Loaded %d wiki entries from meta_p", len(self._wiki_map))
