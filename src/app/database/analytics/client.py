@@ -46,6 +46,7 @@ class WikiReplicaDB(WikiReplicaBaseDB):
 
         config = Config.get_instance()
 
+        # TODO: Pass the configured database host and port to both connection paths.
         super().__init__(
             dbname=f"{dbname}_p",
             host=host,
