@@ -232,7 +232,7 @@ class TestMakeViews:
         with patch.object(pipeline, "process_language_views") as mock_process:
             mock_process.return_value = {"Art1": 100}
 
-            result = pipeline.make_views(languages, 2024, limit=0)
+            result = pipeline.make_views(languages=languages, year=2024, limit=0)
 
             assert mock_process.call_count == 3
             assert len(result) == 3
@@ -244,7 +244,7 @@ class TestMakeViews:
         with patch.object(pipeline, "process_language_views") as mock_process:
             mock_process.return_value = {"Art1": 100}
 
-            result = pipeline.make_views(languages, 2024, limit=2)
+            result = pipeline.make_views(languages=languages, year=2024, limit=2)
 
             assert mock_process.call_count == 2
             assert len(result) == 2
@@ -257,7 +257,7 @@ class TestMakeViews:
         with patch.object(pipeline, "process_language_views") as mock_process:
             mock_process.return_value = {"Art1": 100}
 
-            pipeline.make_views(languages, 2024, limit=0)
+            pipeline.make_views(languages=languages, year=2024, limit=0)
 
             pipeline.stats_service.dump_stats_all.assert_called_once()
 
@@ -269,9 +269,9 @@ class TestMakeViews:
         processed_order = []
 
         with patch.object(pipeline, "process_language_views") as mock_process:
-            mock_process.side_effect = lambda year, lang, maxv=0: processed_order.append(lang) or {"Art1": 100}
+            mock_process.side_effect = lambda lang, maxv=0, year=0: processed_order.append(lang) or {"Art1": 100}
 
-            pipeline.make_views(languages, 2024, limit=0)
+            pipeline.make_views(languages=languages, year=2024, limit=0)
 
             # Languages should be processed in the order provided
             assert processed_order == ["de", "fr", "en"]
@@ -299,7 +299,7 @@ class TestProcessLanguageViews:
         pipeline.views_service = MagicMock()
         pipeline.views_service.get_one_lang_views.return_value = {"Art1": 100}
 
-        pipeline.process_language_views("en", 2024, maxv=500)
+        pipeline.process_language_views(lang="en", year=2024, maxv=500)
 
         pipeline.views_service.get_one_lang_views.assert_called_once()
         call_kwargs = pipeline.views_service.get_one_lang_views.call_args.kwargs

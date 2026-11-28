@@ -265,7 +265,7 @@ class TestMakeViews:
         with patch.object(pipeline, "process_language_views") as mock_process:
             mock_process.return_value = {"Art1": {"2024": 100}}
 
-            result = pipeline.make_views(languages, limit=0)
+            result = pipeline.make_views(languages=languages, limit=0)
 
             assert mock_process.call_count == 3
             assert len(result) == 3
@@ -277,7 +277,7 @@ class TestMakeViews:
         with patch.object(pipeline, "process_language_views") as mock_process:
             mock_process.return_value = {"Art1": {"2024": 100}}
 
-            result = pipeline.make_views(languages, limit=2)
+            result = pipeline.make_views(languages=languages, limit=2)
 
             assert mock_process.call_count == 2
             assert len(result) == 2
