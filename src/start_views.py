@@ -34,6 +34,7 @@ if __name__ == "__main__":
     year, limit, maxv = parse_args()
     pipeline = MultiYearViewsPipeline(
         local="local" in sys.argv,
+        zero="zero" in sys.argv,
     )
     pipeline.start(
         year=year,
