@@ -7,9 +7,8 @@ Classes to test: DatabaseConfig, ViewsDataPaths, Config
 TODO: write tests
 """
 
-
 from src.app.config import (
+    Config,
     DatabaseConfig,
     ViewsDataPaths,
-    Config,
 )

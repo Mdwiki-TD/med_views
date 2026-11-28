@@ -7,7 +7,6 @@ Classes to test: MultiYearViewsPipeline
 TODO: write tests
 """
 
-
 from src.app.all_years.run import (
     MultiYearViewsPipeline,
 )

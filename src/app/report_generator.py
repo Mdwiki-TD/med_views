@@ -9,8 +9,8 @@ from pathlib import Path
 from typing import Any
 
 from .config import Config
-from .services import MwclientPage
 from .io.dump_utils import DumpManager
+from .services import MwclientPage
 from .views_utils.views_fetcher import ViewsFetcher
 from .wikitext.texts_utils import WikiTextBuilder
 
