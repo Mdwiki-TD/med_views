@@ -35,7 +35,7 @@ class MultiYearViewsService:
         self.dump_manager = dump_manager or DumpManager()
 
     @staticmethod
-    def calculate_total_views(langcode: str, u_data: dict) -> int:
+    def calculate_total_views(langcode: str, u_data: dict[str, Any]) -> int:
         """Calculate total views across all articles and years.
 
         Parameters:
@@ -59,9 +59,9 @@ class MultiYearViewsService:
     def get_one_lang_views_by_titles(
         self,
         langcode: str,
-        titles: list,
+        titles: list[str],
         year: int | None = None,
-    ) -> dict:
+    ) -> dict[str, Any]:
         """Fetch views for all titles of one language."""
         all_data = {}
 
@@ -79,7 +79,7 @@ class MultiYearViewsService:
     def load_one_lang_views(
         self,
         langcode: str,
-        titles: list,
+        titles: list[str],
         year: int | None = None,
     ) -> dict[str, Any]:
         """Load view statistics for one language."""
@@ -100,16 +100,19 @@ class MultiYearViewsService:
         self,
         langcode: str,
         titles: list[str],
-        json_file,
+        json_file: Path,
         year: int | None = None,
         maxv: int = 0,
-    ) -> dict:
+    ) -> dict[str, Any]:
         """Get views for one language with file caching."""
         u_data = {}
         titles = [x.replace("_", " ") for x in titles]
 
         if json_file.exists():
             u_data: dict = self.dump_manager.json_load(json_file)  # pyright: ignore[reportAssignmentType]
+            # TODO: Select the requested year from nested cached values.
+            # For year=2024, a cached value of {"2023": 10, "2024": 20, "all": 30} remains unchanged. The title then counts as cached, so no fetch replaces the value. The shared statistics service reports 30 instead of 20, and the yearly writer preserves the nested value.
+            # When year is supplied, extract that year's count before checking cache completeness. Fetch entries that lack the requested year. Preserve nested values when year is None.
             u_data = {x.replace("_", " "): v for x, v in u_data.items()}
         else:
             logger.info(f"{json_file} not found.")
