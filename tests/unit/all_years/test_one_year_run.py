@@ -328,7 +328,7 @@ class TestStart:
         mock_deps["dump_manager"].count_languages_in_json.return_value = {}
 
         with patch.object(pipeline, "make_views") as mock_make:
-            pipeline.start(2024, limit=0, maxv=0)
+            pipeline.start(limit=0, maxv=0, year=2024)
 
             mock_make.assert_not_called()
 
@@ -337,7 +337,7 @@ class TestStart:
         mock_deps["dump_manager"].load_languages_counts.return_value = {"en": 0, "fr": 0}
 
         with patch.object(pipeline, "make_views") as mock_make:
-            pipeline.start(2024, limit=0, maxv=0)
+            pipeline.start(limit=0, maxv=0, year=2024)
 
             mock_make.assert_not_called()
 
@@ -346,7 +346,7 @@ class TestStart:
         mock_deps["dump_manager"].load_languages_counts.return_value = {"en": 100, "fr": 50, "de": 25}
 
         with patch.object(pipeline, "make_views") as mock_make:
-            pipeline.start(2024, limit=0, maxv=0)
+            pipeline.start(limit=0, maxv=0, year=2024)
 
             mock_make.assert_called_once()
             call_args = mock_make.call_args
@@ -360,7 +360,7 @@ class TestStart:
         mock_deps["dump_manager"].load_languages_counts.return_value = {"en": 100}
 
         with patch.object(pipeline, "make_views") as mock_make:
-            pipeline.start(2024, limit=10, maxv=500)
+            pipeline.start(limit=10, maxv=500, year=2024)
 
             call_args = mock_make.call_args
             # make_views is called with keyword arguments
@@ -394,7 +394,7 @@ class TestIntegration:
         }
 
         # Run pipeline
-        pipeline.start(2024, limit=0, maxv=0)
+        pipeline.start(limit=0, maxv=0, year=2024)
 
         # Verify stats were recorded
         assert "en" in pipeline.stats_service.stats_all_data

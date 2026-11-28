@@ -40,7 +40,10 @@ class SingleYearViewsPipeline:
 
         self.dump_dir_path = dump_dir_path or Config.get_instance().paths.dump_dir_path
 
-    def dump_empty_data_all(self, year: int) -> None:
+    def dump_empty_data_all(
+        self,
+        year: int,
+    ) -> None:
         file = self.dump_dir_path / f"empty_views_{year}.json"
         logger.debug(f"dump_empty_data_all({file}), {len(self.empty_data_all)=}")
 
@@ -98,7 +101,13 @@ class SingleYearViewsPipeline:
 
         return result
 
-    def make_views(self, languages, year, limit, maxv=0) -> dict[str, int]:
+    def make_views(
+        self,
+        languages,
+        year: int,
+        limit: int,
+        maxv: int = 0,
+    ) -> dict[str, int]:
         views = {}
 
         for n, (lang, _) in enumerate(languages.items(), start=1):
