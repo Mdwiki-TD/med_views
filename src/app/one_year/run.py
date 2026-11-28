@@ -9,13 +9,13 @@ import json
 import logging
 from pathlib import Path
 
+from ..all_years.stats import MultiYearStatsService
+from ..all_years.views import MultiYearViewsService
 from ..config import Config
 from ..io.dump_utils import DumpManager
 from ..sql_loader import MedicalTitlesRepository
 from ..titles_utils import TitlesLoader
 from ..views_utils.views_fetcher import ViewsFetcher
-from .stats import SingleYearStatsService
-from .views import SingleYearViewsService
 
 logger = logging.getLogger(__name__)
 
@@ -32,8 +32,8 @@ class SingleYearViewsPipeline:
     ) -> None:
         self.dump_manager = dump_manager or DumpManager()
         self.titles_loader = TitlesLoader()
-        self.views_service = SingleYearViewsService()
-        self.stats_service = SingleYearStatsService()
+        self.views_service = MultiYearViewsService()
+        self.stats_service = MultiYearStatsService()
         self.views_fetcher = views_fetcher or ViewsFetcher()
         self.empty_data_all: dict = {}
         self.local = local
@@ -118,25 +118,39 @@ class SingleYearViewsPipeline:
 
         return views
 
-    def process_language_views(self, year: int, lang: str, maxv: int = 0) -> dict[str, int]:
+    def process_language_views(
+        self,
+        year: int,
+        lang: str,
+        maxv: int = 0,
+    ) -> dict[str, int]:
         titles = self.titles_loader.load_lang_titles(lang)
 
-        json_file = self.views_fetcher.get_view_file(lang, year)
+        json_file = self.views_fetcher.get_view_file(
+            lang,
+            year,
+        )
 
-        data = self.views_service.get_one_lang_views(lang, titles, year, json_file, maxv=maxv)
+        data = self.views_service.get_one_lang_views(
+            lang,
+            titles,
+            json_file,
+            year=year,
+            maxv=maxv,
+        )
 
         self.dump_one_lang_files(titles, data, lang, year)
 
         return data
 
-    def start(self, year, limit, maxv):
+    def start(
+        self,
+        year,
+        limit,
+        maxv,
+    ):
         """
         Orchestrates collection of per-language pageview totals for a given year.
-
-        Parameters:
-            year (int): Year used in view calculations.
-            limit (int): Maximum number of languages to process (0 means no limit).
-            maxv (int): Upper bound applied to per-language view calculations (0 means no cap).
         """
         languages = self.get_languages_articles_counts()
 

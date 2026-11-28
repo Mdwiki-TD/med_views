@@ -33,4 +33,8 @@ if __name__ == "__main__":
     pipeline = SingleYearViewsPipeline(
         local="local" in sys.argv,
     )
-    pipeline.start(year, limit, maxv)
+    pipeline.start(
+        year=year,
+        limit=limit,
+        maxv=maxv,
+    )
