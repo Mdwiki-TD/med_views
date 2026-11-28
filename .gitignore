@@ -5,3 +5,4 @@ views_all_run_it.py
 _works_files/**
 !_works_files/*.md
 /src/app/database/tools
+.coverage
