@@ -209,9 +209,6 @@ class PageviewsClient(PageviewsClientHelper):
                 if detail:
                     details.setdefault(detail, 0)
                     details[detail] += 1
-
-                if "printresult" in sys.argv:
-                    logger.debug("result: %s", result)
                 continue
 
             for item in result["items"]:

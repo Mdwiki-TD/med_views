@@ -31,12 +31,14 @@ class MultiYearViewsService:
         views_fetcher: ViewsFetcher | None = None,
         dump_manager: DumpManager | None = None,
         local: bool = False,
+        zero: bool = False,
     ) -> None:
         """Initialize the service."""
         self._fetcher = views_fetcher or ViewsFetcher()
         self.dump_manager = dump_manager or DumpManager()
 
         self.local = local
+        self.zero = zero
 
     @staticmethod
     def calculate_total_views(langcode: str, u_data: dict[str, Any]) -> int:
@@ -89,7 +91,7 @@ class MultiYearViewsService:
         """Load view statistics for one language."""
         data = {}
 
-        if "zero" in sys.argv:
+        if self.zero:
             data = dict.fromkeys(titles, 0)
         else:
             data = self.get_one_lang_views_by_titles(
