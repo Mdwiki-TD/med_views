@@ -8,6 +8,7 @@ from __future__ import annotations
 import datetime
 import json
 import logging
+from pathlib import Path
 
 from ..config import Config
 from ..io.dump_utils import DumpManager
@@ -23,18 +24,25 @@ logger = logging.getLogger(__name__)
 class MultiYearViewsPipeline:
     """Orchestrates multi-year view collection pipeline."""
 
-    def __init__(self, local: bool = False) -> None:
-        self.config = Config.get_instance()
-        self.dump_manager = DumpManager(config=self.config)
+    def __init__(
+        self,
+        local: bool = False,
+        views_fetcher: ViewsFetcher | None = None,
+        dump_manager: DumpManager | None = None,
+        dump_dir_path: Path | None = None,
+    ) -> None:
+        self.dump_manager = dump_manager or DumpManager()
         self.titles_loader = TitlesLoader()
         self.views_service = MultiYearViewsService()
-        self.stats_service = MultiYearStatsService(config=self.config)
-        self.views_fetcher = ViewsFetcher()
+        self.stats_service = MultiYearStatsService()
+        self.views_fetcher = views_fetcher or ViewsFetcher()
         self.empty_data_all: dict = {}
         self.local = local
 
+        self.dump_dir_path = dump_dir_path or Config.get_instance().paths.dump_dir_path
+
     def dump_empty_data_all(self) -> None:
-        file = self.config.main_dump_path / "empty_views_all_years.json"
+        file = self.dump_dir_path / "empty_views_all_years.json"
         logger.debug(f"dump_empty_data_all({file}), {len(self.empty_data_all)=}")
 
         # sort empty_data_all by len of values desc

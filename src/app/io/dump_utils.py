@@ -22,19 +22,17 @@ class DumpManager:
 
     def __init__(
         self,
-        config: Config | None = None,
+        dump_dir_path: Path | None = None,
+        dump_dir_titles_path: Path | None = None,
     ) -> None:
-        """Initialize the DumpManager.
-
-        Parameters:
-            config: Optional configuration object. Defaults to Config.get_instance().
-        """
-        self._config = config or Config.get_instance()
+        """Initialize the DumpManager."""
+        self.dump_dir_titles_path = dump_dir_titles_path or Config.get_instance().paths.dump_dir_titles_path
+        self.dump_dir_path = dump_dir_path or Config.get_instance().paths.dump_dir_path
 
     def count_languages_in_json(self) -> dict[str, list[str]]:
-        """Count items in each language JSON file in json_titles_path.
+        """Count items in each language JSON file in dump_dir_titles_path.
 
-        Scans json_titles_path for files with a .json extension, uses each
+        Scans dump_dir_titles_path for files with a .json extension, uses each
         file's stem as the language key, and records the number of top-level
         items in that file.
 
@@ -44,7 +42,7 @@ class DumpManager:
         """
         result = {}
 
-        for json_file in self._config.json_titles_path.glob("*.json"):
+        for json_file in self.dump_dir_titles_path.glob("*.json"):
             lang = json_file.stem
             with open(json_file, encoding="utf-8") as f:
                 result[lang] = len(json.load(f))
@@ -61,7 +59,7 @@ class DumpManager:
             list[str]: A list of title strings with underscores replaced by
                 spaces; returns an empty list if the language file does not exist.
         """
-        json_file = self._config.json_titles_path / f"{lang}.json"
+        json_file = self.dump_dir_titles_path / f"{lang}.json"
 
         if json_file.exists():
             with open(json_file, encoding="utf-8") as f:
@@ -128,13 +126,13 @@ class DumpManager:
         """Write language count data to the main dump file.
 
         The input mapping is sorted by count in descending order and written
-        to main_dump_path/languages_counts.json as JSON. If data is empty or
+        to dump_dir_path/languages_counts.json as JSON. If data is empty or
         has 200 or fewer entries, no file is written.
 
         Parameters:
             data: Mapping of language identifiers to integer counts.
         """
-        file = self._config.main_dump_path / "languages_counts.json"
+        file = self.dump_dir_path / "languages_counts.json"
 
         # sort data
         data = dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
@@ -153,7 +151,7 @@ class DumpManager:
                 from "languages_counts.json", or an empty dict if the file
                 does not exist.
         """
-        file = self._config.main_dump_path / "languages_counts.json"
+        file = self.dump_dir_path / "languages_counts.json"
 
         data = {}
 

@@ -5,9 +5,7 @@ Tests for src.app.one_year.stats
 import json
 import tempfile
 from pathlib import Path
-from unittest.mock import MagicMock
 
-from src.app.config import Config
 from src.app.one_year.stats import SingleYearStatsService
 
 
@@ -17,10 +15,7 @@ class TestSingleYearStatsService:
     def test_dump_stats(self):
         """Test calculating statistics for one language."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_config = MagicMock(spec=Config)
-            mock_config.main_dump_path = Path(tmpdir)
-
-            service = SingleYearStatsService(config=mock_config)
+            service = SingleYearStatsService(dump_dir_path=Path(tmpdir))
 
             articles = ["Cancer", "Diabetes", "Empty"]
             new_data = {"Cancer": 1000, "Diabetes": 500, "Empty": 0}
@@ -35,10 +30,7 @@ class TestSingleYearStatsService:
     def test_dump_stats_filters_hash(self):
         """Test that hash entries are filtered out."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_config = MagicMock(spec=Config)
-            mock_config.main_dump_path = Path(tmpdir)
-
-            service = SingleYearStatsService(config=mock_config)
+            service = SingleYearStatsService(dump_dir_path=Path(tmpdir))
 
             articles = ["Cancer", "Test#section"]
             new_data = {"Cancer": 1000, "Test#section": 500}
@@ -51,10 +43,7 @@ class TestSingleYearStatsService:
     def test_dump_stats_all(self):
         """Test writing all statistics to files."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_config = MagicMock(spec=Config)
-            mock_config.main_dump_path = Path(tmpdir)
-
-            service = SingleYearStatsService(config=mock_config)
+            service = SingleYearStatsService(dump_dir_path=Path(tmpdir))
 
             # Add some stats
             service.stats_all_data = {

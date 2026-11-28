@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import logging
 import sys
+from pathlib import Path
 
 from .config import Config
 from .io.dump_utils import DumpManager
@@ -15,23 +16,25 @@ logger = logging.getLogger(__name__)
 
 
 class TitlesLoader:
-
     def __init__(
         self,
         dump_manager: DumpManager | None = None,
         titles_repo: MedicalTitlesRepository | None = None,
         local: bool = False,
+        dump_dir_path: Path | None = None,
     ) -> None:
         """Initialize the repository."""
         self.config = Config.get_instance()
-        self.dump_manager = dump_manager or DumpManager(config=self.config)
+        self.dump_manager = dump_manager or DumpManager()
         self.titles_repo = titles_repo or MedicalTitlesRepository()
         self.local = local
 
-    def start(self):
-        self.config = Config.get_instance()
+        self.dump_dir_path = dump_dir_path or self.config.paths.dump_dir_path
+        self.dump_dir_titles_path = self.config.paths.dump_dir_titles_path
 
-        file = self.config.main_dump_path / "all_languages_titles.json"
+    def start(self):
+
+        file = self.dump_dir_path / "all_languages_titles.json"
 
         if "local" in sys.argv:
             logger.info("dump_data: loading from local files")
@@ -54,7 +57,7 @@ class TitlesLoader:
         for n, (lang, titles) in enumerate(all_links.items(), start=1):
             logger.debug(f"dump_data(): lang:{n}/{len(all_links)} \t {lang} {len(titles)}")
 
-            file = self.config.json_titles_path / f"{lang}.json"
+            file = self.dump_dir_titles_path / f"{lang}.json"
 
             self.dump_manager.dump_list(file, titles)
 

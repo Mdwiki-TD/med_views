@@ -26,21 +26,16 @@ class MultiYearStatsService:
 
     def __init__(
         self,
-        config: Config | None = None,
+        dump_dir_path: Path | None = None,
     ) -> None:
-        """Initialize the service.
-
-        Parameters:
-            config: Optional configuration object. Defaults to Config.get_instance().
-        """
-        _config = config or Config.get_instance()
+        """Initialize the service."""
         self.stats_all_data: dict = {}
-        self.main_dump_path = _config.main_dump_path
+        self.dump_dir_path = dump_dir_path or Config.get_instance().paths.dump_dir_path
 
     def dump_stats(
         self,
         articles: list[str],
-        new_data: dict[str, dict | int],
+        new_data: dict[str, Any],
         lang: str,
     ) -> dict[str, Any]:
         """Calculate and store statistics for one language across all years.
@@ -98,8 +93,8 @@ class MultiYearStatsService:
     ) -> None:
         """Write all statistics to summary files."""
         self._dump_stats_all(
-            self.main_dump_path / "all_years_summary.json",
-            self.main_dump_path / "all_years_stats_all.json",
+            self.dump_dir_path / "all_years_summary.json",
+            self.dump_dir_path / "all_years_stats_all.json",
             data,
         )
 

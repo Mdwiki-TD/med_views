@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import logging
+from pathlib import Path
 
 from app.config import Config
 from app.services import MwclientPage
@@ -18,11 +19,19 @@ logger = logging.getLogger(__name__)
 class ReportGenerator:
     """Generates and uploads wiki reports for medical pageview statistics."""
 
-    def __init__(self, save: bool = True) -> None:
-        self.config = Config.get_instance()
-        self.dump_manager = DumpManager(config=self.config)
-        self.wiki_builder = WikiTextBuilder()
-        self.views_fetcher = ViewsFetcher()
+    def __init__(
+        self,
+        dump_manager: DumpManager | None = None,
+        wiki_builder: WikiTextBuilder | None = None,
+        views_fetcher: ViewsFetcher | None = None,
+        dump_dir_path: Path | None = None,
+        save: bool = True,
+    ) -> None:
+        self.dump_manager = dump_manager or DumpManager()
+        self.wiki_builder = wiki_builder or WikiTextBuilder()
+        self.views_fetcher = views_fetcher or ViewsFetcher()
+
+        self.dump_dir_path = dump_dir_path or Config.get_instance().paths.dump_dir_path
         self.save = save
 
     def get_languages_articles_counts(self) -> dict:
@@ -103,12 +112,12 @@ class ReportGenerator:
         views = dict(sorted(views.items(), key=lambda item: item[1], reverse=True))
 
         # dump views
-        with open(self.config.main_dump_path / f"{year}_views_by_lang.json", "w", encoding="utf-8") as f:
+        with open(self.dump_dir_path / f"{year}_views_by_lang.json", "w", encoding="utf-8") as f:
             json.dump(views, f, ensure_ascii=False, indent=4)
 
         newtext = self.wiki_builder.build_wiki_text(languages, views)
 
-        with open(self.config.main_dump_path / f"{year}_text.txt", "w", encoding="utf-8") as f:
+        with open(self.dump_dir_path / f"{year}_text.txt", "w", encoding="utf-8") as f:
             f.write(newtext)
 
         return newtext

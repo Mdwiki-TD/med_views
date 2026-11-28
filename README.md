@@ -37,12 +37,18 @@ Copy `example.env` to `.env` and configure:
 ```bash
 MDWIKI_USERNAME=your_username
 MDWIKI_HIMO_PASSWORD=your_password
-MAIN_PATH=/path/to/output/directory
+
+MED_VIEWS_PATH=~/data/views           # Output directory (default: ~data/views/)
+
+# or:
+# MED_VIEWS_DUMP_PATH = (default: $MED_VIEWS_PATH/dumps/)
+# MED_VIEWS_BASE_PATH = (default: $MED_VIEWS_PATH/update_med_views/)
+
 ```
 
 - `MDWIKI_USERNAME`: Username for MDWiki uploads
 - `MDWIKI_HIMO_PASSWORD`: Password for MDWiki uploads
-- `MAIN_PATH`: Output directory for JSON dumps (defaults to `~/data/views_dumps/`)
+- `MED_VIEWS_PATH`: Output directory (default: `~data/views/`)
 
 ## Workflow and Execution
 
@@ -59,7 +65,7 @@ python3 start_titles.py
 **What it does:**
 
 - Retrieves medicine-related titles using SQL queries
-- Saves per-language JSON files to `~/data/views_dumps/titles/`
+- Saves per-language JSON files to `~/data/views/dumps/titles/`
 - Creates `all_languages_titles.json` summary
 
 **Options:**
@@ -86,7 +92,7 @@ python3 start_views_all_years.py
 
 - Iterates through collected titles
 - Uses Wikimedia Pageviews API to fetch view counts
-- Stores yearly JSON data in `~/data/views_dumps/views_by_year/YYYY/`
+- Stores yearly JSON data in `~/data/views/dumps/views_by_year/YYYY/`
 
 **Parameters:**
 
@@ -201,7 +207,7 @@ med_views/
 The system generates JSON files in the following structure:
 
 ```
-~/data/views_dumps/
+~/data/views/dumps/
 ├── titles/
 │   ├── en.json                 # English medical article titles
 │   ├── ar.json                 # Arabic medical article titles

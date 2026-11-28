@@ -70,15 +70,20 @@ Runtime arguments passed via sys.argv with `key:value` format:
 ## Environment Variables
 
 ```bash
-MDWIKI_USERNAME=your_username      # MDWiki login
-MDWIKI_HIMO_PASSWORD=your_password # MDWiki password
-VIEWS_DUMP_PATH=/path/to/output    # Output directory (default: ~data/views_dumps/)
+MDWIKI_USERNAME=your_username         # MDWiki login
+MDWIKI_HIMO_PASSWORD=your_password    # MDWiki password
+
+MED_VIEWS_PATH=~/data/views           # Output directory (default: ~data/views/)
+
+# or:
+# MED_VIEWS_DUMP_PATH = (default: $MED_VIEWS_PATH/dumps/)
+# MED_VIEWS_BASE_PATH = (default: $MED_VIEWS_PATH/update_med_views/)
 ```
 
 ## Data Structure
 
 ```
-~data/views_dumps/
+~data/views/dumps/
 ├── titles/*.json              # Per-language article lists
 ├── views_by_year/YYYY/*.json  # Yearly view data per language
 ├── all_languages_titles.json  # Title count summary

@@ -17,11 +17,9 @@ class WikiReplicaDB(WikiReplicaBaseDB):
     def __init__(
         self,
         wiki_identifier: str,
-        config: Config | None = None,
         maps: WikiReplicaMaps | None = None,
         safe_load: bool = False,
     ) -> None:
-        self.config = config or Config.get_instance()
         self.maps = maps or WikiReplicaMaps.get_instance()
         # self.maps = WikiReplicaMaps(
         #     WikiReplicaBaseDB(
@@ -44,11 +42,13 @@ class WikiReplicaDB(WikiReplicaBaseDB):
 
         logger.info("Resolved wiki '%s' -> dbname='%s', host='%s'", wiki_identifier, dbname, host)
 
+        config = Config.get_instance()
+
         super().__init__(
             dbname=f"{dbname}_p",
             host=host,
-            user=self.config.analytics_database.user,
-            password=self.config.analytics_database.password,
+            user=config.analytics_database.user,
+            password=config.analytics_database.password,
         )
 
     @staticmethod

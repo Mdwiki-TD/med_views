@@ -22,16 +22,11 @@ class SingleYearStatsService:
 
     def __init__(
         self,
-        config: Config | None = None,
+        dump_dir_path: Path | None = None,
     ) -> None:
-        """Initialize the service.
-
-        Parameters:
-            config: Optional configuration object. Defaults to Config.get_instance().
-        """
-        _config = config or Config.get_instance()
+        """Initialize the service."""
         self.stats_all_data: dict = {}
-        self.main_dump_path = _config.main_dump_path
+        self.dump_dir_path = dump_dir_path or Config.get_instance().paths.dump_dir_path
 
     def dump_stats(
         self,
@@ -79,8 +74,8 @@ class SingleYearStatsService:
     ) -> None:
         """Write all statistics to summary files."""
         self._dump_stats_all(
-            self.main_dump_path / f"{year}_summary.json",
-            self.main_dump_path / f"{year}_stats_all.json",
+            self.dump_dir_path / f"{year}_summary.json",
+            self.dump_dir_path / f"{year}_stats_all.json",
             data,
         )
 

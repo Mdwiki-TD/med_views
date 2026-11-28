@@ -5,10 +5,8 @@ Tests for src.app.all_years.stats_bot_all_years
 import json
 import tempfile
 from pathlib import Path
-from unittest.mock import MagicMock
 
 from src.app.all_years.stats import MultiYearStatsService
-from src.app.config import Config
 
 
 class TestMultiYearStatsService:
@@ -17,10 +15,7 @@ class TestMultiYearStatsService:
     def test_dump_stats_with_single_year_data(self):
         """Test calculating statistics with single year data"""
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_config = MagicMock(spec=Config)
-            mock_config.main_dump_path = Path(tmpdir)
-
-            service = MultiYearStatsService(config=mock_config)
+            service = MultiYearStatsService(dump_dir_path=Path(tmpdir))
 
             articles = ["Art1", "Art2", "Art3"]
             new_data = {
@@ -39,10 +34,7 @@ class TestMultiYearStatsService:
     def test_dump_stats_with_multi_year_data(self):
         """Test calculating statistics with multi-year data"""
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_config = MagicMock(spec=Config)
-            mock_config.main_dump_path = Path(tmpdir)
-
-            service = MultiYearStatsService(config=mock_config)
+            service = MultiYearStatsService(dump_dir_path=Path(tmpdir))
 
             articles = ["Art1", "Art2"]
             new_data = {
@@ -59,10 +51,7 @@ class TestMultiYearStatsService:
     def test_dump_stats_with_empty_entries(self):
         """Test calculating statistics with empty entries"""
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_config = MagicMock(spec=Config)
-            mock_config.main_dump_path = Path(tmpdir)
-
-            service = MultiYearStatsService(config=mock_config)
+            service = MultiYearStatsService(dump_dir_path=Path(tmpdir))
 
             articles = ["Art1", "Art2", "Art3"]
             new_data = {
@@ -79,10 +68,7 @@ class TestMultiYearStatsService:
     def test_dump_stats_with_missing_entries(self):
         """Test calculating statistics with missing entries"""
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_config = MagicMock(spec=Config)
-            mock_config.main_dump_path = Path(tmpdir)
-
-            service = MultiYearStatsService(config=mock_config)
+            service = MultiYearStatsService(dump_dir_path=Path(tmpdir))
 
             articles = ["Art1", "Art2", "Art3"]
             new_data = {
@@ -101,10 +87,7 @@ class TestMultiYearStatsService:
     def test_dump_stats_with_mixed_data_types(self):
         """Test calculating statistics with mixed int and dict data"""
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_config = MagicMock(spec=Config)
-            mock_config.main_dump_path = Path(tmpdir)
-
-            service = MultiYearStatsService(config=mock_config)
+            service = MultiYearStatsService(dump_dir_path=Path(tmpdir))
 
             articles = ["Art1", "Art2", "Art3"]
             new_data = {
@@ -122,10 +105,7 @@ class TestMultiYearStatsService:
     def test_dump_stats_filters_hash_in_articles_list(self):
         """Test that hash entries in articles list are counted separately"""
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_config = MagicMock(spec=Config)
-            mock_config.main_dump_path = Path(tmpdir)
-
-            service = MultiYearStatsService(config=mock_config)
+            service = MultiYearStatsService(dump_dir_path=Path(tmpdir))
 
             articles = ["Art1", "Art2#section"]
             new_data = {
@@ -141,10 +121,7 @@ class TestMultiYearStatsService:
     def test_dump_stats_all(self):
         """Test writing all statistics to files."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_config = MagicMock(spec=Config)
-            mock_config.main_dump_path = Path(tmpdir)
-
-            service = MultiYearStatsService(config=mock_config)
+            service = MultiYearStatsService(dump_dir_path=Path(tmpdir))
 
             # Add some stats
             service.stats_all_data = {

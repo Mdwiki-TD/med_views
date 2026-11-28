@@ -44,12 +44,12 @@ This plan creates a parallel system to the existing one that collects and stores
 **التغييرات / Changes:**
 
 - استيراد من `src.app.views_all_years` بدلاً من `src.views`
-- تخزين البيانات في مجلد `views_by_year_path` لكل سنة على حدة
+- تخزين البيانات في مجلد `dump_dir_views_by_year_path` لكل سنة على حدة
 - معالجة البيانات لكل سنة وحفظها في المجلد المناسب
 
 **Import from `src.app.views_all_years` instead of `src.views`**
 
-- Store data in `views_by_year_path` for each year separately
+- Store data in `dump_dir_views_by_year_path` for each year separately
 - Process data for each year and save in appropriate folder
 
 ### 4. src/all_years/stats.py
@@ -165,7 +165,7 @@ This plan creates a parallel system to the existing one that collects and stores
     - النظام الجديد: `{title: {2015: count, 2016: count, ...}}`
 
 3. **التخزين / Storage:**
-    - يجب تخزين كل سنة في مجلد منفصل داخل `views_by_year_path`
+    - يجب تخزين كل سنة في مجلد منفصل داخل `dump_dir_views_by_year_path`
     - مثل النظام الحالي الذي يخزن سنة 2025
 
 4. **الإحصائيات / Statistics:**
