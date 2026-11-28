@@ -48,7 +48,7 @@ class TestTitlesLoader:
         mock_dump_manager = MagicMock()
         mock_dump_manager.load_lang_titles_from_dump.return_value = []
 
-        loader = TitlesLoader(dump_manager=mock_dump_manager)
+        loader = TitlesLoader(dump_manager=mock_dump_manager, local=True)
 
         import sys
 
