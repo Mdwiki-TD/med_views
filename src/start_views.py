@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 """
 python src/start_views.py
+
+Collects and stores article views for all years (2015-2025)
 """
 
 from __future__ import annotations
@@ -14,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 def parse_args():
-    year = 2025
+    year = None
     limit = 0
     maxv = 0
     for arg in sys.argv:

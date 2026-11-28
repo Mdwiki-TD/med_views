@@ -75,13 +75,13 @@ Fetch historical pageview data for the collected titles.
 **Single-year mode:**
 
 ```bash
-python3 start_views.py
+python3 start_views.py -year:<year>
 ```
 
 **Multi-year mode (2015-2025):**
 
 ```bash
-python3 start_views_all_years.py
+python3 start_views.py
 ```
 
 **What it does:**
@@ -96,7 +96,13 @@ python3 start_views_all_years.py
 - `-min:<number>`: Minimum number of titles required to process a language
 - `-para:<number>`: Number of parallel threads (default: 10)
 
-### 3. Generate Reports and Upload
+### 3. Generate Reports
+
+```bash
+python3 report_generator.py
+```
+
+### 4. Save Reports and Upload
 
 Aggregate the data and generate a summary report for MDWiki.
 
@@ -115,6 +121,23 @@ python3 save_reports.py
 - `year:<year>`: The year for which to generate stats (default: 2024)
 - `limit:<number>`: Limit the number of languages processed
 - `save`: Actually upload to MDWiki (without this, just generates locally)
+
+### Full Workflow
+
+```bash
+
+python3 start_titles.py
+
+python3 start_views.py
+
+python3 report_generator.py
+
+python3 save_reports.py
+
+python3 after1.py
+
+python3 after2.py
+```
 
 ## Testing
 
@@ -162,8 +185,7 @@ Configuration is in `pyproject.toml`:
 med_views/
 ├── src/
 │   ├── start_titles.py             # Entry point: title collection
-│   ├── start_views.py              # Entry point: single-year view collection
-│   ├── start_views_all_years.py    # Entry point: multi-year view collection
+│   ├── start_views.py              # Entry point: multi/single-year view collection
 │   ├── save_reports.py             # Entry point: report generation
 |   |
 │   └── app/

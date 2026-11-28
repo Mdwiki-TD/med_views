@@ -52,7 +52,6 @@ src/
 ├── after.py
 ├── save_reports.py
 ├── start_titles.py
-├── start_views.py
-└── start_views_all_years.py
+└── start_views.py
 
 ```

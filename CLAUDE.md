@@ -16,8 +16,7 @@ ruff check src/ tests/
 
 # Workflow execution (in order)
 python3 start_titles.py             # 1. Collect titles from DB
-python3 start_views.py              # 2. Fetch pageviews (single year)
-python3 start_views_all_years.py    # 2. Fetch pageviews (2015-2025)
+python3 start_views.py              # 2. Fetch pageviews (2016-2025)
 python3 save_reports.py             # 3. Generate/upload reports
 ```
 
@@ -30,7 +29,7 @@ DB Query → Titles JSON → API Fetch → Views JSON → Aggregation → Wiki R
 ```
 
 1. **start_titles.py**: Queries Wikimedia Labs DB for medical articles across all language editions
-2. **start_views.py / start_views_all_years.py**: Fetches pageview data via Wikimedia API
+2. **start_views.py**: Fetches pageview data via Wikimedia API
 3. **save_reports.py**: Aggregates statistics and generates MediaWiki tables for MDWiki
 
 ### Dual-System Design
