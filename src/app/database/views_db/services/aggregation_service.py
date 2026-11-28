@@ -1,17 +1,16 @@
 """
-Aggregation service for computing and caching derived data.
+Aggregation service for computing and caching derived data (corrected).
 """
 
 from __future__ import annotations
 
 import logging
-from datetime import datetime
 from typing import Any
 
 from sqlalchemy import func, select
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.dialects.sqlite import insert
 
-from ..models import LanguageCount, Statistic, Title, ViewAllAgents, ViewUsersAgents
+from ..models import LanguageCount, Statistic, View
 from .database_service import DatabaseService
 from .view_service import AgentType
 
@@ -50,25 +49,18 @@ class AggregationService:
             agent_type: Type of agent data.
 
         Returns:
-            dict: Aggregated counts including total_views and title_count.
+            dict: Aggregated counts including total_views.
         """
-        view_model = ViewAllAgents if agent_type == "all_agents" else ViewUsersAgents
-
         with self.db_service.get_session() as session:
-            # Compute total views and title count
+            # Compute total views
             stmt = (
-                select(
-                    func.sum(view_model.views).label("total_views"),
-                    func.count(view_model.id).label("title_count"),
-                )
-                .join(Title, Title.id == view_model.title_id)
-                .where(Title.lang == lang, view_model.year == year)
+                select(func.sum(View.views).label("total_views"))
+                .where(View.lang == lang, View.year == year, View.agent_type == agent_type)
             )
             result = session.execute(stmt).one()
 
             return {
                 "total_views": result.total_views or 0,
-                "title_count": result.title_count or 0,
             }
 
     def cache_language_counts(
@@ -77,7 +69,6 @@ class AggregationService:
         year: int,
         agent_type: AgentType,
         total_views: int,
-        title_count: int,
     ) -> None:
         """
         Cache language counts in the database.
@@ -87,33 +78,21 @@ class AggregationService:
             year: Year.
             agent_type: Type of agent data.
             total_views: Total view count.
-            title_count: Number of titles.
         """
         with self.db_service.get_session() as session:
-            # Check if record exists
-            stmt = select(LanguageCount).where(
-                LanguageCount.lang == lang,
-                LanguageCount.year == year,
-                LanguageCount.agent_type == agent_type,
+            # Use SQLite-specific upsert
+            data = {
+                "lang": lang,
+                "year": year,
+                "agent_type": agent_type,
+                "total_views": total_views,
+            }
+            stmt = insert(LanguageCount).values(data)
+            stmt = stmt.on_conflict_do_update(
+                index_elements=["lang", "year", "agent_type"],
+                set_={"total_views": stmt.excluded.total_views},
             )
-            existing = session.execute(stmt).scalar_one_or_none()
-
-            if existing:
-                # Update existing record
-                existing.total_views = total_views
-                existing.title_count = title_count
-                existing.updated_at = datetime.utcnow().isoformat()
-            else:
-                # Create new record
-                record = LanguageCount(
-                    lang=lang,
-                    year=year,
-                    agent_type=agent_type,
-                    total_views=total_views,
-                    title_count=title_count,
-                    updated_at=datetime.utcnow().isoformat(),
-                )
-                session.add(record)
+            session.execute(stmt)
 
         logger.debug(f"Cached language counts for {lang}/{year} ({agent_type})")
 
@@ -147,8 +126,6 @@ class AggregationService:
 
             return {
                 "total_views": result.total_views,
-                "title_count": result.title_count,
-                "updated_at": result.updated_at,
             }
 
     def get_all_language_counts_for_year(
@@ -175,39 +152,6 @@ class AggregationService:
             results = session.execute(stmt).all()
             return {lang: total_views for lang, total_views in results}
 
-    def compute_statistics(
-        self,
-        lang: str,
-        year: int | None,
-        articles: int,
-        empty_views: int,
-        not_empty_views: int,
-        hash_count: int,
-        total_views: int,
-    ) -> dict[str, Any]:
-        """
-        Compute statistics for a language and year.
-
-        Parameters:
-            lang: Language code.
-            year: Year (None for all-years summary).
-            articles: Total number of articles.
-            empty_views: Number of articles with zero views.
-            not_empty_views: Number of articles with non-zero views.
-            hash_count: Number of articles with special characters.
-            total_views: Total view count.
-
-        Returns:
-            dict: Computed statistics.
-        """
-        return {
-            "articles": articles,
-            "empty_views": empty_views,
-            "not_empty_views": not_empty_views,
-            "hash_count": hash_count,
-            "total_views": total_views,
-        }
-
     def cache_statistics(
         self,
         lang: str,
@@ -231,31 +175,28 @@ class AggregationService:
             total_views: Total view count.
         """
         with self.db_service.get_session() as session:
-            # Check if record exists
-            stmt = select(Statistic).where(Statistic.lang == lang, Statistic.year == year)
-            existing = session.execute(stmt).scalar_one_or_none()
-
-            if existing:
-                # Update existing record
-                existing.articles = articles
-                existing.empty_views = empty_views
-                existing.not_empty_views = not_empty_views
-                existing.hash_count = hash_count
-                existing.total_views = total_views
-                existing.updated_at = datetime.utcnow().isoformat()
-            else:
-                # Create new record
-                record = Statistic(
-                    lang=lang,
-                    year=year,
-                    articles=articles,
-                    empty_views=empty_views,
-                    not_empty_views=not_empty_views,
-                    hash_count=hash_count,
-                    total_views=total_views,
-                    updated_at=datetime.utcnow().isoformat(),
-                )
-                session.add(record)
+            # Use SQLite-specific upsert
+            data = {
+                "lang": lang,
+                "year": year,
+                "articles": articles,
+                "empty_views": empty_views,
+                "not_empty_views": not_empty_views,
+                "hash_count": hash_count,
+                "total_views": total_views,
+            }
+            stmt = insert(Statistic).values(data)
+            stmt = stmt.on_conflict_do_update(
+                index_elements=["lang", "year"],
+                set_={
+                    "articles": stmt.excluded.articles,
+                    "empty_views": stmt.excluded.empty_views,
+                    "not_empty_views": stmt.excluded.not_empty_views,
+                    "hash_count": stmt.excluded.hash_count,
+                    "total_views": stmt.excluded.total_views,
+                },
+            )
+            session.execute(stmt)
 
         logger.debug(f"Cached statistics for {lang}/{year}")
 
@@ -287,7 +228,6 @@ class AggregationService:
                 "not_empty_views": result.not_empty_views,
                 "hash_count": result.hash_count,
                 "total_views": result.total_views,
-                "updated_at": result.updated_at,
             }
 
     def get_all_statistics_for_year(

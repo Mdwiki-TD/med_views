@@ -1,11 +1,8 @@
 """
-Tests for database services.
+Tests for database services (revised for corrected schema).
 """
 
 from __future__ import annotations
-
-import tempfile
-from pathlib import Path
 
 import pytest
 
@@ -73,7 +70,8 @@ class TestTitleService:
         count2 = title_service.insert_titles("en", titles)
 
         assert count1 == 2
-        # Second insert should not add duplicates
+        # Second insert should not add duplicates (upsert does nothing)
+        assert count2 == 0  # No new rows inserted
         total = title_service.get_title_count_for_language("en")
         assert total == 2
 
@@ -122,71 +120,48 @@ class TestTitleService:
         assert title_service.title_exists("en", "Article One") is True
         assert title_service.title_exists("en", "Article Two") is False
 
-    def test_get_title_id(self, title_service):
-        """Test getting title ID."""
-        titles = ["Article One"]
-        title_service.insert_titles("en", titles)
-
-        title_id = title_service.get_title_id("en", "Article One")
-        assert title_id is not None
-        assert isinstance(title_id, int)
-
 
 class TestViewService:
     """Tests for ViewService."""
 
-    def test_insert_views_all_agents(self, title_service, view_service):
+    def test_insert_views_all_agents(self, view_service):
         """Test inserting views for all_agents."""
-        # Insert titles first
-        title_service.insert_titles("en", ["Article One", "Article Two"])
-
-        # Insert views
         views_data = {"Article One": 100, "Article Two": 200}
         count = view_service.insert_views("en", 2024, views_data, "all_agents")
         assert count == 2
 
-    def test_insert_views_users_agents(self, title_service, view_service):
+    def test_insert_views_users_agents(self, view_service):
         """Test inserting views for users_agents."""
-        title_service.insert_titles("en", ["Article One", "Article Two"])
-
         views_data = {"Article One": 100, "Article Two": 200}
         count = view_service.insert_views("en", 2024, views_data, "users_agents")
         assert count == 2
 
-    def test_get_views_for_language_year(self, title_service, view_service):
+    def test_get_views_for_language_year(self, view_service):
         """Test retrieving views for a language and year."""
-        title_service.insert_titles("en", ["Article One", "Article Two"])
-
         views_data = {"Article One": 100, "Article Two": 200}
         view_service.insert_views("en", 2024, views_data, "all_agents")
 
         retrieved = view_service.get_views_for_language_year("en", 2024, "all_agents")
         assert retrieved == views_data
 
-    def test_get_total_views_for_language_year(self, title_service, view_service):
+    def test_get_total_views_for_language_year(self, view_service):
         """Test getting total views for a language and year."""
-        title_service.insert_titles("en", ["Article One", "Article Two"])
-
         views_data = {"Article One": 100, "Article Two": 200}
         view_service.insert_views("en", 2024, views_data, "all_agents")
 
         total = view_service.get_total_views_for_language_year("en", 2024, "all_agents")
         assert total == 300
 
-    def test_get_title_count_for_language_year(self, title_service, view_service):
+    def test_get_title_count_for_language_year(self, view_service):
         """Test getting title count for a language and year."""
-        title_service.insert_titles("en", ["Article One", "Article Two", "Article Three"])
-
-        views_data = {"Article One": 100, "Article Two": 200}
+        views_data = {"Article One": 100, "Article Two": 200, "Article Three": 300}
         view_service.insert_views("en", 2024, views_data, "all_agents")
 
         count = view_service.get_title_count_for_language_year("en", 2024, "all_agents")
-        assert count == 2
+        assert count == 3
 
-    def test_delete_views_for_language_year(self, title_service, view_service):
+    def test_delete_views_for_language_year(self, view_service):
         """Test deleting views for a language and year."""
-        title_service.insert_titles("en", ["Article One", "Article Two"])
-
         views_data = {"Article One": 100, "Article Two": 200}
         view_service.insert_views("en", 2024, views_data, "all_agents")
 
@@ -196,56 +171,55 @@ class TestViewService:
         total = view_service.get_total_views_for_language_year("en", 2024, "all_agents")
         assert total == 0
 
+    def test_upsert_views(self, view_service):
+        """Test that upserting views updates existing records."""
+        views_data1 = {"Article One": 100, "Article Two": 200}
+        view_service.insert_views("en", 2024, views_data1, "all_agents")
+
+        # Upsert with new values
+        views_data2 = {"Article One": 150, "Article Two": 250}
+        view_service.insert_views("en", 2024, views_data2, "all_agents")
+
+        # Verify updated values
+        retrieved = view_service.get_views_for_language_year("en", 2024, "all_agents")
+        assert retrieved["Article One"] == 150
+        assert retrieved["Article Two"] == 250
+
 
 class TestAggregationService:
     """Tests for AggregationService."""
 
-    def test_compute_language_counts(self, title_service, view_service, aggregation_service):
+    def test_compute_language_counts(self, view_service, aggregation_service):
         """Test computing language counts."""
-        title_service.insert_titles("en", ["Article One", "Article Two"])
-
         views_data = {"Article One": 100, "Article Two": 200}
         view_service.insert_views("en", 2024, views_data, "all_agents")
 
         counts = aggregation_service.compute_language_counts("en", 2024, "all_agents")
         assert counts["total_views"] == 300
-        assert counts["title_count"] == 2
 
-    def test_cache_language_counts(self, title_service, view_service, aggregation_service):
+    def test_cache_language_counts(self, view_service, aggregation_service):
         """Test caching language counts."""
-        title_service.insert_titles("en", ["Article One", "Article Two"])
-
         views_data = {"Article One": 100, "Article Two": 200}
         view_service.insert_views("en", 2024, views_data, "all_agents")
 
         # Compute and cache
         counts = aggregation_service.compute_language_counts("en", 2024, "all_agents")
-        aggregation_service.cache_language_counts(
-            "en", 2024, "all_agents", counts["total_views"], counts["title_count"]
-        )
+        aggregation_service.cache_language_counts("en", 2024, "all_agents", counts["total_views"])
 
         # Retrieve cached
         cached = aggregation_service.get_cached_language_counts("en", 2024, "all_agents")
         assert cached is not None
         assert cached["total_views"] == 300
-        assert cached["title_count"] == 2
 
-    def test_get_all_language_counts_for_year(
-        self, title_service, view_service, aggregation_service
-    ):
+    def test_get_all_language_counts_for_year(self, view_service, aggregation_service):
         """Test getting all language counts for a year."""
-        title_service.insert_titles("en", ["Article One"])
-        title_service.insert_titles("fr", ["Article Un"])
-
         view_service.insert_views("en", 2024, {"Article One": 100}, "all_agents")
         view_service.insert_views("fr", 2024, {"Article Un": 200}, "all_agents")
 
         # Compute and cache
         for lang in ["en", "fr"]:
             counts = aggregation_service.compute_language_counts(lang, 2024, "all_agents")
-            aggregation_service.cache_language_counts(
-                lang, 2024, "all_agents", counts["total_views"], counts["title_count"]
-            )
+            aggregation_service.cache_language_counts(lang, 2024, "all_agents", counts["total_views"])
 
         # Retrieve all
         all_counts = aggregation_service.get_all_language_counts_for_year(2024, "all_agents")
